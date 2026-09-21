@@ -1,0 +1,23 @@
+## 1 arithmetic intensity (Monte Carlo, d=20, sweep K)
+K          samples        C(1core)  SEQ       PAR(10)   GPU      
+256        268435456      0.471s    0.482s    0.071s    0.087s   
+1024       1073741824     1.918s    1.934s    0.288s    0.092s   
+4096       4294967296     7.714s    7.757s    1.092s    0.14s    
+
+## 2 merge-heavy (FWHT, sweep d)
+d      n           C(array)    C(tree)     SEQ       PAR(10)   GPU      
+20     1048576     0.004s      0.66s       0.053s    0.016s    0.108s   
+22     4194304     0.01s       3.187s      0.241s    0.056s    0.165s   
+24     16777216    0.04s       9.951s      0.909s    0.177s    0.44s    
+
+## 3 load placement (identical total work, d=20 K=4096)
+variant                      SEQ       PAR(10)   GPU      
+uniform                      8.114s    1.092s    0.132s   
+hot 1/64 (by residue)        7.948s    1.086s    0.131s   
+linear ramp (by range)       7.878s    1.093s    0.184s   
+block 1/64 (by range)        8.21s     2.086s    1.636s   
+
+## 4 divergence (identical mean work, d=20 K=256)
+variant                      SEQ       PAR(10)   GPU      
+uniform 32 rounds            7.814s    1.359s    0.112s   
+divergent 64/0               10.663s   1.867s    0.104s   

@@ -1,0 +1,22 @@
+# Local build products and scratch files; keep experimental sources and results.
+.DS_Store
+*.gpu
+*.o
+*.dSYM/
+__pycache__/
+/build/
+/examples/ds/*/bin/*
+!/examples/ds/*/bin/*.bend
+/examples/ds/path/.check/
+/examples/ds/path/p[12]_bend
+/examples/ds/path/p[12]_c*
+/examples/ds/path/verify_p[12]
+/examples/ds/path/p1_gpu.err
+/examples/ds/path/p1_gpu.out
+/examples/ds/sort/msort
+/examples/ds/sort/bsort
+/examples/ds/sort/nosort
+/examples/ds/sort/c_*
+/examples/ds/sort/.probe_*
+/examples/ds/sort/.lp
+/examples/ds/sort/.sz_*

@@ -1,0 +1,45 @@
+type Lst is Data:
+  Lnil{}
+  Lcons{h: U32, t: Lst}
+
+type Ck is Data:
+  Ck{i: U32, ok: U32, sum: U32, isum: U32, msum: U32, prev: U32}
+
+# xorshift: x ^= x<<13; x ^= x>>17; x ^= x<<5
+def prng(+x: U32) -> U32:
+  +b = U32.xor(x, U32.shln(x, 13n))
+  +d = U32.xor(b, U32.shrn(b, 17n))
+  U32.xor(d, U32.shln(d, 5n))
+
+def key(i: U32) -> U32:
+  prng(U32.mul(U32.inc(i), 2654435761))
+
+# a merge emits at most n elements; 2^26 covers the 2^25 run
+def fuel() -> Nat:
+  67108864n
+
+def ck0() -> Ck:
+  Ck{0, 1, 0, 0, 0, 0}
+
+# one emitted element: bump the index, AND the ascending test into ok, add the
+# value to the order-independent sum, to the position-weighted isum, and to
+# msum -- a commutative hash of the multiset, which unlike sum notices a pair
+# of values swapped for two others with the same total
+def push(c: Ck, +v: U32) -> Ck:
+  match c:
+    case Ck{+i, ok, sum, isum, msum, prev}:
+      Ck{U32.inc(i), U32.and(ok, Bool.to_u32(U32.is_le(prev, v))),
+        U32.add(sum, v), U32.add(isum, U32.mul(i, v)),
+        U32.add(msum, prng(v)), v}
+
+# fold the leftover tail of whichever run outlived the other
+def drain(f: Nat, xs: Lst, acc: Ck) -> Ck:
+  match f:
+    case 0n:
+      acc
+    case 1n+p:
+      match xs:
+        case Lnil{}:
+          acc
+        case Lcons{v, t}:
+          drain(p, t, push(acc, v))
