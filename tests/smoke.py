@@ -53,7 +53,7 @@ class PlaygroundSmokeTest(unittest.TestCase):
                 text=True, capture_output=True, timeout=60,
             )
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(result.stdout.strip(), "All terms check.")
+        self.assertEqual(result.stdout.splitlines()[0], "ALL PROOFS CHECK")
 
     def test_fwht_involution(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -65,6 +65,27 @@ class PlaygroundSmokeTest(unittest.TestCase):
             "d=5  involution: True",
             "d=10 involution: True",
         ])
+
+    def test_unsafe_proof_fails_the_check(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result = self.run_bend(
+                ROOT / "examples/probes/unsafe_absurd.bend", "--check-only", cwd=directory
+            )
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        output = result.stdout + result.stderr
+        self.assertIn("SOME PROOFS FAIL", output)
+        self.assertIn("2 defs rely on unsafe or foreign code", output)
+
+    def test_simulations_match_their_c_twins(self):
+        environ = {k: v for k, v in os.environ.items() if k != "BEND_REPO"}
+        environ["BEND_NO_TELEMETRY"] = "1"
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.run(
+                ["bash", str(ROOT / "examples/sim/check.sh")],
+                cwd=directory, env=environ, text=True, capture_output=True, timeout=120,
+            )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("PASS: 3 / 3", result.stdout)
 
 
 if __name__ == "__main__":

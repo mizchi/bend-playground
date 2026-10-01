@@ -80,6 +80,29 @@ Bend と C の定数を合わせれば出力は**ビット一致する**。一�
 - **`fw_tree.c` は d=24 で 10 秒近くかかる。** malloc/free が律速なので、これは想定どおり
 - **U32 はオーバーフローする。** 規模を変えるとき `2*K*i` のような式が 2^32 を超えると、エラーにならず静かに総仕事量が変わる（実験中に一度これで偽の結果が出た）
 
+## 物理とモンテカルロの実験
+
+[../08-physics-and-monte-carlo.md](../08-physics-and-monte-carlo.md) の実験ソースは `sim/` にある。
+
+| ファイル | 役割 |
+|---|---|
+| `sim/galton.bend` / `galton.c` | 物理: Galton board。重力 + ピンとの円衝突 + 壁。2^16 個の独立なボール |
+| `sim/anneal.bend` / `anneal.c` | モンテカルロ探索: 32 品目ナップサックの焼きなまし。2^14 本の独立チェーン。C は厳密解（DP）も出す |
+| `sim/balls.bend` / `balls.c` | 物理: 1 箱 8 球の衝突（O(N²) の弾性衝突）。2^12 個の独立な箱 |
+| `sim/probes/twin_leak.bend` | 共有リストを 2 つの引数に渡すとメモリが解放されない最小再現 |
+| `sim/check.sh` | 小さい規模で Bend と C の出力がビット一致するか（`just check-sim`） |
+| `sim/bench.sh` | C / Bend 1 core / Bend 全コアの best-of-3 と max RSS（`just bench-sim`） |
+| `sim/results.txt` | 生の計測値 |
+
+規模は各 `.bend` 末尾の `def dep()` / `def steps()`、C 側は `-DDEP=` / `-DSTEPS=`。
+C twin は `-ffp-contract=off` でビルドする（`check.sh` / `bench.sh` が付ける）。
+
+| 条件 | 出力 |
+|---|---|
+| `galton` dep=16 steps=2048 | `0 75 331 867 2204 4610 7760 10693 12118 11002 7804 4719 2126 876 301 50` |
+| `anneal` dep=14 steps=4096 | `best=976 chains=1 mask=882706334`（DP の厳密解も 976） |
+| `balls` dep=12 steps=4096 | `contacts=231820 checksum=4256907475` |
+
 ## データ構造の実験
 
 `ds/` の前提は [ds/CONTRACT.md](ds/CONTRACT.md) を参照。
