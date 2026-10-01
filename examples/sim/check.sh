@@ -9,6 +9,14 @@ export BEND_NO_TELEMETRY=1
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 
+# the C twin of a program: balls_flat shares balls.c
+twin_of() {
+  case "$1" in
+    balls_flat) echo balls ;;
+    *) echo "$1" ;;
+  esac
+}
+
 # rewrite the bodies of `def dep()` and `def steps()` to the given sizes
 resize() {
   awk -v dep="$2" -v steps="$3" '
@@ -24,7 +32,7 @@ check() {
   resize "$D/$name.bend" "$dep" "$steps" > "$work/$name.bend"
   "$BEND" "$work/$name.bend" -o "$work/$name" > /dev/null
   "$CC" -std=c11 -O3 -ffp-contract=off -DDEP="$dep" -DSTEPS="$steps" \
-    "$D/$name.c" -lm -o "$work/${name}_c"
+    "$D/$(twin_of "$name").c" -lm -o "$work/${name}_c"
   local got want
   got="$("$work/$name" --gpu off)"
   want="$("$work/${name}_c" | head -n 1)"
@@ -41,5 +49,6 @@ check() {
 check galton 10 2048
 check anneal 8 4096
 check balls 4 512
+check balls_flat 4 512
 printf 'PASS: %s / %s\n' "$passed" "$((passed + failed))"
 [[ "$failed" -eq 0 ]]

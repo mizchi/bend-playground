@@ -12,6 +12,14 @@ CC="${CC:-clang}"
 export BEND_NO_TELEMETRY=1
 mkdir -p "$OUT"
 
+# the C twin of a program: balls_flat shares balls.c
+twin_of() {
+  case "$1" in
+    balls_flat) echo balls ;;
+    *) echo "$1" ;;
+  esac
+}
+
 # best-of-3 wall clock and the largest max RSS, as "seconds MB"
 measure() {
   python3 - "$@" <<'PY'
@@ -32,7 +40,7 @@ printf '# Bend %s (%s)\n' "$("$BEND" version | awk '{print $2}')" \
 printf '%-8s %-16s %-16s %-16s %s\n' program c bend-1core bend-allcores output
 for name in "$@"; do
   "$BEND" "$D/$name.bend" -o "$OUT/$name" > /dev/null
-  "$CC" -std=c11 -O3 -ffp-contract=off "$D/$name.c" -lm -o "$OUT/${name}_c"
+  "$CC" -std=c11 -O3 -ffp-contract=off "$D/$(twin_of "$name").c" -lm -o "$OUT/${name}_c"
   printf '%-8s %-16s %-16s %-16s %s\n' "$name" \
     "$(measure "$OUT/${name}_c")" \
     "$(measure "$OUT/$name" --threads 1 --gpu off)" \

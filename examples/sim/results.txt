@@ -47,3 +47,8 @@ galton   1.408s 10MB      1.396s 10MB      0.365s 10MB
 anneal   1.231s 10MB      1.254s 10MB      0.324s 10MB
 balls    1.041s 10MB      7.678s 10MB      3.100s 10MB
 # probes/twin_leak.bend on 2.0.23 --threads 1: max RSS 94MB (the leak predates the update)
+
+# balls_flat (balls.bend unrolled into 32 f32 parameters, gen_balls_flat.py), 2026-10-01, Bend 2.0.34 (7d24b8d0)
+program  c                bend-1core       bend-allcores    output
+balls    1.025s 10MB      7.670s 10MB      2.849s 10MB      contacts=231820 checksum=4256907475
+balls_flat 1.025s 10MB    1.290s 10MB      0.332s 10MB      contacts=231820 checksum=4256907475
