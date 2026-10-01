@@ -1,0 +1,76 @@
+From d1de1e08926e4e48f4ecabb9e3335b5e6d9ac532 Mon Sep 17 00:00:00 2001
+From: mizchi <chikuba-kotaro@arkedgespace.com>
+Date: Thu, 1 Oct 2026 13:53:29 +0000
+Subject: [PATCH] A spin called in a self-jump's argument sinks the twin it was
+ lent, so the loop no longer keeps the old list's cells (#<issue>)
+
+Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ bend2/comp.ts                 |  4 +---
+ tests/reg/spin_twin_sink.bend | 39 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 40 insertions(+), 3 deletions(-)
+ create mode 100644 tests/reg/spin_twin_sink.bend
+
+diff --git a/bend2/comp.ts b/bend2/comp.ts
+index a824dce..d6f0e84 100644
+--- a/bend2/comp.ts
++++ b/bend2/comp.ts
+@@ -2278,9 +2278,7 @@ function emit_fuse(fl: File, ck: Spine, dst: Val | null, tail = false): void {
+     file_push(fl, "return 0;");
+   });
+   out.ws.forEach((v, j) => file_push(fl, `${v} = ${o}[${j}];`));
+-  if (tail) {
+-    bind_dead(fl, []);
+-  }
++  bind_dead(fl, tail ? [] : fl.rest);
+   emit_put(fl, dst, out);
+ }
+ 
+diff --git a/tests/reg/spin_twin_sink.bend b/tests/reg/spin_twin_sink.bend
+new file mode 100644
+index 0000000..c843b23
+--- /dev/null
++++ b/tests/reg/spin_twin_sink.bend
+@@ -0,0 +1,39 @@
++# regression witness: a spin (Xs.walk, a flat loop) fed one value twice in
++# an argument of a self-jump: go(p, Xs.walk(xs, xs, X0{})). Xs.walk consumes
++# its first parameter and never reads its second, so go keeps xs once and
++# lends it to the second; the lent copy dies at the spin call, and the
++# self-jump runs no bind_dead, so the spin call must sink it. Before, nothing
++# did: every turn left the old list's cells counted, and the 10^6 turns
++# below took 64 MB of RSS on one thread instead of 10 MB. In the C,
++# go's spin call is followed by a term_sink of xs.
++import Base
++
++type Xs is Data:
++  X0{}
++  X1{v: U32, rest: Xs}
++
++def Xs.walk(xs: Xs, +all: Xs, acc: Xs) -> Xs:
++  match xs:
++    case X0{}:
++      acc
++    case X1{v, rest}:
++      Xs.walk(rest, all, X1{(v + 1 : U32), acc})
++
++def Xs.sum(xs: Xs, acc: U32) -> U32:
++  match xs:
++    case X0{}:
++      acc
++    case X1{v, rest}:
++      Xs.sum(rest, (acc + v : U32))
++
++def go(k: Nat, +xs: Xs) -> Xs:
++  match k:
++    case 0n:
++      xs
++    case 1n+p:
++      go(p, Xs.walk(xs, xs, X0{}))
++
++def main() -> IO(Unit):
++  IO.print(U32.show(Xs.sum(go(U32.to_nat(1000000), X1{1, X1{2, X1{3, X1{4, X0{}}}}}), 0)))
++
++#|4000010
+-- 
+2.43.0
+

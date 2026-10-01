@@ -14,14 +14,18 @@
 
 テスト: `tests/reg/spin_twin_sink.bend`（4 セルのリストで 10^6 反復、答えを固定）。
 test.ts は RSS を見ないので、`closure_value_owns.bend` と同じくヘッダに RSS を書いた。
-修正前 64 MB → 修正後 10 MB（`--threads 1`、Linux x86_64）。
+修正前 64 MB → 修正後 10 MB（`--threads 1` と `--threads 4` で同じ、Linux x86_64）。
 
 <details>
 <summary>ローカルでの確認</summary>
 
 - gates/repo.ts: PASS 49 / 49
 - tests/ の全 .bend を C レーン（`-o t` → `./t --gpu off`）と JS レーン（`-o t.js` → `bun t.js`）で
-  修正前後に実行し、`#|` 行との一致を比較: <結果>
+  修正前後に実行し、`#|` 行との一致を比較。どちらのレーンも結果は修正前と同じで、
+  変わったのは新しいテストが通った 1 件だけ（C: pass 670 → 671、JS: pass 692 → 693。
+  残りは型エラーの出力を期待値にするテストと、この環境で落ちる io/ のテストで、修正前後で同じ）
+- bench/runtime の 16 本: 生成 C は 15 本が同一。hashmap は既存の `term_sink` 1 行が
+  spin 呼び出しの直後に移るだけ
 - gates/test.ts と gates/perf.ts はクラスタ前提のため未実行
 - 環境: Linux x86_64（Intel Xeon、4 スレッド）、Ubuntu clang 18.1.3、bend 2.0.34 (7d24b8d0)。GPU なし
 

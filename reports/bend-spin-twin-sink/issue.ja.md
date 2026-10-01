@@ -25,6 +25,8 @@ $ ./twin --threads 1 --gpu off     # 最大 RSS 64 MB（Python の resource.getr
 自己ジャンプは `bind_dead` を走らせないので、自己ジャンプの引数位置で spin を呼ぶと、
 貸した twin の残り 1 参照を落とす箇所がない。修正案と回帰テストを PR #<番号> に出す。
 
+2.0.23（75cb8f3e）でも同じく 64 MB。open な PR の head（#1000 以降）に `emit_fuse` のこの分岐を変えるものは無かった。
+
 再現ファイルと計測手順の gist: <gist URL>
 
 ### The file
