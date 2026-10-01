@@ -14,8 +14,9 @@ just setup
 just test
 ```
 
-Bend 本体は `upstream/bend` の Git submodule で管理し、実験で使った
-Bend 2.0.23 のコミット `75cb8f3e041aeaad2b37e726c0a33ba19dc49df8` に固定しています。
+Bend 本体は `upstream/bend` の Git submodule で管理し、
+Bend 2.0.34 のコミット `7d24b8d0235cb9781140512c0f163c48ea84a719` に固定しています
+（01〜07 の計測は 2.0.23 / `75cb8f3e041aeaad2b37e726c0a33ba19dc49df8` で行ったもの）。
 元の Bend checkout は不要です。`just setup` は記録されたコミットを取得します。
 
 ```sh
@@ -34,10 +35,11 @@ just bend examples/mc.bend -o build/mc
 利用できるタスクは `just`、実験ごとの説明は [examples/README.md](examples/README.md) を参照してください。
 
 `just test` は別ディレクトリ・空白を含むパスからの実行、引数の受け渡し、紹介記事の13サンプル
-（意図した型エラー4本を含む）、FWHT の involution を検証します。
+（意図した型エラー4本を含む）、FWHT の involution、`@unsafe` な偽の証明が検査に落ちること、
+物理・モンテカルロの 3 本が C twin とビット一致することを検証します（C コンパイラが必要、GPU は不要）。
 生成バイナリや作業ファイルは Git 管理から除外しています。
 
-以下のノート・計測値は固定した Bend コミットを対象にした当時の記録です。
+01〜07 のノート・計測値は 2.0.23 を対象にした当時の記録です。08 は 2.0.34 で計測しています。
 01〜06 に現れる `bend2/`、`bench/`、`tests/` などの upstream のパスやコマンドは、
 `upstream/bend/` を基準に読んでください。
 
@@ -52,8 +54,10 @@ just bend examples/mc.bend -o build/mc
 | [05-gpu-algorithm-fit.md](05-gpu-algorithm-fit.md) | どんなアルゴリズムが GPU に向くか、対照実験4本 |
 | [06-writing-bend.md](06-writing-bend.md) | Bend で何が書けて何が書けないか。壁5つと抜け道1つ、probe 9 本。03 の賭けの実行側の採点 |
 | [07-bend-intro.md](07-bend-intro.md) | Bend を知らない人向けの紹介記事。サンプル 13 本は型検査と実行を確認済み |
+| [08-physics-and-monte-carlo.md](08-physics-and-monte-carlo.md) | Bend 2.0.34 に更新して、物理シミュレーション 2 本とモンテカルロ探索 1 本を C twin と比較。2.0.23 からの変化も記録 |
 | [examples/](examples/) | 05 の実験ソース（Bend 8 本 + C twin 3 本）と生の計測値 |
 | [examples/ds/](examples/ds/) | 06 の実験ソース（経路探索 / ソート / マップ / 共有木）。タイミングは未計測 |
+| [examples/sim/](examples/sim/) | 08 の実験ソース（Galton board / 焼きなまし / 衝突する球）と C twin、生の計測値 |
 
 ## 30 秒サマリ
 
@@ -106,6 +110,8 @@ Bend は**アフィン型という単一の制約**で、普通は両立しな�
   ```
 
   救いは汚染が推移的に伝播して `N defs rely on unsafe or foreign code` と一覧されること。防壁ではなく**汚染追跡**。足りないのは exit code と `--deny-unsafe` だけ
+
+  **2.0.34 追記:** 同じファイルは `SOME PROOFS FAIL` を出して **exit 1** になった。exit code の穴は埋まっている（[08](08-physics-and-monte-carlo.md)）
 
 ## 実測の要点（[05](05-gpu-algorithm-fit.md) より）
 

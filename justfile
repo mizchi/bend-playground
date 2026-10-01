@@ -12,9 +12,17 @@ setup:
 bend +args:
     ./scripts/bend.sh "$@"
 
-# Verify portability, the introductory samples and FWHT correctness.
+# Verify portability, the introductory samples, FWHT and the simulations.
 test:
     python3 tests/smoke.py
+
+# Check the physics and Monte Carlo samples against their C twins (no GPU).
+check-sim:
+    ./examples/sim/check.sh
+
+# Time the physics and Monte Carlo samples against their C twins (quiet machine).
+bench-sim *programs="galton anneal balls":
+    ./examples/sim/bench.sh {{programs}}
 
 # Check all 13 introductory samples, including the four expected errors.
 check-intro:

@@ -8,7 +8,7 @@ failed=0
 for f in "$D"/*.bend; do
   name="$(basename "$f")"
   expected_status=0
-  expected='All terms check.'
+  expected='ALL PROOFS CHECK'
   case "$name" in
     s02_*) expected_status=1; expected='consumed more than once' ;;
     s08_*) expected_status=1; expected='expected : Data' ;;
