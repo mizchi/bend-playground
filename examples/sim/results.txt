@@ -63,3 +63,16 @@ DEP=6: as X: 127 won 1 drawn 0 lost; as O: 117 won 7 drawn 4 lost minimax-optima
 DEP=8: as X: 126 won 2 drawn 0 lost; as O: 121 won 2 drawn 5 lost minimax-optimal moves: 4365 of 4520 reachable positions mistakes: win->draw 53, win->loss 3, draw->loss 99 
 DEP=10: as X: 128 won 0 drawn 0 lost; as O: 121 won 3 drawn 4 lost minimax-optimal moves: 4368 of 4520 reachable positions mistakes: win->draw 57, win->loss 4, draw->loss 91 
 DEP=12: as X: 128 won 0 drawn 0 lost; as O: 121 won 3 drawn 4 lost minimax-optimal moves: 4371 of 4520 reachable positions mistakes: win->draw 55, win->loss 4, draw->loss 90 
+
+# mcts (UCT, root parallelization), 2026-10-01, Bend 2.0.34 (7d24b8d0); C column without --audit
+mcts     2.215s 10MB      3.303s 10MB      0.861s 10MB      1099 764 1042 813 1700 843 1095 776 1084 / as X: 127 won 1 drawn 0 lost; as O: 120 won 8 drawn 0 lost
+# bend-1core by version: Bool.pick 9.475s, match k 6.671s, split node 3.867s, lazy UCT (unrolled) 3.470s, lazy UCT (Ch fold) 3.303s
+# trees x iters, 9216 playouts a move, 256 games: C / bend-1core / bend-4threads
+1x9216 2.44 4.11 1.10 | 4x2304 2.41 3.61 0.93 | 16x576 2.21 3.29 0.87 | 64x144 2.00 2.94 0.76
+# 131072 playouts a move (4x32767), 1 game: 4x32767 0.23 0.38 0.11 | 16x8192 0.25 0.40 0.12 | 64x2048 0.23 0.33 0.10 | 256x512 0.22 0.33 0.11
+# mcts.c --audit (9216 playouts a move): optimal of 4520 / lost as O of 128
+trees=2^0: as X: 124 won 4 drawn 0 lost; as O: 121 won 7 drawn 0 lost minimax-optimal moves: 4520 of 4520 reachable positions mistakes: win->draw 0, win->loss 0, draw->loss 0 
+trees=2^2: as X: 126 won 2 drawn 0 lost; as O: 120 won 8 drawn 0 lost minimax-optimal moves: 4520 of 4520 reachable positions mistakes: win->draw 0, win->loss 0, draw->loss 0 
+trees=2^4: as X: 127 won 1 drawn 0 lost; as O: 120 won 8 drawn 0 lost minimax-optimal moves: 4504 of 4520 reachable positions mistakes: win->draw 8, win->loss 0, draw->loss 8 
+trees=2^6: as X: 126 won 2 drawn 0 lost; as O: 117 won 11 drawn 0 lost minimax-optimal moves: 4485 of 4520 reachable positions mistakes: win->draw 16, win->loss 1, draw->loss 18 
+trees=2^8: as X: 128 won 0 drawn 0 lost; as O: 122 won 3 drawn 3 lost minimax-optimal moves: 4440 of 4520 reachable positions mistakes: win->draw 38, win->loss 3, draw->loss 39 

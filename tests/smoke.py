@@ -85,7 +85,7 @@ class PlaygroundSmokeTest(unittest.TestCase):
                 cwd=directory, env=environ, text=True, capture_output=True, timeout=120,
             )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertIn("PASS: 5 / 5", result.stdout)
+        self.assertIn("PASS: 6 / 6", result.stdout)
 
     def test_generated_balls_flat_is_current(self):
         result = subprocess.run(
