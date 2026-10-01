@@ -17,11 +17,13 @@ twin_of() {
   esac
 }
 
-# rewrite the bodies of `def dep()` and `def steps()` to the given sizes
+# rewrite the bodies of `def dep()` and of `def steps()` (or `def games()`,
+# fmc's second knob) to the given sizes
 resize() {
   awk -v dep="$2" -v steps="$3" '
     prev == "def dep() -> Nat:"   { $0 = "  " dep "n" }
     prev == "def steps() -> Nat:" { $0 = "  " steps "n" }
+    prev == "def games() -> Nat:" { $0 = "  " steps "n" }
     { print; prev = $0 }' "$1"
 }
 
@@ -31,11 +33,12 @@ check() {
   local name="$1" dep="$2" steps="$3"
   resize "$D/$name.bend" "$dep" "$steps" > "$work/$name.bend"
   "$BEND" "$work/$name.bend" -o "$work/$name" > /dev/null
-  "$CC" -std=c11 -O3 -ffp-contract=off -DDEP="$dep" -DSTEPS="$steps" \
+  "$CC" -std=c11 -O3 -ffp-contract=off -DDEP="$dep" -DSTEPS="$steps" -DGAMES="$steps" \
     "$D/$(twin_of "$name").c" -lm -o "$work/${name}_c"
   local got want
   got="$("$work/$name" --gpu off)"
-  want="$("$work/${name}_c" | head -n 1)"
+  # the C twin may print more (fmc's minimax audit); compare Bend's lines
+  want="$("$work/${name}_c" | head -n "$(printf '%s\n' "$got" | wc -l)")"
   if [[ -n "$got" && "$got" == "$want" ]]; then
     printf 'PASS %s dep=%s steps=%s: %s\n' "$name" "$dep" "$steps" "$got"
     passed=$((passed + 1))
@@ -50,5 +53,6 @@ check galton 10 2048
 check anneal 8 4096
 check balls 4 512
 check balls_flat 4 512
+check fmc 4 4
 printf 'PASS: %s / %s\n' "$passed" "$((passed + failed))"
 [[ "$failed" -eq 0 ]]

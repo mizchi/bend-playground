@@ -90,12 +90,13 @@ Bend と C の定数を合わせれば出力は**ビット一致する**。一�
 | `sim/anneal.bend` / `anneal.c` | モンテカルロ探索: 32 品目ナップサックの焼きなまし。2^14 本の独立チェーン。C は厳密解（DP）も出す |
 | `sim/balls.bend` / `balls.c` | 物理: 1 箱 8 球の衝突（O(N²) の弾性衝突）。2^12 個の独立な箱 |
 | `sim/balls_flat.bend` / `gen_balls_flat.py` | balls.bend の箱の状態を f32 引数 32 個に展開した生成コード（C twin は `balls.c`）。生成し直すときは `python3 examples/sim/gen_balls_flat.py > examples/sim/balls_flat.bend` |
+| `sim/fmc.bend` / `fmc.c` | モンテカルロ探索: 三目並べの flat Monte Carlo。初手の評価と、対ランダム 2^8 局。`fmc.c --audit` は完全読みとの照合（C のみ） |
 | `sim/probes/twin_leak.bend` | 共有リストを 2 つの引数に渡すとメモリが解放されない最小再現 |
 | `sim/check.sh` | 小さい規模で Bend と C の出力がビット一致するか（`just check-sim`） |
 | `sim/bench.sh` | C / Bend 1 core / Bend 全コアの best-of-3 と max RSS（`just bench-sim`） |
 | `sim/results.txt` | 生の計測値 |
 
-規模は各 `.bend` 末尾の `def dep()` / `def steps()`、C 側は `-DDEP=` / `-DSTEPS=`。
+規模は各 `.bend` の `def dep()` / `def steps()`（fmc は `def games()`）、C 側は `-DDEP=` / `-DSTEPS=` / `-DGAMES=`。
 C twin は `-ffp-contract=off` でビルドする（`check.sh` / `bench.sh` が付ける）。
 
 | 条件 | 出力 |
@@ -103,6 +104,7 @@ C twin は `-ffp-contract=off` でビルドする（`check.sh` / `bench.sh` が�
 | `galton` dep=16 steps=2048 | `0 75 331 867 2204 4610 7760 10693 12118 11002 7804 4719 2126 876 301 50` |
 | `anneal` dep=14 steps=4096 | `best=976 chains=1 mask=882706334`（DP の厳密解も 976） |
 | `balls` / `balls_flat` dep=12 steps=4096 | `contacts=231820 checksum=4256907475` |
+| `fmc` dep=10 games=8 | `1382 1252 1418 1211 1569 1222 1376 1240 1400` と `as X: 128 won 0 drawn 0 lost; as O: 121 won 3 drawn 4 lost` |
 
 ## データ構造の実験
 

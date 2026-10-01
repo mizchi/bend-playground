@@ -21,7 +21,7 @@ check-sim:
     ./examples/sim/check.sh
 
 # Time the physics and Monte Carlo samples against their C twins (quiet machine).
-bench-sim *programs="galton anneal balls balls_flat":
+bench-sim *programs="galton anneal balls balls_flat fmc":
     ./examples/sim/bench.sh {{programs}}
 
 # Check all 13 introductory samples, including the four expected errors.

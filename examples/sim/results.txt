@@ -52,3 +52,14 @@ balls    1.041s 10MB      7.678s 10MB      3.100s 10MB
 program  c                bend-1core       bend-allcores    output
 balls    1.025s 10MB      7.670s 10MB      2.849s 10MB      contacts=231820 checksum=4256907475
 balls_flat 1.025s 10MB    1.290s 10MB      0.332s 10MB      contacts=231820 checksum=4256907475
+
+# fmc (flat Monte Carlo tic-tac-toe), 2026-10-01, Bend 2.0.34 (7d24b8d0); C column without --audit
+fmc      0.600s 10MB      0.756s 10MB      0.196s 10MB      1382 1252 1418 1211 1569 1222 1376 1240 1400 / as X: 128 won 0 drawn 0 lost; as O: 121 won 3 drawn 4 lost
+# first version, nth through Bool.pick (no early exit): bend-1core 1.896s, bend-allcores 0.473s
+# fmc.c --audit by playouts per move (DEP): minimax-optimal moves of 4520 / games lost as O of 128
+DEP=2: as X: 122 won 4 drawn 2 lost; as O: 97 won 21 drawn 10 lost minimax-optimal moves: 4062 of 4520 reachable positions mistakes: win->draw 93, win->loss 136, draw->loss 229 
+DEP=4: as X: 125 won 1 drawn 2 lost; as O: 109 won 8 drawn 11 lost minimax-optimal moves: 4284 of 4520 reachable positions mistakes: win->draw 56, win->loss 25, draw->loss 155 
+DEP=6: as X: 127 won 1 drawn 0 lost; as O: 117 won 7 drawn 4 lost minimax-optimal moves: 4348 of 4520 reachable positions mistakes: win->draw 52, win->loss 8, draw->loss 112 
+DEP=8: as X: 126 won 2 drawn 0 lost; as O: 121 won 2 drawn 5 lost minimax-optimal moves: 4365 of 4520 reachable positions mistakes: win->draw 53, win->loss 3, draw->loss 99 
+DEP=10: as X: 128 won 0 drawn 0 lost; as O: 121 won 3 drawn 4 lost minimax-optimal moves: 4368 of 4520 reachable positions mistakes: win->draw 57, win->loss 4, draw->loss 91 
+DEP=12: as X: 128 won 0 drawn 0 lost; as O: 121 won 3 drawn 4 lost minimax-optimal moves: 4371 of 4520 reachable positions mistakes: win->draw 55, win->loss 4, draw->loss 90 
