@@ -1,6 +1,10 @@
 # bendlang/bend
 
-<!-- measured:begin -->
+<!-- maintainer-persona:measured:begin -->
+<!-- maintainer-persona:measured:end -->
+
+## 0. Hand measurement
+
 Measured by hand on 2026-10-01 from a git clone at main @ 7d24b8d0 (the
 skill's measure.ts needs an authenticated `gh`, which this session lacked:
 the PR/issue numbers below come from commit subjects and CHANGELOG.md, not
@@ -30,7 +34,6 @@ NOT measured).
   and permanent ttok caps: comp.ts 64k ...), safe.ts. They run on the
   maintainers' Mac mini cluster, not in GitHub Actions (`.github/` holds only
   issue templates).
-<!-- measured:end -->
 
 ## 1. Readers
 
@@ -73,7 +76,7 @@ runs no bind_dead", regression witness, RSS, `--threads 1`, `--gpu off`.
   lanes. RSS is not checked by test.ts; leak witnesses
   (tests/reg/closure_value_owns.bend) pin the answer and describe the RSS
   in the header.
-- Commit subject: the declarative sentence of §measured, `(#issue)` at the
+- Commit subject: the declarative sentence of §0, `(#issue)` at the
   end. Squash-merged under the maintainer's name or the author's.
 
 ## 6. Landmines
