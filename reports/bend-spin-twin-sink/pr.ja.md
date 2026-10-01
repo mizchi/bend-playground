@@ -10,10 +10,12 @@ tail のときは従来通り。jump の引数以外でも、非 tail の spin �
 
 テスト: `tests/reg/spin_lent_sink.bend`。同じ値を 2 回渡す形（`go`）と、別の呼び出し元のせいで借用になった引数に 1 回渡す形（`go2`）。
 test.ts は RSS を見ないので、`closure_value_owns.bend` と同じくヘッダに書いた。
-修正前 79 MB → 修正後 10 MB（`--threads 1` と `--threads 4` で同じ）。生成 C の差分は spin 呼び出し 2 か所の後の `term_sink` だけ。
+最大 RSS は修正前 79 MB → 修正後 10 MB（子プロセスの `getrusage`、`--threads 1` と `--threads 4` で同じ）。生成 C の差分は spin 呼び出し 2 か所の後の `term_sink` だけ。
 
-確かめきれていない点: `emit_fork` の逐次側は、引数を `rest: [chain[i]]` で評価する。
-ここで fork 呼び出しの引数の中にある spin が、hold だけで生きている束縛を受け取ると、並列側と live が食い違いうる。
+漏れていたセルを解放する分、時間はかかるようになる。1 周ごとに 1 セル伸びるリストを捨てるループ（`go(p, X1{0, Xs.walk(xs, xs, X0{})})` を 20000 周）は、2.2 s・3054 MB から 3.7 s・10 MB になった（`--threads 1`、3 回の最良値）。修正前の 2.2 s のうち 1.3 s はリーク分のページ確保（sys）だった。
+
+確かめきれていない点: `emit_fork` は並列側（`rest: [他の call, o.b]`）と逐次側（`rest: [chain[i]]`）の両方で、呼び出しの引数をこのコード経由で評価する。
+fork 呼び出しの引数の中にある spin が、hold だけで生きている束縛を受け取ると、両側の live が食い違いうる。
 そうなる例は作れず、試した fork のプログラムの C は修正前と同一だった。
 
 <details>

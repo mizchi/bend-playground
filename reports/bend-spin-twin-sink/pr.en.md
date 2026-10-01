@@ -4,9 +4,11 @@ When a spin is called inside a jump's argument, as in `go(p, Xs.walk(xs, xs, X0{
 
 `emit_fuse` now runs `bind_dead(fl, fl.rest)` after a non-tail call too, sinking the bindings the rest no longer uses; a tail call is unchanged. Outside jump arguments this sinks a dead binding right after its spin call instead of later, so a continuation's frame can lose a word (in the hashmap bench an existing `term_sink` moves up to right after its spin call).
 
-Test: `tests/reg/spin_lent_sink.bend`, with one value passed twice (`go`) and one variable lent once to a parameter another call site made borrowed (`go2`). test.ts does not check RSS, so the header states it, as `closure_value_owns.bend` does: 79 MB before, 10 MB after, at `--threads 1` and `--threads 4`. The C differs only by a `term_sink` after each of the two spin calls.
+Test: `tests/reg/spin_lent_sink.bend`, with one value passed twice (`go`) and one variable lent once to a parameter another call site made borrowed (`go2`). test.ts does not check RSS, so the header states it, as `closure_value_owns.bend` does: 79 MB of max RSS before, 10 MB after (`getrusage` of the child), at `--threads 1` and `--threads 4`. The C differs only by a `term_sink` after each of the two spin calls.
 
-Not settled: `emit_fork`'s sequential path evaluates a call's arguments with `rest: [chain[i]]`. If a spin inside those arguments were lent a binding that only `hold` keeps alive, the sequential and parallel paths could disagree on what is live. I could not build such a program, and the fork programs I tried emit the same C before and after.
+The freeing now costs time where the cells used to leak. A loop that drops a list growing by one cell a turn, `go(p, X1{0, Xs.walk(xs, xs, X0{})})` for 20000 turns, went from 2.2 s and 3054 MB to 3.7 s and 10 MB (`--threads 1`, best of 3); before, 1.3 s of the 2.2 s was the kernel paging in the leak.
+
+Not settled: both paths of `emit_fork` evaluate a call's arguments through this code, the parallel one with `rest: [other calls, o.b]` and the sequential one with `rest: [chain[i]]`. If a spin inside those arguments were lent a binding that only `hold` keeps alive, the two paths could disagree on what is live. I could not build such a program, and the fork programs I tried emit the same C before and after.
 
 <details>
 <summary>Checked locally</summary>
