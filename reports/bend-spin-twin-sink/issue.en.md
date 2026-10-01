@@ -1,4 +1,4 @@
-# A spin fed one value twice in a self-jump's argument never sinks the lent copy, so RSS grows every turn
+# A variable lent to a spin inside a jump's argument is never sunk, so RSS grows every turn of the loop
 
 ### What you did
 
@@ -12,11 +12,11 @@ bend twin.bend -o twin && ./twin --threads 1 --gpu off
 
 The answer is right, but every turn of `go` leaves the old list's cells allocated: max RSS grows with the turn count, 64 MB for 10^6 turns of a 4-cell list (measured with Python's `resource.getrusage`). Passing `X0{}` as the second argument keeps it at 10 MB.
 
-In the C (`bend twin.bend -o twin.c`), `go` runs `_xs_0 = term_keep(e, _xs_0, 1)`, calls `spin_0(e, _o_0, _xs_0, _xs_0, ...)` and jumps back with no `term_sink` of `_xs_0`. When `Xs.walk` is not a spin (build the result with a non-tail cons), the continuation after the call sinks it and RSS stays flat.
+In the C (`bend twin.bend -o twin.c`), `go` calls `spin_0(e, _o_0, _xs_0, _xs_0, ...)`. `spin_0` reads both arguments as borrowed, through `term_peek`, and `go` jumps back with no `term_sink` of `_xs_0`. Binding the result with a `let` first keeps RSS flat, since the `let` runs `bind_dead`.
 
-`emit_fuse` (bend2/comp.ts @ 7d24b8d0) runs `bind_dead` only when the call is a tail call, and a self-jump runs no `bind_dead`, so in a self-jump's argument nothing sinks the lent twin. 2.0.23 (75cb8f3e) gives the same 64 MB. No open PR head from #1000 on changes this branch of `emit_fuse`. A fix with a regression test is in #<PR>.
+`emit_fuse` (bend2/comp.ts @ 7d24b8d0) runs `bind_dead` only for a tail call, and a jump runs no `bind_dead`, so a spin called inside a jump's argument leaves the variable it was lent unsunk. Passing the value twice is not required: one variable lent to a parameter that is borrowed because another call site lends it leaks the same way (`go2` in the PR's test). The call can also sit deeper in the argument, as in `go(p, Xs.rev(Xs.walk(xs, xs, X0{}), X0{}))`. I checked self-jumps only; a jump to another def goes through the same path, untested.
 
-Reproduction and measurement: <gist URL>
+2.0.23 (75cb8f3e) gives the same 64 MB. No open PR head from #1000 on changes this branch of `emit_fuse`. A fix with a regression test is in #<PR>. Reproduction and measurement: <gist URL>
 
 ### The file
 
@@ -55,7 +55,7 @@ def main() -> IO(Unit):
 
 ### bend --version
 
-bend 2.0.34
+bend 2.0.34 (from `bend version`; on main `bend --version` is an unknown option)
 
 ### uname -sm
 
