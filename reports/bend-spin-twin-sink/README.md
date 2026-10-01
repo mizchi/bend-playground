@@ -1,4 +1,4 @@
-# Bend: a lent twin is never sunk after a spin call in a self-jump argument
+# Bend: a variable lent to a spin inside a jump argument is never sunk
 
 `go(p, Xs.walk(xs, xs, X0{}))` passes one list twice. `Xs.walk` is a flat
 loop (emitted as a `spin_N` C function) that consumes its first parameter and
@@ -21,10 +21,13 @@ Expected: about 10 MB, flat in the turn count. Any of these keeps it flat:
 - build the result with a non-tail cons, so `Xs.walk` is not a spin;
 - the patch below (comp.ts @ 7d24b8d0).
 
-In the generated C (`bend twin.bend -o twin.c`), `go` does
-`_xs_0 = term_keep(e, _xs_0, 1)`, calls `spin_0(e, _o_0, _xs_0, _xs_0, ...)`,
-and jumps back without a `term_sink` of `_xs_0`. When `Xs.walk` is not fused,
-the continuation after the call sinks it.
+In the generated C (`bend twin.bend -o twin.c`), `go` calls
+`spin_0(e, _o_0, _xs_0, _xs_0, ...)`, `spin_0` reads both arguments as
+borrowed (`term_peek`), and `go` jumps back with no `term_sink` of `_xs_0`.
+Binding the result with a `let` first keeps RSS flat, because the `let`
+runs `bind_dead`. Passing the value twice is not required: a variable lent
+once to a parameter that is borrowed (because another call site lends it)
+leaks the same way, as `go2` in the PR's test shows.
 
 ```diff
 --- a/bend2/comp.ts
