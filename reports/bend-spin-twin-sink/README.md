@@ -22,8 +22,9 @@ Expected: about 10 MB, flat in the turn count. Any of these keeps it flat:
 - the patch below (comp.ts @ 7d24b8d0).
 
 In the generated C (`bend twin.bend -o twin.c`), `go` calls
-`spin_0(e, _o_0, _xs_0, _xs_0, ...)`, `spin_0` reads both arguments as
-borrowed (`term_peek`), and `go` jumps back with no `term_sink` of `_xs_0`.
+`spin_0(e, _o_0, _xs_0, _xs_0, ...)`, `spin_0` takes both arguments as
+borrowed (it reads the first through `term_peek` and passes the second along
+unread), and `go` jumps back with no `term_sink` of `_xs_0`.
 Binding the result with a `let` first keeps RSS flat, because the `let`
 runs `bind_dead`. Passing the value twice is not required: a variable lent
 once to a parameter that is borrowed (because another call site lends it)

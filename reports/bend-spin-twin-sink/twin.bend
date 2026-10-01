@@ -4,7 +4,7 @@ type Xs is Data:
   X0{}
   X1{v: U32, rest: Xs}
 
-# consumes xs, never reads all
+# walks xs, never reads all
 def Xs.walk(xs: Xs, +all: Xs, acc: Xs) -> Xs:
   match xs:
     case X0{}:

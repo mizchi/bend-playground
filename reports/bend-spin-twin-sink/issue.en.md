@@ -12,7 +12,7 @@ bend twin.bend -o twin && ./twin --threads 1 --gpu off
 
 The answer is right, but every turn of `go` leaves the old list's cells allocated: max RSS grows with the turn count, 64 MB for 10^6 turns of a 4-cell list (measured with Python's `resource.getrusage`). Passing `X0{}` as the second argument keeps it at 10 MB.
 
-In the C (`bend twin.bend -o twin.c`), `go` calls `spin_0(e, _o_0, _xs_0, _xs_0, ...)`. `spin_0` reads both arguments as borrowed, through `term_peek`, and `go` jumps back with no `term_sink` of `_xs_0`. Binding the result with a `let` first keeps RSS flat, since the `let` runs `bind_dead`.
+In the C (`bend twin.bend -o twin.c`), `go` calls `spin_0(e, _o_0, _xs_0, _xs_0, ...)`. `spin_0` takes both arguments as borrowed: it reads the first through `term_peek` and passes the second along unread. `go` then jumps back with no `term_sink` of `_xs_0`. Binding the result with a `let` first keeps RSS flat, since the `let` runs `bind_dead`.
 
 `emit_fuse` (bend2/comp.ts @ 7d24b8d0) runs `bind_dead` only for a tail call, and a jump runs no `bind_dead`, so a spin called inside a jump's argument leaves the variable it was lent unsunk. Passing the value twice is not required: one variable lent to a parameter that is borrowed because another call site lends it leaks the same way (`go2` in the PR's test). The call can also sit deeper in the argument, as in `go(p, Xs.rev(Xs.walk(xs, xs, X0{}), X0{}))`. I checked self-jumps only; a jump to another def goes through the same path, untested.
 
@@ -27,7 +27,7 @@ type Xs is Data:
   X0{}
   X1{v: U32, rest: Xs}
 
-# consumes xs, never reads all
+# walks xs, never reads all
 def Xs.walk(xs: Xs, +all: Xs, acc: Xs) -> Xs:
   match xs:
     case X0{}:

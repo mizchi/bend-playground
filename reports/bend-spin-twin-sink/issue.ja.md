@@ -13,7 +13,7 @@ bend twin.bend -o twin && ./twin --threads 1 --gpu off
 2 つ目の引数を `X0{}` にすると 10 MB で一定。
 
 生成 C（`bend twin.bend -o twin.c`）では、`go` が `spin_0(e, _o_0, _xs_0, _xs_0, ...)` を呼ぶ。
-`spin_0` は両方の引数を借用として `term_peek` で読み、`go` は `_xs_0` を `term_sink` しないまま自己ジャンプする。
+`spin_0` は両方の引数を借用として受け取り、1 つ目を `term_peek` で読み、2 つ目は読まずに次の反復へ渡す。`go` は `_xs_0` を `term_sink` しないまま自己ジャンプする。
 `let` で結果を一度束縛すると、その後の `bind_dead` が sink して RSS は一定になる。
 
 `emit_fuse`（bend2/comp.ts @ 7d24b8d0）は tail のときだけ `bind_dead` を呼び、jump も `bind_dead` を走らせない。
