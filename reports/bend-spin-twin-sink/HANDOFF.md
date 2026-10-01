@@ -122,8 +122,12 @@ node $S/check-draft.ts --persona personas/bendlang/bend.md --kind pr /tmp/pr.md 
        --title "$(head -1 /tmp/pr.md | sed 's/^# //')" --body-file <(tail -n +3 /tmp/pr.md)
 ```
 
-PR 本文の末尾には、mizchi/bend#2 と同じ Claude Code の署名を付けるかを決めてから送る（upstream のコミットには
-`Co-authored-by: Claude` が多く、AI 利用は普通に受け入れられている）。
+PR 本文の末尾には mizchi/bend#2 と同じ Claude Code の署名を付ける（mizchi が決定済み）。
+`gh pr create` の前に `/tmp/pr.md` の末尾へ追記しておく:
+
+```sh
+printf '\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n' >> /tmp/pr.md
+```
 
 ### 6. 後片付け
 
