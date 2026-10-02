@@ -9,18 +9,10 @@ work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 
 best() {
-  python3 - "$@" <<'PY'
-import subprocess, sys, time
-b = float("inf")
-for _ in range(3):
-    t = time.perf_counter()
-    subprocess.run(sys.argv[1:], stdout=subprocess.DEVNULL, check=True)
-    b = min(b, time.perf_counter() - t)
-print(f"{b:.3f}s")
-PY
+  python3 "$D/../../../scripts/benchmark.py" "$@"
 }
 
-printf '# %s, %s threads, Bend %s\n' "$(uname -sm)" "$(nproc)" "$("$BEND" version | awk '{print $2}')"
+printf '# %s, %s threads, Bend %s\n' "$(uname -sm)" "$(getconf _NPROCESSORS_ONLN)" "$("$BEND" version | awk '{print $2}')"
 printf '%-6s %-6s %-10s %-10s %s\n' w mode 1-thread all-cores output
 for w in ${WS:-16 64 256 1024}; do
   for mode in 0 1 2; do
@@ -29,8 +21,15 @@ for w in ${WS:-16 64 256 1024}; do
       prev == "def mode() -> U32:" { $0 = "  " m }
       { print; prev = $0 }' "$D/fork_cost.bend" > "$work/f.bend"
     "$BEND" "$work/f.bend" -o "$work/f" > /dev/null
-    name=$(case $mode in 0) echo plain ;; 1) echo fork ;; 2) echo tree ;; esac)
+    case "$mode" in
+      0) name=plain ;;
+      1) name=fork ;;
+      2) name=tree ;;
+    esac
+    one="$(best "$work/f" --threads 1 --gpu off)"
+    all="$(best "$work/f" --gpu off)"
+    output="$("$work/f" --gpu off)"
     printf '%-6s %-6s %-10s %-10s %s\n' "$w" "$name" \
-      "$(best "$work/f" --threads 1 --gpu off)" "$(best "$work/f" --gpu off)" "$("$work/f" --gpu off)"
+      "$one" "$all" "$output"
   done
 done

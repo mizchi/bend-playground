@@ -15,6 +15,7 @@ bend +args:
 # Verify portability, the introductory samples, FWHT and the simulations.
 test:
     python3 tests/smoke.py
+    python3 tests/benchmark.py
 
 # Check the physics and Monte Carlo samples against their C twins (no GPU).
 check-sim:
@@ -23,6 +24,10 @@ check-sim:
 # Time the physics and Monte Carlo samples against their C twins (quiet machine).
 bench-sim *programs="galton anneal balls balls_flat fmc mcts c4":
     ./examples/sim/bench.sh {{programs}}
+
+# Time sequential-loop forks versus a broad fork tree (WS overrides work sizes).
+bench-fork:
+    ./examples/sim/probes/fork_cost.sh
 
 # Check all 13 introductory samples, including the four expected errors.
 check-intro:

@@ -95,13 +95,27 @@ Bend と C の定数を合わせれば出力は**ビット一致する**。一�
 | `sim/c4.bend` / `c4.c` | Connect Four の MCTS。同じ予算で「木 2^w 本 × 予算/2^w」と「木 1 本 × 予算」を対戦させ、root parallelization の質の落ち方を測る |
 | `sim/ttt.bend` | fmc と mcts が共有する三目並べ（盤面、プレイアウト、集計、対局の記録） |
 | `sim/probes/twin_leak.bend` | 共有リストを 2 つの引数に渡すとメモリが解放されない最小再現 |
-| `sim/probes/fork_cost.bend` / `fork_cost.sh` | 逐次ループの中の fork の費用の最小再現。fork する版・しない版・fork 木の版を、仕事の大きさを変えて 1 スレッドと全コアで測る |
+| `sim/probes/fork_cost.bend` / `fork_cost.sh` | 逐次ループの中の fork の費用の最小再現。fork する版・しない版・fork 木の版を、仕事の大きさを変えて 1 スレッドと全コアで測る（`just bench-fork`） |
 | `sim/check.sh` | 小さい規模で Bend と C の出力がビット一致するか（`just check-sim`） |
 | `sim/bench.sh` | C / Bend 1 core / Bend 全コアの best-of-3 と max RSS（`just bench-sim`） |
-| `sim/results.txt` | 生の計測値 |
+| `sim/results.txt` | Linux / Xeon の生の計測値 |
+| `sim/results-macos-m5-2026-10-02.txt` | macOS / Apple M5 の生の計測値と環境、全規模での出力照合 |
+| `sim/bench-macos-m5-2026-10-02.md` | 最新マージの Mac CPU ベンチマークと fork コストの比較 |
 
 規模は各 `.bend` の `def dep()` / `def steps()`（fmc・mcts・c4 は `def games()`、mcts・c4 はさらに `def iters()`、c4 は `def budget()`）、C 側は `-DDEP=` / `-DSTEPS=` / `-DGAMES=` / `-DITERS=` / `-DBUDGET=`。
 C twin は `-ffp-contract=off` でビルドする（`check.sh` / `bench.sh` が付ける）。
+
+Mac / Linux 共通の計測手順:
+
+```sh
+just test
+just bench-sim
+WS="16 64 256 1024 16384 65536" just bench-fork
+```
+
+時間計測は直列の best-of-3。`--gpu off` で CPU のみを比較する。
+RSS はコンパイルを除く 3 回の最大値で、表示上の `MB` は MiB。
+コア数の取得には `getconf` を使い、Mac の RSS（bytes）と Linux の RSS（KiB）を同じ単位に換算する。
 
 | 条件 | 出力 |
 |---|---|
@@ -110,7 +124,7 @@ C twin は `-ffp-contract=off` でビルドする（`check.sh` / `bench.sh` が�
 | `balls` / `balls_flat` dep=12 steps=4096 | `contacts=231820 checksum=4256907475` |
 | `fmc` dep=10 games=8 | `1382 1252 1418 1211 1569 1222 1376 1240 1400` と `as X: 128 won 0 drawn 0 lost; as O: 121 won 3 drawn 4 lost` |
 | `mcts` dep=4 iters=576 games=8 | `1099 764 1042 813 1700 843 1095 776 1084` と `as X: 127 won 1 drawn 0 lost; as O: 120 won 8 drawn 0 lost` |
-| `c4` dep=4 iters=256 budget=1024 games=6 | `480 503 609 891 562 572 479`、続いて `1 trees x 1024 vs 1 x 1024: 31 won 0 drawn 33 lost` など 4 行 |
+| `c4` dep=4 iters=256 budget=1024 games=4、葉は逐次 | `480 503 609 891 562 572 479`、続いて `1 trees x 1024 x 1 playouts vs 1 x 1024 x 1: 7 won 0 drawn 9 lost` など 9 行 |
 
 ## データ構造の実験
 

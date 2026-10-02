@@ -22,28 +22,20 @@ twin_of() {
 
 # best-of-3 wall clock and the largest max RSS, as "seconds MB"
 measure() {
-  python3 - "$@" <<'PY'
-import resource, subprocess, sys, time
-best = float("inf")
-for _ in range(3):
-    t = time.perf_counter()
-    subprocess.run(sys.argv[1:], stdout=subprocess.DEVNULL, check=True)
-    best = min(best, time.perf_counter() - t)
-rss = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss / 1024
-print(f"{best:.3f}s {rss:.0f}MB")
-PY
+  python3 "$ROOT/scripts/benchmark.py" --rss "$@"
 }
 
-printf '# %s, %s threads, %s\n' "$(uname -sm)" "$(nproc)" "$("$CC" --version | head -n 1)"
+printf '# %s, %s threads, %s\n' "$(uname -sm)" "$(getconf _NPROCESSORS_ONLN)" "$("$CC" --version | head -n 1)"
 printf '# Bend %s (%s)\n' "$("$BEND" version | awk '{print $2}')" \
   "$(git -C "${BEND_REPO:-$ROOT/upstream/bend}" rev-parse --short=8 HEAD)"
 printf '%-8s %-16s %-16s %-16s %s\n' program c bend-1core bend-allcores output
 for name in "$@"; do
   "$BEND" "$D/$name.bend" -o "$OUT/$name" > /dev/null
   "$CC" -std=c11 -O3 -ffp-contract=off "$D/$(twin_of "$name").c" -lm -o "$OUT/${name}_c"
+  c_time="$(measure "$OUT/${name}_c")"
+  bend_one="$(measure "$OUT/$name" --threads 1 --gpu off)"
+  bend_all="$(measure "$OUT/$name" --gpu off)"
+  output="$("$OUT/$name" --gpu off)"
   printf '%-8s %-16s %-16s %-16s %s\n' "$name" \
-    "$(measure "$OUT/${name}_c")" \
-    "$(measure "$OUT/$name" --threads 1 --gpu off)" \
-    "$(measure "$OUT/$name" --gpu off)" \
-    "$("$OUT/$name" --gpu off)"
+    "$c_time" "$bend_one" "$bend_all" "$output"
 done

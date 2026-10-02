@@ -13,7 +13,11 @@
 - **GPU なし**。`!` は使わず、`--threads 1 --gpu off`（1 コア）と `--gpu off`（全コア）を測った
 - 計測は best-of-3 の wall clock（`just bench-sim`）
 - C twin は Bend と同じ f32 演算を同じ順序で行う。`-ffp-contract=off` を付け、
-  コンパイラは Bend 自身と同じ clang を使った。**3 本とも Bend と C の出力がビット一致する**（`just check-sim`）
+  コンパイラは Bend 自身と同じ clang を使った。**全7本とも Bend と C の出力がビット一致する**（`just check-sim`）
+
+2026-10-02 の最新マージを Apple M5 / macOS で再計測した結果は
+[Mac CPU ベンチマーク](examples/sim/bench-macos-m5-2026-10-02.md) にまとめた。
+以下の表は従来の Linux / Xeon の計測値で、Mac の値は別記している。
 
 ---
 

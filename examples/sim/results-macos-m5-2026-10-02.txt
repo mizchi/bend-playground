@@ -1,0 +1,89 @@
+# Mac CPU benchmarks, 2026-10-02T13:06:49+09:00
+# Playground HEAD: 5469ac86e2ab463a4ae96da6ced22e2d18f14358
+# Local benchmark changes: portable CPU count, Darwin RSS units, shared measurement helper, Bash 3.2-compatible probe.
+# Bend HEAD: 7d24b8d0235cb9781140512c0f163c48ea84a719
+# Bend version: bend 2.0.34
+# CPU: Apple M5
+# CPU topology: 4 performance + 6 efficiency cores, 10 logical threads.
+# Memory bytes: 34359738368
+# macOS: 26.6.2, build 25G83
+# Kernel: Darwin 25.6.0
+# Clang: Apple clang version 21.0.0 (clang-2100.0.123.102)
+# Bun: 1.3.5; Python: Python 3.9.6
+# Serial runs, best of 3 wall clock including process startup; CPU only (--gpu off).
+# RSS: peak across the 3 child runs, in MiB (MB label); excludes compilation.
+# Existing UI apps remained running; no benchmark/build jobs launched concurrently.
+# Thermal status before:
+Note: No thermal warning level has been recorded
+Note: No performance warning level has been recorded
+Note: No CPU power status has been recorded
+
+# Command:  just bench-sim
+# Darwin arm64, 10 threads, Apple clang version 21.0.0 (clang-2100.0.123.102)
+# Bend 2.0.34 (7d24b8d0)
+program  c                bend-1core       bend-allcores    output
+galton   0.262s 1MB       0.256s 2MB       0.043s 4MB       0 75 331 867 2204 4610 7760 10693 12118 11002 7804 4719 2126 876 301 50
+anneal   0.400s 1MB       0.652s 2MB       0.093s 3MB       best=976 chains=1 mask=882706334
+balls    0.840s 1MB       2.400s 2MB       0.541s 3MB       contacts=231820 checksum=4256907475
+balls_flat 0.858s 1MB       1.095s 2MB       0.186s 3MB       contacts=231820 checksum=4256907475
+fmc      0.279s 1MB       0.339s 2MB       0.051s 10MB      1382 1252 1418 1211 1569 1222 1376 1240 1400
+as X: 128 won 0 drawn 0 lost; as O: 121 won 3 drawn 4 lost
+mcts     0.937s 1MB       1.605s 2MB       0.228s 6MB       1099 764 1042 813 1700 843 1095 776 1084
+as X: 127 won 1 drawn 0 lost; as O: 120 won 8 drawn 0 lost
+c4       2.288s 1MB       2.531s 2MB       0.476s 8MB       480 503 609 891 562 572 479
+1 trees x 1024 x 1 playouts vs 1 x 1024 x 1: 7 won 0 drawn 9 lost
+4 trees x 256 x 1 playouts vs 1 x 1024 x 1: 9 won 0 drawn 7 lost
+16 trees x 64 x 1 playouts vs 1 x 1024 x 1: 6 won 0 drawn 10 lost
+64 trees x 16 x 1 playouts vs 1 x 1024 x 1: 2 won 0 drawn 14 lost
+1 trees x 256 x 4 playouts vs 1 x 1024 x 1: 9 won 3 drawn 4 lost
+1 trees x 64 x 16 playouts vs 1 x 1024 x 1: 7 won 1 drawn 8 lost
+1 trees x 16 x 64 playouts vs 1 x 1024 x 1: 5 won 0 drawn 11 lost
+1 trees x 1024 x 4 playouts vs 1 x 1024 x 1: 11 won 0 drawn 5 lost
+1 trees x 1024 x 16 playouts vs 1 x 1024 x 1: 13 won 1 drawn 2 lost
+
+# Probe started: 2026-10-02T13:10:38+09:00
+# Command: WS="16 64 256 1024 16384 65536" just bench-fork
+# Darwin arm64, 10 threads, Bend 2.0.34
+w      mode   1-thread   all-cores  output
+16     plain  0.003s     0.002s     2348744559
+16     fork   0.003s     0.475s     2348744559
+16     tree   0.003s     0.002s     215357184
+64     plain  0.003s     0.003s     1980233717
+64     fork   0.003s     0.515s     1980233717
+64     tree   0.004s     0.002s     2958360437
+256    plain  0.007s     0.005s     2601407040
+256    fork   0.006s     0.488s     2601407040
+256    tree   0.006s     0.003s     3043967354
+1024   plain  0.015s     0.013s     4150684257
+1024   fork   0.014s     0.478s     4150684257
+1024   tree   0.015s     0.004s     2394092968
+16384  plain  0.183s     0.183s     923657738
+16384  fork   0.182s     0.490s     923657738
+16384  tree   0.183s     0.027s     2128352299
+65536  plain  0.723s     0.722s     186488217
+65536  fork   0.713s     0.676s     186488217
+65536  tree   0.747s     0.101s     2032960601
+
+# Thermal status after:
+Note: No thermal warning level has been recorded
+Note: No performance warning level has been recorded
+Note: No CPU power status has been recorded
+
+# Full-size output verification (outside timed runs):
+# PASS galton: C == Bend 1 thread == Bend 10 threads (1 lines; C-only extra lines excluded)
+# PASS anneal: C == Bend 1 thread == Bend 10 threads (1 lines; C-only extra lines excluded)
+# PASS balls: C == Bend 1 thread == Bend 10 threads (1 lines; C-only extra lines excluded)
+# PASS balls_flat: C == Bend 1 thread == Bend 10 threads (1 lines; C-only extra lines excluded)
+# PASS fmc: C == Bend 1 thread == Bend 10 threads (2 lines; C-only extra lines excluded)
+# PASS mcts: C == Bend 1 thread == Bend 10 threads (2 lines; C-only extra lines excluded)
+# PASS c4: C == Bend 1 thread == Bend 10 threads (10 lines; C-only extra lines excluded)
+
+# c4 variant: only leaf.fork() changed from False{} to True{} in a build/ copy; same games=4 and budgets.
+# Measurement command: python3 scripts/benchmark.py --rss build/sim/c4-leaf-fork/c4 [--threads 1] --gpu off
+c4-leaf-fork 1-thread: 2.548s 2MB; output matches default c4 and C
+c4-leaf-fork 10-threads: 5.083s 58MB; output matches default c4 and C
+
+# Final thermal status:
+Note: No thermal warning level has been recorded
+Note: No performance warning level has been recorded
+Note: No CPU power status has been recorded

@@ -3,8 +3,9 @@ import Base
 # loop. loop runs n() turns; each turn computes two calls of work (w() steps
 # of an xorshift) and feeds their sum to the next turn, either as a parallel
 # let (par() = True: a fork every turn) or as two plain lets. tree runs the
-# same 2 * n() calls as the leaves of one fork tree. All three print the
-# same number. Measure with fork_cost.sh: on 4 threads the forking loop
+# same 2 * n() calls as the leaves of one fork tree. The two loops print
+# the same number; the tree uses independent seeds and a different sum.
+# Measure with fork_cost.sh: on 4 threads the forking loop
 # runs far slower than the plain one, the tree does not.
 
 def n() -> Nat:
