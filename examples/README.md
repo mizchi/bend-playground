@@ -92,13 +92,14 @@ Bend と C の定数を合わせれば出力は**ビット一致する**。一�
 | `sim/balls_flat.bend` / `gen_balls_flat.py` | balls.bend の箱の状態を f32 引数 32 個に展開した生成コード（C twin は `balls.c`）。生成し直すときは `python3 examples/sim/gen_balls_flat.py > examples/sim/balls_flat.bend` |
 | `sim/fmc.bend` / `fmc.c` | モンテカルロ探索: 三目並べの flat Monte Carlo。初手の評価と、対ランダム 2^8 局。`fmc.c --audit` は完全読みとの照合（C のみ） |
 | `sim/mcts.bend` / `mcts.c` | モンテカルロ探索: 三目並べの MCTS（UCT）を root parallelization で。1 手 16 本 × 576 反復。`mcts.c --audit` は完全読みとの照合（C のみ） |
+| `sim/c4.bend` / `c4.c` | Connect Four の MCTS。同じ予算で「木 2^w 本 × 予算/2^w」と「木 1 本 × 予算」を対戦させ、root parallelization の質の落ち方を測る |
 | `sim/ttt.bend` | fmc と mcts が共有する三目並べ（盤面、プレイアウト、集計、対局の記録） |
 | `sim/probes/twin_leak.bend` | 共有リストを 2 つの引数に渡すとメモリが解放されない最小再現 |
 | `sim/check.sh` | 小さい規模で Bend と C の出力がビット一致するか（`just check-sim`） |
 | `sim/bench.sh` | C / Bend 1 core / Bend 全コアの best-of-3 と max RSS（`just bench-sim`） |
 | `sim/results.txt` | 生の計測値 |
 
-規模は各 `.bend` の `def dep()` / `def steps()`（fmc・mcts は `def games()`、mcts はさらに `def iters()`）、C 側は `-DDEP=` / `-DSTEPS=` / `-DGAMES=` / `-DITERS=`。
+規模は各 `.bend` の `def dep()` / `def steps()`（fmc・mcts・c4 は `def games()`、mcts・c4 はさらに `def iters()`、c4 は `def budget()`）、C 側は `-DDEP=` / `-DSTEPS=` / `-DGAMES=` / `-DITERS=` / `-DBUDGET=`。
 C twin は `-ffp-contract=off` でビルドする（`check.sh` / `bench.sh` が付ける）。
 
 | 条件 | 出力 |
@@ -108,6 +109,7 @@ C twin は `-ffp-contract=off` でビルドする（`check.sh` / `bench.sh` が�
 | `balls` / `balls_flat` dep=12 steps=4096 | `contacts=231820 checksum=4256907475` |
 | `fmc` dep=10 games=8 | `1382 1252 1418 1211 1569 1222 1376 1240 1400` と `as X: 128 won 0 drawn 0 lost; as O: 121 won 3 drawn 4 lost` |
 | `mcts` dep=4 iters=576 games=8 | `1099 764 1042 813 1700 843 1095 776 1084` と `as X: 127 won 1 drawn 0 lost; as O: 120 won 8 drawn 0 lost` |
+| `c4` dep=4 iters=256 budget=1024 games=6 | `480 503 609 891 562 572 479`、続いて `1 trees x 1024 vs 1 x 1024: 31 won 0 drawn 33 lost` など 4 行 |
 
 ## データ構造の実験
 

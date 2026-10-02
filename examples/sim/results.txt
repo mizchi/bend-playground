@@ -76,3 +76,16 @@ trees=2^2: as X: 126 won 2 drawn 0 lost; as O: 120 won 8 drawn 0 lost minimax-op
 trees=2^4: as X: 127 won 1 drawn 0 lost; as O: 120 won 8 drawn 0 lost minimax-optimal moves: 4504 of 4520 reachable positions mistakes: win->draw 8, win->loss 0, draw->loss 8 
 trees=2^6: as X: 126 won 2 drawn 0 lost; as O: 117 won 11 drawn 0 lost minimax-optimal moves: 4485 of 4520 reachable positions mistakes: win->draw 16, win->loss 1, draw->loss 18 
 trees=2^8: as X: 128 won 0 drawn 0 lost; as O: 122 won 3 drawn 3 lost minimax-optimal moves: 4440 of 4520 reachable positions mistakes: win->draw 38, win->loss 3, draw->loss 39 
+
+# c4 (Connect Four MCTS, root parallelization vs one tree at the same budget), 2026-10-02, Bend 2.0.34 (7d24b8d0)
+c4       6.962s 10MB      7.355s 10MB      2.009s 10MB      480 503 609 891 562 572 479 (games=6)
+# games=8 (256 a match), identical in Bend (7.81s, 4 threads) and C (27.7s):
+480 503 609 891 562 572 479
+1 trees x 1024 vs 1 x 1024: 125 won 9 drawn 122 lost
+4 trees x 256 vs 1 x 1024: 106 won 7 drawn 143 lost
+16 trees x 64 vs 1 x 1024: 88 won 12 drawn 156 lost
+64 trees x 16 vs 1 x 1024: 16 won 2 drawn 238 lost
+# c4.c variant, the wide player given the full budget per tree (4x..64x the compute), games=8:
+4 trees x 1024 vs 1 x 1024: 151 won 10 drawn 95 lost
+16 trees x 1024 vs 1 x 1024: 139 won 12 drawn 105 lost
+64 trees x 1024 vs 1 x 1024: 145 won 6 drawn 105 lost

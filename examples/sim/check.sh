@@ -20,23 +20,25 @@ twin_of() {
 }
 
 # rewrite the bodies of `def dep()`, of `def steps()` (or `def games()`, the
-# second knob of fmc and mcts) and of `def iters()` (mcts) to the given sizes
+# second knob of fmc, mcts and c4), of `def iters()` (mcts, c4) and of
+# `def budget()` (c4, a U32) to the given sizes
 resize() {
-  awk -v dep="$2" -v steps="$3" -v iters="$4" '
-    prev == "def dep() -> Nat:"   { $0 = "  " dep "n" }
-    prev == "def steps() -> Nat:" { $0 = "  " steps "n" }
-    prev == "def games() -> Nat:" { $0 = "  " steps "n" }
-    prev == "def iters() -> Nat:" { $0 = "  " iters "n" }
+  awk -v dep="$2" -v steps="$3" -v iters="$4" -v budget="$5" '
+    prev == "def dep() -> Nat:"    { $0 = "  " dep "n" }
+    prev == "def steps() -> Nat:"  { $0 = "  " steps "n" }
+    prev == "def games() -> Nat:"  { $0 = "  " steps "n" }
+    prev == "def iters() -> Nat:"  { $0 = "  " iters "n" }
+    prev == "def budget() -> U32:" { $0 = "  " budget }
     { print; prev = $0 }' "$1"
 }
 
 passed=0
 failed=0
 check() {
-  local name="$1" dep="$2" steps="$3" iters="${4:-0}"
-  resize "$D/$name.bend" "$dep" "$steps" "$iters" > "$work/$name.bend"
+  local name="$1" dep="$2" steps="$3" iters="${4:-0}" budget="${5:-0}"
+  resize "$D/$name.bend" "$dep" "$steps" "$iters" "$budget" > "$work/$name.bend"
   "$BEND" "$work/$name.bend" -o "$work/$name" > /dev/null
-  "$CC" -std=c11 -O3 -ffp-contract=off -DDEP="$dep" -DSTEPS="$steps" -DGAMES="$steps" -DITERS="$iters" \
+  "$CC" -std=c11 -O3 -ffp-contract=off -DDEP="$dep" -DSTEPS="$steps" -DGAMES="$steps" -DITERS="$iters" -DBUDGET="$budget" \
     "$D/$(twin_of "$name").c" -lm -o "$work/${name}_c"
   local got want
   got="$("$work/$name" --gpu off)"
@@ -58,5 +60,6 @@ check balls 4 512
 check balls_flat 4 512
 check fmc 4 4
 check mcts 2 4 64
+check c4 2 2 64 64
 printf 'PASS: %s / %s\n' "$passed" "$((passed + failed))"
 [[ "$failed" -eq 0 ]]
