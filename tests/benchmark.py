@@ -1,5 +1,6 @@
 """Check benchmark units and subprocess handling without timing real workloads."""
 import importlib.util
+import json
 from pathlib import Path
 import re
 import subprocess
@@ -45,6 +46,18 @@ class BenchmarkTest(unittest.TestCase):
         )
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(result.stdout, "")
+
+    def test_json_measurement_records_samples_and_units(self):
+        result = subprocess.run(
+            [sys.executable, str(SCRIPT), "--json", sys.executable, "-c", "pass"],
+            text=True, capture_output=True, check=True,
+        )
+        stats = json.loads(result.stdout)
+        self.assertEqual(len(stats["samples_seconds"]), 3)
+        self.assertEqual(stats["best_seconds"], min(stats["samples_seconds"]))
+        self.assertEqual(stats["median_seconds"], sorted(stats["samples_seconds"])[1])
+        self.assertGreater(stats["peak_rss_mib"], 0)
+        self.assertLess(stats["peak_rss_mib"], 256)
 
 
 if __name__ == "__main__":

@@ -36,7 +36,10 @@ just bend examples/mc.bend -o build/mc
 
 `just test` は別ディレクトリ・空白を含むパスからの実行、引数の受け渡し、紹介記事の13サンプル
 （意図した型エラー4本を含む）、FWHT の involution、`@unsafe` な偽の証明が検査に落ちること、
-物理・モンテカルロの 3 本が C twin とビット一致することを検証します（C コンパイラが必要、GPU は不要）。
+物理・モンテカルロの7本が C twin とビット一致すること、
+N-Queens・素因数分解・AST 変換・DPLL SAT が C の逐次・並列版と独立オラクルに一致すること、
+C FFI とその比較用ループが同じ結果になることを検証します
+（C コンパイラが必要、GPU は不要）。
 生成バイナリや作業ファイルは Git 管理から除外しています。
 
 01〜07 のノート・計測値は 2.0.23 を対象にした当時の記録です。08 は 2.0.34 で計測しています。
@@ -58,6 +61,8 @@ just bend examples/mc.bend -o build/mc
 | [examples/](examples/) | 05 の実験ソース（Bend 8 本 + C twin 3 本）と生の計測値 |
 | [examples/ds/](examples/ds/) | 06 の実験ソース（経路探索 / ソート / マップ / 共有木）。タイミングは未計測 |
 | [examples/sim/](examples/sim/) | 08 の実験ソース（Galton board / 焼きなまし / 衝突する球）と C twin、生の計測値 |
+| [examples/algorithms/](examples/algorithms/README.md) | 適性の候補16項目と、N-Queens / Pollard ρ / AST 変換 / DPLL SAT の Mac CPU 実測。C の逐次・並列版とも比較 |
+| [examples/ffi/](examples/ffi/README.md) | C FFI の1呼出し当たりの追加時間と、処理をまとめた場合の比較 |
 
 ## 30 秒サマリ
 

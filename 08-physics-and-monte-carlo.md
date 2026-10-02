@@ -18,6 +18,8 @@
 2026-10-02 の最新マージを Apple M5 / macOS で再計測した結果は
 [Mac CPU ベンチマーク](examples/sim/bench-macos-m5-2026-10-02.md) にまとめた。
 以下の表は従来の Linux / Xeon の計測値で、Mac の値は別記している。
+非数値の探索・木の変換を含む候補一覧と、C の並列版も含めた追加比較は
+[CPU アルゴリズムの比較](examples/algorithms/README.md) に記録した。
 
 ---
 

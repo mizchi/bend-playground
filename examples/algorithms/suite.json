@@ -1,0 +1,14 @@
+[
+  {"name": "nqueens", "label": "n14", "dep": 8, "size": 14},
+  {"name": "nqueens", "label": "n15", "dep": 8, "size": 15},
+  {"name": "nqueens", "label": "n16", "dep": 8, "size": 16},
+  {"name": "rho", "label": "2^17", "dep": 17},
+  {"name": "rho", "label": "2^19", "dep": 19},
+  {"name": "rho", "label": "2^22", "dep": 22},
+  {"name": "astfold", "label": "2^12-d9", "dep": 12, "size": 9},
+  {"name": "astfold", "label": "2^14-d9", "dep": 14, "size": 9},
+  {"name": "astfold", "label": "2^20-d9", "dep": 20, "size": 9},
+  {"name": "sat", "label": "sat-2^10-n24", "dep": 10, "size": 24},
+  {"name": "sat", "label": "sat-2^14-n24", "dep": 14, "size": 24},
+  {"name": "sat", "label": "sat-2^16-n32", "dep": 16, "size": 32}
+]

@@ -126,6 +126,24 @@ RSS はコンパイルを除く 3 回の最大値で、表示上の `MB` は MiB
 | `mcts` dep=4 iters=576 games=8 | `1099 764 1042 813 1700 843 1095 776 1084` と `as X: 127 won 1 drawn 0 lost; as O: 120 won 8 drawn 0 lost` |
 | `c4` dep=4 iters=256 budget=1024 games=4、葉は逐次 | `480 503 609 891 562 572 479`、続いて `1 trees x 1024 x 1 playouts vs 1 x 1024 x 1: 7 won 0 drawn 9 lost` など 9 行 |
 
+## 非数値処理も含む CPU アルゴリズムの比較
+
+[algorithms/README.md](algorithms/README.md) に適性の候補16項目と実測をまとめた。
+N-Queens の厳密な探索、Pollard ρ 法の素因数分解、AST の定数畳み込みを、
+C / Bend の1スレッドと全コアで比較する。C 並列版も動的なジョブキューを使う。
+
+```sh
+just check-algorithms
+just check-sat
+just bench-algorithms
+just sat examples/algorithms/sat/backtrack-sat.cnf
+```
+
+## C FFI の実験
+
+C FFI の呼出しコストは [ffi/README.md](ffi/README.md) を参照。
+`just check-ffi` で正しさを検証し、`just bench-ffi --batch` で C 直接呼出しと比較する。
+
 ## データ構造の実験
 
 `ds/` の前提は [ds/CONTRACT.md](ds/CONTRACT.md) を参照。

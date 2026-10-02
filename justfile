@@ -12,10 +12,41 @@ setup:
 bend +args:
     ./scripts/bend.sh "$@"
 
-# Verify portability, the introductory samples, FWHT and the simulations.
+# Verify portability, introductory samples, simulations and exact CPU algorithms.
 test:
     python3 tests/smoke.py
     python3 tests/benchmark.py
+    python3 tests/algorithms.py
+    python3 tests/sat.py
+    python3 tests/ffi.py
+
+# Verify native FFI and its pure controls against an independent scalar oracle.
+check-ffi:
+    python3 tests/ffi.py
+
+# Measure per-call native FFI overhead and optional batching.
+bench-ffi *args="":
+    python3 scripts/ffi_bench.py {{args}}
+
+# Verify irregular CPU algorithms against C twins and independent oracles.
+check-algorithms:
+    python3 tests/algorithms.py
+
+# Compare C and Bend on 1/all CPU threads; program names select a subset.
+bench-algorithms *programs="nqueens rho astfold sat":
+    python3 scripts/algorithm_bench.py {{programs}}
+
+# Verify DPLL and SAT witnesses against exhaustive truth tables.
+check-sat:
+    python3 tests/sat.py
+
+# Solve a DIMACS CNF (0..32 variables); append --split-depth/--threads/--backend.
+sat +args:
+    python3 scripts/sat.py "$@"
+
+# Compare sequential DPLL with prefix partitions of one repeated CNF.
+bench-sat +args:
+    python3 scripts/sat_bench.py "$@"
 
 # Check the physics and Monte Carlo samples against their C twins (no GPU).
 check-sim:

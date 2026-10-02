@@ -1,0 +1,1403 @@
+{
+  "environment": {
+    "date": "2026-10-02T15:40:08+09:00",
+    "playground_commit": "637574795f63a55a3b6bf5508a8cf8ad4c856f0b",
+    "bend_commit": "7d24b8d0235cb9781140512c0f163c48ea84a719",
+    "bend_version": "bend 2.0.34",
+    "platform": "Darwin arm64",
+    "threads": 10,
+    "compiler": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+    "c_flags": "-std=c11 -O3 -pthread; separate kernel.c, no LTO, noinline kernel",
+    "python": "3.9.6",
+    "method": "serial best-of-3 wall clock; median regression on nonzero call counts; startup included then removed by slope",
+    "rss_unit": "MiB (helper output label MB)",
+    "c_scheduler": "pthread workers; dynamic atomic queue; chunks 1 for nqueens, 16 otherwise",
+    "source_state": "local algorithm additions on the recorded playground commit",
+    "background": "existing UI applications running; no benchmark/build jobs launched concurrently by this run",
+    "source_sha256": {
+      "examples/algorithms/astfold.bend": "250588d08a72d24fc5261253d5e7944ab391e6744927903b3b62c590d71bdb7c",
+      "examples/algorithms/astfold.c": "7dd11fbcbcf1e12c9a97de0d67632ce5d4b59a1197bbe34bcdc9f8819d655625",
+      "examples/algorithms/batch.h": "3f3a84c9267c1502486832697f705a9fd29f71ba9655e43b505553ca22ec74c1",
+      "examples/algorithms/common.bend": "7291343b9cdf09c2c456c229c664875f471a1d90bdd02e6411c30e6de1d06945",
+      "examples/algorithms/nqueens.bend": "d8445945f806a8c5bb81bacc3bcd3051d12a25ae034b6ba94d5bbf014776f698",
+      "examples/algorithms/nqueens.c": "68fc1843c3f64bd188c64e72b74a60ea787e9732f6977cc864d0bd72fea58a2b",
+      "examples/algorithms/rho.bend": "817b8f3ed6361ef5a29b11ea7d75fe56ad4632704a8222fbfce7fcef8ef045f3",
+      "examples/algorithms/rho.c": "956397886c813c9e7776ebaa2032127f96df9e1735192dc8daf76ccfd624335d",
+      "examples/algorithms/sat-core.bend": "ef29306359af3b23981f6f05977963ccadb62fb4d24ac5bcfab4824d8ae84d46",
+      "examples/algorithms/sat-core.h": "dcf51fff314be42ddf16db7482962c7b455226bac59acef298f9e0b1a7026224",
+      "examples/algorithms/sat-input.bend": "f3bf35c4fd3c838adeb976ba031466558393160302dc61dc169ad4917585085d",
+      "examples/algorithms/sat.bend": "f042078e4ac8d456017cab7eec1a59f3a9da0a96870becd5ba634628ca776d06",
+      "examples/algorithms/sat.c": "7ed0ea9d8e91f589c855d6c510d30df6d1d48f2392e2a88b964ba0b52a91dbf9",
+      "examples/algorithms/suite.json": "7e98d80524eb89783a0ee2e1838d9f1a6a42115bced090e4db4a578a4cb4dd2c",
+      "scripts/algorithm_bench.py": "413b450b074728b249d6c542ceacff3a23509db89e700630160795d3b912cf73",
+      "scripts/benchmark.py": "0ad205c884978aaefb595f1bebe2ecebb3837a1c875e5e98541d0614b3351066",
+      "scripts/sat.py": "7f05c046de423b44ad2039a3496e0dc9555c2c772aa3b8d8c1b8398988c73930",
+      "scripts/sat_bench.py": "6d9f2393a5c523fd4aedce97615bfa92e552f338d3abd64bd38e8e1ea8bd084d",
+      "examples/ffi/common.bend": "a402a24d5325f3037d97aee25fcb1373bd0e29af685ebebba5a7c1742cdd2a98",
+      "examples/ffi/direct.c": "a918d0f771dc31a749b809da8285d0f7642b5f5fe78d1bd97723506a4cabd9f2",
+      "examples/ffi/effect.c": "4b2a871ddbcd71ddca6601b013abc67c2aab9828782d305195aaf18cd551d33d",
+      "examples/ffi/foreign.bend": "eabf103f09ebbb557efd0bd8d8ef88902499cad4370f7305afb2620138713984",
+      "examples/ffi/io-pure.bend": "b2f4d03179dc03b468cf253492220083621bdf3df0209e354219b831e5790705",
+      "examples/ffi/kernel.c": "e8dd94c7f2dc2e92bbb37ef4a4c7bde2154ee6cb055c6a37b398ed571b5f40a0",
+      "examples/ffi/kernel.h": "3fab8f2f1661c34dcbffa816a850bed00005d5fb944b007ab38cf7eb4f3ed88b",
+      "examples/ffi/pure.bend": "4638d846975bc21e31caa6c309da16371c369f42663bcb5af904abac9228c329",
+      "scripts/ffi_bench.py": "958f23c2c54e7464a890dd98e959ffb908d6bb4030019c2e3ee6f408bb5bbc42"
+    },
+    "cpu": "Apple M5",
+    "memory_bytes": 34359738368,
+    "os_version": "26.6.2",
+    "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+    "payload": "U32 input state + U32 rounds -> U32 result; no buffers or per-call output; synchronous host FFI",
+    "kernel": "sequential xorshift32; next call depends on previous result; seed=0x12345678",
+    "thermal_after": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded"
+  },
+  "cases": [
+    {
+      "calls": 0,
+      "rounds": 0,
+      "group": "slope",
+      "checksum": 305419896,
+      "timings": {
+        "c-direct": {
+          "best_seconds": 0.0018320840000000012,
+          "median_seconds": 0.0019106249999999991,
+          "samples_seconds": [
+            0.0022534170000000006,
+            0.0019106249999999991,
+            0.0018320840000000012
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "bend-pure-1": {
+          "best_seconds": 0.002182875000000001,
+          "median_seconds": 0.002471374999999998,
+          "samples_seconds": [
+            0.002920166999999998,
+            0.002471374999999998,
+            0.002182875000000001
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-1": {
+          "best_seconds": 0.0020390830000000006,
+          "median_seconds": 0.0023867919999999987,
+          "samples_seconds": [
+            0.0028332080000000003,
+            0.0023867919999999987,
+            0.0020390830000000006
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-1": {
+          "best_seconds": 0.0024161250000000016,
+          "median_seconds": 0.0024478329999999965,
+          "samples_seconds": [
+            0.0029862499999999993,
+            0.0024161250000000016,
+            0.0024478329999999965
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-pure-all": {
+          "best_seconds": 0.0017457500000000008,
+          "median_seconds": 0.0019186250000000002,
+          "samples_seconds": [
+            0.002364917000000001,
+            0.0019186250000000002,
+            0.0017457500000000008
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-all": {
+          "best_seconds": 0.0017057919999999976,
+          "median_seconds": 0.0017268330000000005,
+          "samples_seconds": [
+            0.002228708999999999,
+            0.0017057919999999976,
+            0.0017268330000000005
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-all": {
+          "best_seconds": 0.001673624999999998,
+          "median_seconds": 0.0017169999999999998,
+          "samples_seconds": [
+            0.002177667000000001,
+            0.0017169999999999998,
+            0.001673624999999998
+          ],
+          "peak_rss_mib": 1.53125
+        }
+      }
+    },
+    {
+      "calls": 1048576,
+      "rounds": 0,
+      "group": "slope",
+      "checksum": 305419896,
+      "timings": {
+        "c-direct": {
+          "best_seconds": 0.0027882080000000004,
+          "median_seconds": 0.002894125000000001,
+          "samples_seconds": [
+            0.0033378750000000006,
+            0.0027882080000000004,
+            0.002894125000000001
+          ],
+          "peak_rss_mib": 1.328125
+        },
+        "bend-pure-1": {
+          "best_seconds": 0.0017925000000000024,
+          "median_seconds": 0.001830749999999999,
+          "samples_seconds": [
+            0.002227332999999998,
+            0.001830749999999999,
+            0.0017925000000000024
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-1": {
+          "best_seconds": 0.013111416,
+          "median_seconds": 0.01784104200000001,
+          "samples_seconds": [
+            0.013111416,
+            0.020143,
+            0.01784104200000001
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-1": {
+          "best_seconds": 0.0260945,
+          "median_seconds": 0.026144958999999995,
+          "samples_seconds": [
+            0.026287875000000002,
+            0.0260945,
+            0.026144958999999995
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-pure-all": {
+          "best_seconds": 0.0017887089999999994,
+          "median_seconds": 0.001879167000000001,
+          "samples_seconds": [
+            0.002177417000000001,
+            0.001879167000000001,
+            0.0017887089999999994
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-all": {
+          "best_seconds": 0.015218917,
+          "median_seconds": 0.015394374999999998,
+          "samples_seconds": [
+            0.015218917,
+            0.015394374999999998,
+            0.016284458
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-all": {
+          "best_seconds": 0.021765584000000004,
+          "median_seconds": 0.022288500000000003,
+          "samples_seconds": [
+            0.023788750000000004,
+            0.021765584000000004,
+            0.022288500000000003
+          ],
+          "peak_rss_mib": 1.546875
+        }
+      }
+    },
+    {
+      "calls": 4194304,
+      "rounds": 0,
+      "group": "slope",
+      "checksum": 305419896,
+      "timings": {
+        "c-direct": {
+          "best_seconds": 0.005181624999999999,
+          "median_seconds": 0.005274959000000003,
+          "samples_seconds": [
+            0.005181624999999999,
+            0.005650375000000003,
+            0.005274959000000003
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "bend-pure-1": {
+          "best_seconds": 0.0019809159999999992,
+          "median_seconds": 0.0020437080000000017,
+          "samples_seconds": [
+            0.0024626249999999995,
+            0.0020437080000000017,
+            0.0019809159999999992
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-1": {
+          "best_seconds": 0.051046459,
+          "median_seconds": 0.05374675,
+          "samples_seconds": [
+            0.05374675,
+            0.051046459,
+            0.058205124999999996
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-1": {
+          "best_seconds": 0.083777916,
+          "median_seconds": 0.084237959,
+          "samples_seconds": [
+            0.083777916,
+            0.084237959,
+            0.08574212500000003
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-pure-all": {
+          "best_seconds": 0.0015976670000000005,
+          "median_seconds": 0.0016963330000000013,
+          "samples_seconds": [
+            0.0022567079999999996,
+            0.0016963330000000013,
+            0.0015976670000000005
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-all": {
+          "best_seconds": 0.058907708,
+          "median_seconds": 0.06047079200000001,
+          "samples_seconds": [
+            0.06047079200000001,
+            0.06365095799999998,
+            0.058907708
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-all": {
+          "best_seconds": 0.08016420799999999,
+          "median_seconds": 0.08522379200000002,
+          "samples_seconds": [
+            0.08016420799999999,
+            0.08609545899999999,
+            0.08522379200000002
+          ],
+          "peak_rss_mib": 1.546875
+        }
+      }
+    },
+    {
+      "calls": 16777216,
+      "rounds": 0,
+      "group": "slope",
+      "checksum": 305419896,
+      "timings": {
+        "c-direct": {
+          "best_seconds": 0.012086459000000004,
+          "median_seconds": 0.013250999999999999,
+          "samples_seconds": [
+            0.012086459000000004,
+            0.018093584000000003,
+            0.013250999999999999
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "bend-pure-1": {
+          "best_seconds": 0.001892333999999999,
+          "median_seconds": 0.0019390830000000012,
+          "samples_seconds": [
+            0.0022302499999999996,
+            0.001892333999999999,
+            0.0019390830000000012
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-1": {
+          "best_seconds": 0.190666875,
+          "median_seconds": 0.207446375,
+          "samples_seconds": [
+            0.226702959,
+            0.207446375,
+            0.190666875
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-1": {
+          "best_seconds": 0.32605408299999994,
+          "median_seconds": 0.327870166,
+          "samples_seconds": [
+            0.327870166,
+            0.32922791700000004,
+            0.32605408299999994
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-pure-all": {
+          "best_seconds": 0.0020935829999999996,
+          "median_seconds": 0.0023303330000000004,
+          "samples_seconds": [
+            0.002658708000000001,
+            0.0020935829999999996,
+            0.0023303330000000004
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-all": {
+          "best_seconds": 0.18720475,
+          "median_seconds": 0.20026208300000004,
+          "samples_seconds": [
+            0.18720475,
+            0.204654625,
+            0.20026208300000004
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-all": {
+          "best_seconds": 0.31576516599999993,
+          "median_seconds": 0.316900666,
+          "samples_seconds": [
+            0.316900666,
+            0.33737995800000004,
+            0.31576516599999993
+          ],
+          "peak_rss_mib": 1.53125
+        }
+      }
+    },
+    {
+      "calls": 0,
+      "rounds": 1,
+      "group": "slope",
+      "checksum": 305419896,
+      "timings": {
+        "c-direct": {
+          "best_seconds": 0.0018171249999999993,
+          "median_seconds": 0.0020335419999999993,
+          "samples_seconds": [
+            0.002380041999999999,
+            0.0020335419999999993,
+            0.0018171249999999993
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "bend-pure-1": {
+          "best_seconds": 0.0020310420000000003,
+          "median_seconds": 0.0020587500000000016,
+          "samples_seconds": [
+            0.002557625000000001,
+            0.0020587500000000016,
+            0.0020310420000000003
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-1": {
+          "best_seconds": 0.002171875,
+          "median_seconds": 0.0023220410000000004,
+          "samples_seconds": [
+            0.00281,
+            0.0023220410000000004,
+            0.002171875
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-ffi-1": {
+          "best_seconds": 0.0020226659999999994,
+          "median_seconds": 0.0023158749999999985,
+          "samples_seconds": [
+            0.002671207999999998,
+            0.0023158749999999985,
+            0.0020226659999999994
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-pure-all": {
+          "best_seconds": 0.0018509170000000005,
+          "median_seconds": 0.0018689580000000004,
+          "samples_seconds": [
+            0.0019429169999999989,
+            0.0018509170000000005,
+            0.0018689580000000004
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-all": {
+          "best_seconds": 0.0017398750000000018,
+          "median_seconds": 0.0017778750000000017,
+          "samples_seconds": [
+            0.001886999999999998,
+            0.0017398750000000018,
+            0.0017778750000000017
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-ffi-all": {
+          "best_seconds": 0.0017018329999999998,
+          "median_seconds": 0.0018503750000000013,
+          "samples_seconds": [
+            0.0018827079999999986,
+            0.0017018329999999998,
+            0.0018503750000000013
+          ],
+          "peak_rss_mib": 1.546875
+        }
+      }
+    },
+    {
+      "calls": 1048576,
+      "rounds": 1,
+      "group": "slope",
+      "checksum": 3382704737,
+      "timings": {
+        "c-direct": {
+          "best_seconds": 0.0037261670000000024,
+          "median_seconds": 0.003962291,
+          "samples_seconds": [
+            0.004499791999999999,
+            0.003962291,
+            0.0037261670000000024
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "bend-pure-1": {
+          "best_seconds": 0.0034559579999999986,
+          "median_seconds": 0.0035059999999999987,
+          "samples_seconds": [
+            0.004097333000000002,
+            0.0035059999999999987,
+            0.0034559579999999986
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-1": {
+          "best_seconds": 0.011333999999999997,
+          "median_seconds": 0.012503124999999997,
+          "samples_seconds": [
+            0.013191208,
+            0.012503124999999997,
+            0.011333999999999997
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-1": {
+          "best_seconds": 0.021436290999999996,
+          "median_seconds": 0.022708959,
+          "samples_seconds": [
+            0.022708959,
+            0.022831499999999998,
+            0.021436290999999996
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-pure-all": {
+          "best_seconds": 0.003093333,
+          "median_seconds": 0.003105583000000002,
+          "samples_seconds": [
+            0.0035013749999999993,
+            0.003093333,
+            0.003105583000000002
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-all": {
+          "best_seconds": 0.011835749999999999,
+          "median_seconds": 0.013372333000000002,
+          "samples_seconds": [
+            0.013372333000000002,
+            0.014314375,
+            0.011835749999999999
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-all": {
+          "best_seconds": 0.021408333,
+          "median_seconds": 0.021415542000000003,
+          "samples_seconds": [
+            0.021408333,
+            0.022315166999999997,
+            0.021415542000000003
+          ],
+          "peak_rss_mib": 1.53125
+        }
+      }
+    },
+    {
+      "calls": 4194304,
+      "rounds": 1,
+      "group": "slope",
+      "checksum": 4161904440,
+      "timings": {
+        "c-direct": {
+          "best_seconds": 0.007870625,
+          "median_seconds": 0.008304124999999996,
+          "samples_seconds": [
+            0.009020542,
+            0.008304124999999996,
+            0.007870625
+          ],
+          "peak_rss_mib": 1.328125
+        },
+        "bend-pure-1": {
+          "best_seconds": 0.008280875,
+          "median_seconds": 0.008774458000000006,
+          "samples_seconds": [
+            0.009925957999999999,
+            0.008774458000000006,
+            0.008280875
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-io-pure-1": {
+          "best_seconds": 0.04861979200000001,
+          "median_seconds": 0.053267834000000014,
+          "samples_seconds": [
+            0.056860625,
+            0.04861979200000001,
+            0.053267834000000014
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-ffi-1": {
+          "best_seconds": 0.08000725,
+          "median_seconds": 0.08211383400000002,
+          "samples_seconds": [
+            0.08000725,
+            0.08376125000000001,
+            0.08211383400000002
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-pure-all": {
+          "best_seconds": 0.0072916249999999995,
+          "median_seconds": 0.007406459000000001,
+          "samples_seconds": [
+            0.007743417000000001,
+            0.0072916249999999995,
+            0.007406459000000001
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-io-pure-all": {
+          "best_seconds": 0.054008292,
+          "median_seconds": 0.055799458000000024,
+          "samples_seconds": [
+            0.054008292,
+            0.058454624999999996,
+            0.055799458000000024
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-ffi-all": {
+          "best_seconds": 0.08098925,
+          "median_seconds": 0.082689875,
+          "samples_seconds": [
+            0.08098925,
+            0.082689875,
+            0.085732
+          ],
+          "peak_rss_mib": 1.546875
+        }
+      }
+    },
+    {
+      "calls": 16777216,
+      "rounds": 1,
+      "group": "slope",
+      "checksum": 3678506360,
+      "timings": {
+        "c-direct": {
+          "best_seconds": 0.023868917000000003,
+          "median_seconds": 0.024050833,
+          "samples_seconds": [
+            0.025898292,
+            0.024050833,
+            0.023868917000000003
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "bend-pure-1": {
+          "best_seconds": 0.023744,
+          "median_seconds": 0.024041917000000003,
+          "samples_seconds": [
+            0.025868541999999998,
+            0.024041917000000003,
+            0.023744
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-io-pure-1": {
+          "best_seconds": 0.16674833399999994,
+          "median_seconds": 0.195793125,
+          "samples_seconds": [
+            0.195793125,
+            0.22328900000000002,
+            0.16674833399999994
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-1": {
+          "best_seconds": 0.32295766600000003,
+          "median_seconds": 0.34009295799999995,
+          "samples_seconds": [
+            0.32295766600000003,
+            0.341482167,
+            0.34009295799999995
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-pure-all": {
+          "best_seconds": 0.024015666999999997,
+          "median_seconds": 0.024066417000000007,
+          "samples_seconds": [
+            0.024445625,
+            0.024015666999999997,
+            0.024066417000000007
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-io-pure-all": {
+          "best_seconds": 0.17886491699999998,
+          "median_seconds": 0.19063275000000002,
+          "samples_seconds": [
+            0.17886491699999998,
+            0.200604792,
+            0.19063275000000002
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-all": {
+          "best_seconds": 0.320001291,
+          "median_seconds": 0.323299958,
+          "samples_seconds": [
+            0.32507304200000003,
+            0.320001291,
+            0.323299958
+          ],
+          "peak_rss_mib": 1.546875
+        }
+      }
+    },
+    {
+      "calls": 4194304,
+      "rounds": 16,
+      "group": "batch",
+      "checksum": 894030156,
+      "timings": {
+        "c-direct": {
+          "best_seconds": 0.0905485,
+          "median_seconds": 0.090556375,
+          "samples_seconds": [
+            0.0905485,
+            0.09124654100000001,
+            0.090556375
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "bend-pure-1": {
+          "best_seconds": 0.09825975,
+          "median_seconds": 0.10567379199999999,
+          "samples_seconds": [
+            0.106319291,
+            0.10567379199999999,
+            0.09825975
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-1": {
+          "best_seconds": 0.11646899999999999,
+          "median_seconds": 0.118825334,
+          "samples_seconds": [
+            0.118825334,
+            0.11646899999999999,
+            0.11941154100000001
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-1": {
+          "best_seconds": 0.13642579100000002,
+          "median_seconds": 0.13946729199999996,
+          "samples_seconds": [
+            0.14446437499999998,
+            0.13642579100000002,
+            0.13946729199999996
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-pure-all": {
+          "best_seconds": 0.08990441699999996,
+          "median_seconds": 0.09048895800000001,
+          "samples_seconds": [
+            0.090510709,
+            0.09048895800000001,
+            0.08990441699999996
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-io-pure-all": {
+          "best_seconds": 0.11593320800000001,
+          "median_seconds": 0.11920620900000001,
+          "samples_seconds": [
+            0.119602084,
+            0.11593320800000001,
+            0.11920620900000001
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-all": {
+          "best_seconds": 0.136243375,
+          "median_seconds": 0.146560166,
+          "samples_seconds": [
+            0.136243375,
+            0.165542292,
+            0.146560166
+          ],
+          "peak_rss_mib": 1.53125
+        }
+      }
+    },
+    {
+      "calls": 262144,
+      "rounds": 256,
+      "group": "batch",
+      "checksum": 894030156,
+      "timings": {
+        "c-direct": {
+          "best_seconds": 0.09657650000000001,
+          "median_seconds": 0.09872641700000001,
+          "samples_seconds": [
+            0.099369125,
+            0.09657650000000001,
+            0.09872641700000001
+          ],
+          "peak_rss_mib": 1.328125
+        },
+        "bend-pure-1": {
+          "best_seconds": 0.090577042,
+          "median_seconds": 0.09080787500000001,
+          "samples_seconds": [
+            0.09189387499999999,
+            0.090577042,
+            0.09080787500000001
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-1": {
+          "best_seconds": 0.094570041,
+          "median_seconds": 0.094849291,
+          "samples_seconds": [
+            0.095330708,
+            0.094570041,
+            0.094849291
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-1": {
+          "best_seconds": 0.09401649999999999,
+          "median_seconds": 0.094196875,
+          "samples_seconds": [
+            0.094196875,
+            0.09401649999999999,
+            0.09484662500000002
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-pure-all": {
+          "best_seconds": 0.090193709,
+          "median_seconds": 0.090209666,
+          "samples_seconds": [
+            0.090398041,
+            0.090193709,
+            0.090209666
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-io-pure-all": {
+          "best_seconds": 0.092311167,
+          "median_seconds": 0.09232562500000002,
+          "samples_seconds": [
+            0.092311167,
+            0.094138916,
+            0.09232562500000002
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-ffi-all": {
+          "best_seconds": 0.093645708,
+          "median_seconds": 0.09364608299999999,
+          "samples_seconds": [
+            0.093645708,
+            0.093938917,
+            0.09364608299999999
+          ],
+          "peak_rss_mib": 1.53125
+        }
+      }
+    },
+    {
+      "calls": 16384,
+      "rounds": 4096,
+      "group": "batch",
+      "checksum": 894030156,
+      "timings": {
+        "c-direct": {
+          "best_seconds": 0.092465041,
+          "median_seconds": 0.093946375,
+          "samples_seconds": [
+            0.10552824999999999,
+            0.093946375,
+            0.092465041
+          ],
+          "peak_rss_mib": 1.328125
+        },
+        "bend-pure-1": {
+          "best_seconds": 0.09107729200000003,
+          "median_seconds": 0.09178704200000001,
+          "samples_seconds": [
+            0.092861833,
+            0.09178704200000001,
+            0.09107729200000003
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-io-pure-1": {
+          "best_seconds": 0.09064412499999999,
+          "median_seconds": 0.090706166,
+          "samples_seconds": [
+            0.09064412499999999,
+            0.091319083,
+            0.090706166
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-ffi-1": {
+          "best_seconds": 0.092668792,
+          "median_seconds": 0.09968295800000002,
+          "samples_seconds": [
+            0.092668792,
+            0.133602334,
+            0.09968295800000002
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-pure-all": {
+          "best_seconds": 0.09052841699999997,
+          "median_seconds": 0.090879541,
+          "samples_seconds": [
+            0.090879541,
+            0.091431084,
+            0.09052841699999997
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-io-pure-all": {
+          "best_seconds": 0.09014837499999998,
+          "median_seconds": 0.09031233300000001,
+          "samples_seconds": [
+            0.090458417,
+            0.09031233300000001,
+            0.09014837499999998
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-ffi-all": {
+          "best_seconds": 0.09178066600000001,
+          "median_seconds": 0.09342583300000001,
+          "samples_seconds": [
+            0.09799691699999999,
+            0.09342583300000001,
+            0.09178066600000001
+          ],
+          "peak_rss_mib": 1.53125
+        }
+      }
+    }
+  ],
+  "fits": {
+    "0": {
+      "c-direct": {
+        "intercept_seconds": 0.0023583961666666688,
+        "nanoseconds_per_call": 0.6514456385657899,
+        "r_squared": 0.9990313890947
+      },
+      "bend-pure-1": {
+        "intercept_seconds": 0.0019191734999999999,
+        "nanoseconds_per_call": 0.0025440624782018134,
+        "r_squared": 0.039538856698643765
+      },
+      "bend-io-pure-1": {
+        "intercept_seconds": 0.004193007166666665,
+        "nanoseconds_per_call": 12.100544225601924,
+        "r_squared": 0.9998808309579197
+      },
+      "bend-ffi-1": {
+        "intercept_seconds": 0.00490392449999999,
+        "nanoseconds_per_call": 19.234308083852135,
+        "r_squared": 0.9999411028376485
+      },
+      "bend-pure-all": {
+        "intercept_seconds": 0.0017125556666666678,
+        "nanoseconds_per_call": 0.034884770711262975,
+        "r_squared": 0.7916016158446328
+      },
+      "bend-io-pure-all": {
+        "intercept_seconds": 0.007121298833333331,
+        "nanoseconds_per_call": 11.569584142594111,
+        "r_squared": 0.9978969535410994
+      },
+      "bend-ffi-all": {
+        "intercept_seconds": 0.0046541183333333735,
+        "nanoseconds_per_call": 18.639818963550383,
+        "r_squared": 0.9998009059644827
+      }
+    },
+    "1": {
+      "c-direct": {
+        "intercept_seconds": 0.002785117666666663,
+        "nanoseconds_per_call": 1.2698353358677459,
+        "r_squared": 0.9997201465649096
+      },
+      "bend-pure-1": {
+        "intercept_seconds": 0.0027175761666666694,
+        "nanoseconds_per_call": 1.2792699223472959,
+        "r_squared": 0.9964719810095181
+      },
+      "bend-io-pure-1": {
+        "intercept_seconds": 0.002337146166666665,
+        "nanoseconds_per_call": 11.560015246981667,
+        "r_squared": 0.9994580540628202
+      },
+      "bend-ffi-1": {
+        "intercept_seconds": -0.0004859366666666032,
+        "nanoseconds_per_call": 20.271190507071353,
+        "r_squared": 0.9998266650860567
+      },
+      "bend-pure-all": {
+        "intercept_seconds": 0.0017625486666666672,
+        "nanoseconds_per_call": 1.3301855268932528,
+        "r_squared": 0.9999713043512836
+      },
+      "bend-io-pure-all": {
+        "intercept_seconds": 0.005042492666666676,
+        "nanoseconds_per_call": 11.111534799848284,
+        "r_squared": 0.9983098268607882
+      },
+      "bend-ffi-all": {
+        "intercept_seconds": 0.001738639166666639,
+        "nanoseconds_per_call": 19.172916298820862,
+        "r_squared": 0.9999905863025588
+      }
+    }
+  },
+  "overhead": {
+    "0": {
+      "1": {
+        "ffi_minus_c_direct_ns": 18.582862445286345,
+        "ffi_minus_bend_pure_ns": 19.231764021373934,
+        "ffi_minus_bend_io_pure_ns": 7.1337638582502105
+      },
+      "all": {
+        "ffi_minus_c_direct_ns": 17.988373324984593,
+        "ffi_minus_bend_pure_ns": 18.60493419283912,
+        "ffi_minus_bend_io_pure_ns": 7.070234820956271
+      }
+    },
+    "1": {
+      "1": {
+        "ffi_minus_c_direct_ns": 19.001355171203606,
+        "ffi_minus_bend_pure_ns": 18.991920584724056,
+        "ffi_minus_bend_io_pure_ns": 8.711175260089686
+      },
+      "all": {
+        "ffi_minus_c_direct_ns": 17.903080962953116,
+        "ffi_minus_bend_pure_ns": 17.84273077192761,
+        "ffi_minus_bend_io_pure_ns": 8.061381498972578
+      }
+    }
+  },
+  "order_confirmation": {
+    "method": "serial C->FFI, FFI->C, C->FFI; each entry measures 3 runs; threads=1",
+    "source_sha256": "5e79e4d5bdbed0149d49f948cf6e8d78377ac36d67f0a612f95a18fba10ebe4e",
+    "cases": [
+      {
+        "calls": 16777216,
+        "rounds": 0,
+        "pairs": [
+          {
+            "order": [
+              "c-direct",
+              "bend-ffi"
+            ],
+            "timings": {
+              "c-direct": {
+                "best_seconds": 0.008981666999999999,
+                "median_seconds": 0.010224915999999999,
+                "samples_seconds": [
+                  0.010224915999999999,
+                  0.010284707999999997,
+                  0.008981666999999999
+                ],
+                "peak_rss_mib": 1.34375
+              },
+              "bend-ffi": {
+                "best_seconds": 0.32056850000000003,
+                "median_seconds": 0.323475,
+                "samples_seconds": [
+                  0.323475,
+                  0.32786779200000005,
+                  0.32056850000000003
+                ],
+                "peak_rss_mib": 1.53125
+              }
+            }
+          },
+          {
+            "order": [
+              "bend-ffi",
+              "c-direct"
+            ],
+            "timings": {
+              "bend-ffi": {
+                "best_seconds": 0.320861334,
+                "median_seconds": 0.371731167,
+                "samples_seconds": [
+                  0.320861334,
+                  0.371731167,
+                  0.38345129099999997
+                ],
+                "peak_rss_mib": 1.53125
+              },
+              "c-direct": {
+                "best_seconds": 0.02112408300000001,
+                "median_seconds": 0.02297158299999999,
+                "samples_seconds": [
+                  0.02112408300000001,
+                  0.02297158299999999,
+                  0.028617292000000003
+                ],
+                "peak_rss_mib": 1.34375
+              }
+            }
+          },
+          {
+            "order": [
+              "c-direct",
+              "bend-ffi"
+            ],
+            "timings": {
+              "c-direct": {
+                "best_seconds": 0.009836916000000001,
+                "median_seconds": 0.010579040999999997,
+                "samples_seconds": [
+                  0.010579040999999997,
+                  0.011734583000000003,
+                  0.009836916000000001
+                ],
+                "peak_rss_mib": 1.34375
+              },
+              "bend-ffi": {
+                "best_seconds": 0.355009584,
+                "median_seconds": 0.355017333,
+                "samples_seconds": [
+                  0.355009584,
+                  0.355017333,
+                  0.3602395420000001
+                ],
+                "peak_rss_mib": 1.53125
+              }
+            }
+          }
+        ],
+        "median_of_medians_seconds": {
+          "c-direct": 0.010579040999999997,
+          "bend-ffi": 0.355017333
+        },
+        "raw_difference_ns_per_call": 20.53012204170227
+      },
+      {
+        "calls": 16777216,
+        "rounds": 1,
+        "pairs": [
+          {
+            "order": [
+              "c-direct",
+              "bend-ffi"
+            ],
+            "timings": {
+              "c-direct": {
+                "best_seconds": 0.025303416999999998,
+                "median_seconds": 0.02561508300000001,
+                "samples_seconds": [
+                  0.025303416999999998,
+                  0.025866957999999995,
+                  0.02561508300000001
+                ],
+                "peak_rss_mib": 1.34375
+              },
+              "bend-ffi": {
+                "best_seconds": 0.327069834,
+                "median_seconds": 0.33674320800000007,
+                "samples_seconds": [
+                  0.327069834,
+                  0.33674320800000007,
+                  0.3424333330000001
+                ],
+                "peak_rss_mib": 1.546875
+              }
+            }
+          },
+          {
+            "order": [
+              "bend-ffi",
+              "c-direct"
+            ],
+            "timings": {
+              "bend-ffi": {
+                "best_seconds": 0.321506791,
+                "median_seconds": 0.32944949999999995,
+                "samples_seconds": [
+                  0.321506791,
+                  0.32944949999999995,
+                  0.3429565
+                ],
+                "peak_rss_mib": 1.546875
+              },
+              "c-direct": {
+                "best_seconds": 0.02407504199999999,
+                "median_seconds": 0.024584542000000008,
+                "samples_seconds": [
+                  0.025557958000000002,
+                  0.024584542000000008,
+                  0.02407504199999999
+                ],
+                "peak_rss_mib": 1.34375
+              }
+            }
+          },
+          {
+            "order": [
+              "c-direct",
+              "bend-ffi"
+            ],
+            "timings": {
+              "c-direct": {
+                "best_seconds": 0.02397787500000001,
+                "median_seconds": 0.024125374999999998,
+                "samples_seconds": [
+                  0.024506667000000003,
+                  0.024125374999999998,
+                  0.02397787500000001
+                ],
+                "peak_rss_mib": 1.34375
+              },
+              "bend-ffi": {
+                "best_seconds": 0.318338209,
+                "median_seconds": 0.31897937499999995,
+                "samples_seconds": [
+                  0.320097917,
+                  0.318338209,
+                  0.31897937499999995
+                ],
+                "peak_rss_mib": 1.546875
+              }
+            }
+          }
+        ],
+        "median_of_medians_seconds": {
+          "c-direct": 0.024584542000000008,
+          "bend-ffi": 0.32944949999999995
+        },
+        "raw_difference_ns_per_call": 18.17136752605438
+      },
+      {
+        "calls": 262144,
+        "rounds": 256,
+        "pairs": [
+          {
+            "order": [
+              "c-direct",
+              "bend-ffi"
+            ],
+            "timings": {
+              "c-direct": {
+                "best_seconds": 0.08992491700000002,
+                "median_seconds": 0.09006320799999999,
+                "samples_seconds": [
+                  0.090320916,
+                  0.09006320799999999,
+                  0.08992491700000002
+                ],
+                "peak_rss_mib": 1.328125
+              },
+              "bend-ffi": {
+                "best_seconds": 0.092798917,
+                "median_seconds": 0.093091708,
+                "samples_seconds": [
+                  0.092798917,
+                  0.09327120800000001,
+                  0.093091708
+                ],
+                "peak_rss_mib": 1.53125
+              }
+            }
+          },
+          {
+            "order": [
+              "bend-ffi",
+              "c-direct"
+            ],
+            "timings": {
+              "bend-ffi": {
+                "best_seconds": 0.09276487500000001,
+                "median_seconds": 0.09289020900000003,
+                "samples_seconds": [
+                  0.09276487500000001,
+                  0.093591584,
+                  0.09289020900000003
+                ],
+                "peak_rss_mib": 1.53125
+              },
+              "c-direct": {
+                "best_seconds": 0.09017637500000002,
+                "median_seconds": 0.090253917,
+                "samples_seconds": [
+                  0.090253917,
+                  0.09017637500000002,
+                  0.09185391700000003
+                ],
+                "peak_rss_mib": 1.328125
+              }
+            }
+          },
+          {
+            "order": [
+              "c-direct",
+              "bend-ffi"
+            ],
+            "timings": {
+              "c-direct": {
+                "best_seconds": 0.090208875,
+                "median_seconds": 0.090231333,
+                "samples_seconds": [
+                  0.09024,
+                  0.090208875,
+                  0.090231333
+                ],
+                "peak_rss_mib": 1.328125
+              },
+              "bend-ffi": {
+                "best_seconds": 0.09357704200000003,
+                "median_seconds": 0.09845020899999998,
+                "samples_seconds": [
+                  0.11525995900000001,
+                  0.09845020899999998,
+                  0.09357704200000003
+                ],
+                "peak_rss_mib": 1.53125
+              }
+            }
+          }
+        ],
+        "median_of_medians_seconds": {
+          "c-direct": 0.090231333,
+          "bend-ffi": 0.093091708
+        },
+        "raw_difference_ns_per_call": 10.911464691162102
+      },
+      {
+        "calls": 16384,
+        "rounds": 4096,
+        "pairs": [
+          {
+            "order": [
+              "c-direct",
+              "bend-ffi"
+            ],
+            "timings": {
+              "c-direct": {
+                "best_seconds": 0.09038258300000002,
+                "median_seconds": 0.0906135,
+                "samples_seconds": [
+                  0.0906135,
+                  0.09062004200000001,
+                  0.09038258300000002
+                ],
+                "peak_rss_mib": 1.328125
+              },
+              "bend-ffi": {
+                "best_seconds": 0.090428584,
+                "median_seconds": 0.09068695799999998,
+                "samples_seconds": [
+                  0.090798958,
+                  0.09068695799999998,
+                  0.090428584
+                ],
+                "peak_rss_mib": 1.53125
+              }
+            }
+          },
+          {
+            "order": [
+              "bend-ffi",
+              "c-direct"
+            ],
+            "timings": {
+              "bend-ffi": {
+                "best_seconds": 0.09056391700000002,
+                "median_seconds": 0.09070754199999999,
+                "samples_seconds": [
+                  0.091220167,
+                  0.09070754199999999,
+                  0.09056391700000002
+                ],
+                "peak_rss_mib": 1.53125
+              },
+              "c-direct": {
+                "best_seconds": 0.090245458,
+                "median_seconds": 0.0902955,
+                "samples_seconds": [
+                  0.0902955,
+                  0.090374458,
+                  0.090245458
+                ],
+                "peak_rss_mib": 1.328125
+              }
+            }
+          },
+          {
+            "order": [
+              "c-direct",
+              "bend-ffi"
+            ],
+            "timings": {
+              "c-direct": {
+                "best_seconds": 0.09038933400000002,
+                "median_seconds": 0.090392583,
+                "samples_seconds": [
+                  0.090392583,
+                  0.09075916600000002,
+                  0.09038933400000002
+                ],
+                "peak_rss_mib": 1.328125
+              },
+              "bend-ffi": {
+                "best_seconds": 0.0907825,
+                "median_seconds": 0.091229167,
+                "samples_seconds": [
+                  0.0907825,
+                  0.092590459,
+                  0.091229167
+                ],
+                "peak_rss_mib": 1.53125
+              }
+            }
+          }
+        ],
+        "median_of_medians_seconds": {
+          "c-direct": 0.090392583,
+          "bend-ffi": 0.09070754199999999
+        },
+        "raw_difference_ns_per_call": 19.223571777343118
+      }
+    ],
+    "thermal_after": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded"
+  }
+}

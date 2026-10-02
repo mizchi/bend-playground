@@ -1,0 +1,572 @@
+{
+  "environment": {
+    "date": "2026-10-02T13:48:30+09:00",
+    "playground_commit": "637574795f63a55a3b6bf5508a8cf8ad4c856f0b",
+    "bend_commit": "7d24b8d0235cb9781140512c0f163c48ea84a719",
+    "bend_version": "bend 2.0.34",
+    "platform": "Darwin arm64",
+    "threads": 10,
+    "compiler": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+    "c_flags": "-std=c11 -O3 -ffp-contract=off -pthread",
+    "python": "3.9.6",
+    "method": "serial best-of-3 wall clock; process startup included; CPU only; compilation excluded",
+    "rss_unit": "MiB (helper output label MB)",
+    "c_scheduler": "pthread workers; dynamic atomic queue; chunks 1 for nqueens, 16 otherwise",
+    "source_state": "local algorithm additions on the recorded playground commit",
+    "background": "existing UI applications running; no benchmark/build jobs launched concurrently by this run",
+    "source_sha256": {
+      "examples/algorithms/astfold.bend": "250588d08a72d24fc5261253d5e7944ab391e6744927903b3b62c590d71bdb7c",
+      "examples/algorithms/astfold.c": "7dd11fbcbcf1e12c9a97de0d67632ce5d4b59a1197bbe34bcdc9f8819d655625",
+      "examples/algorithms/batch.h": "3f3a84c9267c1502486832697f705a9fd29f71ba9655e43b505553ca22ec74c1",
+      "examples/algorithms/common.bend": "7291343b9cdf09c2c456c229c664875f471a1d90bdd02e6411c30e6de1d06945",
+      "examples/algorithms/nqueens.bend": "d8445945f806a8c5bb81bacc3bcd3051d12a25ae034b6ba94d5bbf014776f698",
+      "examples/algorithms/nqueens.c": "68fc1843c3f64bd188c64e72b74a60ea787e9732f6977cc864d0bd72fea58a2b",
+      "examples/algorithms/rho.bend": "817b8f3ed6361ef5a29b11ea7d75fe56ad4632704a8222fbfce7fcef8ef045f3",
+      "examples/algorithms/rho.c": "956397886c813c9e7776ebaa2032127f96df9e1735192dc8daf76ccfd624335d",
+      "examples/algorithms/suite.json": "820424b0d725fc79642a45d4ff4e91180548cde8aa91aa1ff618976e00267fd6",
+      "scripts/algorithm_bench.py": "a091d3d9c5e63e5b73d33326f5b3d268ff12fed368996d7e99ca859873ea6640",
+      "scripts/benchmark.py": "0ad205c884978aaefb595f1bebe2ecebb3837a1c875e5e98541d0614b3351066"
+    },
+    "cpu": "Apple M5",
+    "memory_bytes": 34359738368,
+    "os_version": "26.6.2",
+    "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+    "thermal_after": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+    "post_measurement_changes": [
+      {
+        "file": "scripts/algorithm_bench.py",
+        "sha256": "097c05fae53ba36cf58c14d29d094b5b86ee8b540ee8f4efc8e74672d89241bd",
+        "reason": "CLI default argument validation corrected after timing; kernels and measurement logic unchanged."
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "nqueens",
+      "label": "n14",
+      "dep": 8,
+      "size": 14,
+      "output": {
+        "checksum": 365596,
+        "detail": 0,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.11349774999999998,
+          "median_seconds": 0.11774341699999999,
+          "samples_seconds": [
+            0.11349774999999998,
+            0.11790141599999998,
+            0.11774341699999999
+          ],
+          "peak_rss_mib": 1.359375
+        },
+        "c-all": {
+          "best_seconds": 0.017700165999999996,
+          "median_seconds": 0.017785916000000002,
+          "samples_seconds": [
+            0.017785916000000002,
+            0.018115417,
+            0.017700165999999996
+          ],
+          "peak_rss_mib": 1.484375
+        },
+        "bend-1": {
+          "best_seconds": 0.15846120800000002,
+          "median_seconds": 0.15963808300000001,
+          "samples_seconds": [
+            0.161393916,
+            0.15963808300000001,
+            0.15846120800000002
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-all": {
+          "best_seconds": 0.026380958,
+          "median_seconds": 0.026849041000000004,
+          "samples_seconds": [
+            0.026380958,
+            0.027948707999999996,
+            0.026849041000000004
+          ],
+          "peak_rss_mib": 3.078125
+        }
+      }
+    },
+    {
+      "name": "nqueens",
+      "label": "n15",
+      "dep": 8,
+      "size": 15,
+      "output": {
+        "checksum": 2279184,
+        "detail": 0,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.6896400839999999,
+          "median_seconds": 0.689825792,
+          "samples_seconds": [
+            0.689825792,
+            0.6896400839999999,
+            0.71272425
+          ],
+          "peak_rss_mib": 1.359375
+        },
+        "c-all": {
+          "best_seconds": 0.099029209,
+          "median_seconds": 0.09943916699999997,
+          "samples_seconds": [
+            0.102883833,
+            0.099029209,
+            0.09943916699999997
+          ],
+          "peak_rss_mib": 1.484375
+        },
+        "bend-1": {
+          "best_seconds": 0.9736081670000001,
+          "median_seconds": 0.974591708,
+          "samples_seconds": [
+            0.9927862919999999,
+            0.974591708,
+            0.9736081670000001
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-all": {
+          "best_seconds": 0.145213625,
+          "median_seconds": 0.15581820799999999,
+          "samples_seconds": [
+            0.15581820799999999,
+            0.145213625,
+            0.158132708
+          ],
+          "peak_rss_mib": 3.1875
+        }
+      }
+    },
+    {
+      "name": "nqueens",
+      "label": "n16",
+      "dep": 8,
+      "size": 16,
+      "output": {
+        "checksum": 14772512,
+        "detail": 0,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 4.730034834,
+          "median_seconds": 4.7338126670000005,
+          "samples_seconds": [
+            4.7338126670000005,
+            4.9448004999999995,
+            4.730034834
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "c-all": {
+          "best_seconds": 0.634211375,
+          "median_seconds": 0.6406422079999999,
+          "samples_seconds": [
+            0.6406422079999999,
+            0.642442542,
+            0.634211375
+          ],
+          "peak_rss_mib": 1.484375
+        },
+        "bend-1": {
+          "best_seconds": 6.55855475,
+          "median_seconds": 6.613410250000001,
+          "samples_seconds": [
+            6.55855475,
+            6.613410250000001,
+            6.7231819999999995
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-all": {
+          "best_seconds": 0.891604625,
+          "median_seconds": 0.8984211660000001,
+          "samples_seconds": [
+            0.909057625,
+            0.8984211660000001,
+            0.891604625
+          ],
+          "peak_rss_mib": 3.140625
+        }
+      }
+    },
+    {
+      "name": "rho",
+      "label": "2^17",
+      "dep": 17,
+      "output": {
+        "checksum": 845607280,
+        "detail": 3091400,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.058372499999999994,
+          "median_seconds": 0.05849966699999999,
+          "samples_seconds": [
+            0.060264459,
+            0.05849966699999999,
+            0.058372499999999994
+          ],
+          "peak_rss_mib": 1.359375
+        },
+        "c-all": {
+          "best_seconds": 0.011727125000000005,
+          "median_seconds": 0.012400333999999999,
+          "samples_seconds": [
+            0.012400333999999999,
+            0.012603374999999997,
+            0.011727125000000005
+          ],
+          "peak_rss_mib": 1.5625
+        },
+        "bend-1": {
+          "best_seconds": 0.155744459,
+          "median_seconds": 0.155756083,
+          "samples_seconds": [
+            0.159112291,
+            0.155756083,
+            0.155744459
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-all": {
+          "best_seconds": 0.02594504200000001,
+          "median_seconds": 0.026452790999999996,
+          "samples_seconds": [
+            0.026452790999999996,
+            0.02594504200000001,
+            0.02657108400000001
+          ],
+          "peak_rss_mib": 2.9375
+        }
+      }
+    },
+    {
+      "name": "rho",
+      "label": "2^19",
+      "dep": 19,
+      "output": {
+        "checksum": 3776897650,
+        "detail": 12363980,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.222662333,
+          "median_seconds": 0.22295208299999997,
+          "samples_seconds": [
+            0.223344625,
+            0.222662333,
+            0.22295208299999997
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "c-all": {
+          "best_seconds": 0.040422542,
+          "median_seconds": 0.04052025000000001,
+          "samples_seconds": [
+            0.040422542,
+            0.040549208999999996,
+            0.04052025000000001
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-1": {
+          "best_seconds": 0.6018211250000001,
+          "median_seconds": 0.6166586669999999,
+          "samples_seconds": [
+            0.6166586669999999,
+            0.6018211250000001,
+            0.650493542
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-all": {
+          "best_seconds": 0.097642042,
+          "median_seconds": 0.09826758300000002,
+          "samples_seconds": [
+            0.097642042,
+            0.102428833,
+            0.09826758300000002
+          ],
+          "peak_rss_mib": 2.84375
+        }
+      }
+    },
+    {
+      "name": "rho",
+      "label": "2^22",
+      "dep": 22,
+      "output": {
+        "checksum": 389772516,
+        "detail": 98975907,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 1.700193375,
+          "median_seconds": 1.710847292,
+          "samples_seconds": [
+            1.710847292,
+            1.71864,
+            1.700193375
+          ],
+          "peak_rss_mib": 1.359375
+        },
+        "c-all": {
+          "best_seconds": 0.3018558330000001,
+          "median_seconds": 0.302843666,
+          "samples_seconds": [
+            0.302843666,
+            0.3018558330000001,
+            0.308310583
+          ],
+          "peak_rss_mib": 1.5625
+        },
+        "bend-1": {
+          "best_seconds": 4.654021041,
+          "median_seconds": 4.982968208,
+          "samples_seconds": [
+            5.031257707999999,
+            4.982968208,
+            4.654021041
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-all": {
+          "best_seconds": 0.7634223330000001,
+          "median_seconds": 0.785649083,
+          "samples_seconds": [
+            0.7634223330000001,
+            0.7916805829999999,
+            0.785649083
+          ],
+          "peak_rss_mib": 2.84375
+        }
+      }
+    },
+    {
+      "name": "astfold",
+      "label": "2^12-d9",
+      "dep": 12,
+      "size": 9,
+      "output": {
+        "checksum": 2511829795,
+        "detail": 2013120,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.017822291999999997,
+          "median_seconds": 0.018220209,
+          "samples_seconds": [
+            0.019451207999999998,
+            0.018220209,
+            0.017822291999999997
+          ],
+          "peak_rss_mib": 1.375
+        },
+        "c-all": {
+          "best_seconds": 0.005505417000000002,
+          "median_seconds": 0.005581959000000001,
+          "samples_seconds": [
+            0.005581959000000001,
+            0.005505417000000002,
+            0.005640209
+          ],
+          "peak_rss_mib": 1.6875
+        },
+        "bend-1": {
+          "best_seconds": 0.025331707999999994,
+          "median_seconds": 0.02564675000000001,
+          "samples_seconds": [
+            0.025744041000000002,
+            0.025331707999999994,
+            0.02564675000000001
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-all": {
+          "best_seconds": 0.006454165999999999,
+          "median_seconds": 0.006913958000000001,
+          "samples_seconds": [
+            0.006454165999999999,
+            0.007027167000000001,
+            0.006913958000000001
+          ],
+          "peak_rss_mib": 3.140625
+        }
+      }
+    },
+    {
+      "name": "astfold",
+      "label": "2^14-d9",
+      "dep": 14,
+      "size": 9,
+      "output": {
+        "checksum": 2638513389,
+        "detail": 8045246,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.06306299999999998,
+          "median_seconds": 0.063300125,
+          "samples_seconds": [
+            0.063300125,
+            0.0633305,
+            0.06306299999999998
+          ],
+          "peak_rss_mib": 1.375
+        },
+        "c-all": {
+          "best_seconds": 0.019557125,
+          "median_seconds": 0.021672499999999997,
+          "samples_seconds": [
+            0.021672499999999997,
+            0.021883083000000005,
+            0.019557125
+          ],
+          "peak_rss_mib": 1.71875
+        },
+        "bend-1": {
+          "best_seconds": 0.093908459,
+          "median_seconds": 0.094268709,
+          "samples_seconds": [
+            0.095390166,
+            0.094268709,
+            0.093908459
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-all": {
+          "best_seconds": 0.015908624999999996,
+          "median_seconds": 0.016013375000000003,
+          "samples_seconds": [
+            0.016454041,
+            0.016013375000000003,
+            0.015908624999999996
+          ],
+          "peak_rss_mib": 3.171875
+        }
+      }
+    },
+    {
+      "name": "astfold",
+      "label": "2^20-d9",
+      "dep": 20,
+      "size": 9,
+      "output": {
+        "checksum": 2548034231,
+        "detail": 515226970,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 3.90772425,
+          "median_seconds": 3.915466790999999,
+          "samples_seconds": [
+            3.90772425,
+            3.957182667,
+            3.915466790999999
+          ],
+          "peak_rss_mib": 1.375
+        },
+        "c-all": {
+          "best_seconds": 1.2124362910000002,
+          "median_seconds": 1.2228235829999998,
+          "samples_seconds": [
+            1.27627125,
+            1.2124362910000002,
+            1.2228235829999998
+          ],
+          "peak_rss_mib": 1.703125
+        },
+        "bend-1": {
+          "best_seconds": 5.858188541,
+          "median_seconds": 5.925345833,
+          "samples_seconds": [
+            5.858188541,
+            5.925345833,
+            5.974248375
+          ],
+          "peak_rss_mib": 1.546875
+        },
+        "bend-all": {
+          "best_seconds": 0.8940752499999999,
+          "median_seconds": 0.901094125,
+          "samples_seconds": [
+            0.901094125,
+            0.8940752499999999,
+            0.9012007080000002
+          ],
+          "peak_rss_mib": 3.1875
+        }
+      }
+    }
+  ],
+  "interleaved_confirmation": {
+    "case": "2^20-d9",
+    "threads": 10,
+    "method": "three serial pairs with alternating command order; process startup included",
+    "pairs": [
+      {
+        "order": [
+          "c-all",
+          "bend-all"
+        ],
+        "seconds": {
+          "c-all": 1.226266042,
+          "bend-all": 0.907768667
+        }
+      },
+      {
+        "order": [
+          "bend-all",
+          "c-all"
+        ],
+        "seconds": {
+          "bend-all": 0.8951663329999997,
+          "c-all": 1.3306696670000004
+        }
+      },
+      {
+        "order": [
+          "c-all",
+          "bend-all"
+        ],
+        "seconds": {
+          "c-all": 1.2414523749999997,
+          "bend-all": 0.8921439170000003
+        }
+      }
+    ],
+    "c_median_seconds": 1.2414523749999997,
+    "bend_median_seconds": 0.8951663329999997,
+    "c_over_bend_median": 1.3868398857667943
+  },
+  "independent_full_size_checks": {
+    "nqueens_known_counts": {
+      "14": 365596,
+      "15": 2279184,
+      "16": 14772512
+    },
+    "rho_checksums_from_verified_prime_inputs": {
+      "17": 845607280,
+      "19": 3776897650,
+      "22": 389772516
+    },
+    "rho_oracle_method": "independently verify the prime table by trial division; sort known prime inputs without using Pollard rho"
+  }
+}

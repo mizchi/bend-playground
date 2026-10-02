@@ -1,0 +1,256 @@
+{
+  "environment": {
+    "date": "2026-10-02T15:04:21+09:00",
+    "playground_commit": "637574795f63a55a3b6bf5508a8cf8ad4c856f0b",
+    "bend_commit": "7d24b8d0235cb9781140512c0f163c48ea84a719",
+    "bend_version": "bend 2.0.34",
+    "platform": "Darwin arm64",
+    "threads": 10,
+    "compiler": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+    "c_flags": "-std=c11 -O3 -pthread",
+    "python": "3.9.6",
+    "method": "serial best-of-3 wall clock; repeated same CNF sequentially; startup included; compilation excluded",
+    "rss_unit": "MiB (helper output label MB)",
+    "c_scheduler": "one atomic-queued prefix per job; persistent pthread pool and a barrier between repetitions; threads capped at prefixes",
+    "source_state": "local algorithm additions on the recorded playground commit",
+    "background": "existing UI applications running; no benchmark/build jobs launched concurrently by this run",
+    "source_sha256": {
+      "examples/algorithms/astfold.bend": "250588d08a72d24fc5261253d5e7944ab391e6744927903b3b62c590d71bdb7c",
+      "examples/algorithms/astfold.c": "7dd11fbcbcf1e12c9a97de0d67632ce5d4b59a1197bbe34bcdc9f8819d655625",
+      "examples/algorithms/batch.h": "3f3a84c9267c1502486832697f705a9fd29f71ba9655e43b505553ca22ec74c1",
+      "examples/algorithms/common.bend": "7291343b9cdf09c2c456c229c664875f471a1d90bdd02e6411c30e6de1d06945",
+      "examples/algorithms/nqueens.bend": "d8445945f806a8c5bb81bacc3bcd3051d12a25ae034b6ba94d5bbf014776f698",
+      "examples/algorithms/nqueens.c": "68fc1843c3f64bd188c64e72b74a60ea787e9732f6977cc864d0bd72fea58a2b",
+      "examples/algorithms/rho.bend": "817b8f3ed6361ef5a29b11ea7d75fe56ad4632704a8222fbfce7fcef8ef045f3",
+      "examples/algorithms/rho.c": "956397886c813c9e7776ebaa2032127f96df9e1735192dc8daf76ccfd624335d",
+      "examples/algorithms/sat-core.bend": "ef29306359af3b23981f6f05977963ccadb62fb4d24ac5bcfab4824d8ae84d46",
+      "examples/algorithms/sat-core.h": "dcf51fff314be42ddf16db7482962c7b455226bac59acef298f9e0b1a7026224",
+      "examples/algorithms/sat-input.bend": "f3bf35c4fd3c838adeb976ba031466558393160302dc61dc169ad4917585085d",
+      "examples/algorithms/sat.bend": "f042078e4ac8d456017cab7eec1a59f3a9da0a96870becd5ba634628ca776d06",
+      "examples/algorithms/sat.c": "7ed0ea9d8e91f589c855d6c510d30df6d1d48f2392e2a88b964ba0b52a91dbf9",
+      "examples/algorithms/suite.json": "7e98d80524eb89783a0ee2e1838d9f1a6a42115bced090e4db4a578a4cb4dd2c",
+      "scripts/algorithm_bench.py": "413b450b074728b249d6c542ceacff3a23509db89e700630160795d3b912cf73",
+      "scripts/benchmark.py": "0ad205c884978aaefb595f1bebe2ecebb3837a1c875e5e98541d0614b3351066",
+      "scripts/sat.py": "7f05c046de423b44ad2039a3496e0dc9555c2c772aa3b8d8c1b8398988c73930",
+      "scripts/sat_bench.py": "6d9f2393a5c523fd4aedce97615bfa92e552f338d3abd64bd38e8e1ea8bd084d"
+    },
+    "cpu": "Apple M5",
+    "memory_bytes": 34359738368,
+    "os_version": "26.6.2",
+    "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+    "cnf": "examples/algorithms/sat/pigeonhole-6-5.cnf",
+    "cnf_sha256": "7113386386e336d9746f67370071c63acabaf945d609d1f5e7271b7a4e404df9",
+    "repetitions": 2048,
+    "thermal_after": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded"
+  },
+  "cases": [
+    {
+      "depth": 0,
+      "prefixes": 1,
+      "output": {
+        "status": "UNSAT",
+        "model": 0,
+        "nodes": 489472,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.10239458299999998,
+          "median_seconds": 0.102887958,
+          "samples_seconds": [
+            0.105016041,
+            0.102887958,
+            0.10239458299999998
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "c-all": {
+          "best_seconds": 0.10260791700000002,
+          "median_seconds": 0.10561216699999999,
+          "samples_seconds": [
+            0.105759208,
+            0.10561216699999999,
+            0.10260791700000002
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "bend-1": {
+          "best_seconds": 1.1712775,
+          "median_seconds": 1.1909349169999999,
+          "samples_seconds": [
+            1.1712775,
+            1.2070899579999999,
+            1.1909349169999999
+          ],
+          "peak_rss_mib": 1.5625
+        },
+        "bend-all": {
+          "best_seconds": 1.2039180829999996,
+          "median_seconds": 1.26478975,
+          "samples_seconds": [
+            1.3688669169999998,
+            1.26478975,
+            1.2039180829999996
+          ],
+          "peak_rss_mib": 1.625
+        }
+      }
+    },
+    {
+      "depth": 2,
+      "prefixes": 4,
+      "output": {
+        "status": "UNSAT",
+        "model": 0,
+        "nodes": 487424,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.09930775,
+          "median_seconds": 0.10095120799999999,
+          "samples_seconds": [
+            0.10095120799999999,
+            0.10667170800000002,
+            0.09930775
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "c-all": {
+          "best_seconds": 0.069085125,
+          "median_seconds": 0.069255,
+          "samples_seconds": [
+            0.069255,
+            0.06971229099999998,
+            0.069085125
+          ],
+          "peak_rss_mib": 1.40625
+        },
+        "bend-1": {
+          "best_seconds": 1.198163125,
+          "median_seconds": 1.2506099159999997,
+          "samples_seconds": [
+            1.198163125,
+            1.2506099159999997,
+            1.297403375
+          ],
+          "peak_rss_mib": 1.5625
+        },
+        "bend-all": {
+          "best_seconds": 0.9027253340000001,
+          "median_seconds": 0.9277552920000001,
+          "samples_seconds": [
+            0.9277552920000001,
+            0.9027253340000001,
+            0.942056
+          ],
+          "peak_rss_mib": 19.703125
+        }
+      }
+    },
+    {
+      "depth": 4,
+      "prefixes": 16,
+      "output": {
+        "status": "UNSAT",
+        "model": 0,
+        "nodes": 503808,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.10360633300000001,
+          "median_seconds": 0.10360841700000001,
+          "samples_seconds": [
+            0.104271792,
+            0.10360633300000001,
+            0.10360841700000001
+          ],
+          "peak_rss_mib": 1.328125
+        },
+        "c-all": {
+          "best_seconds": 0.068929958,
+          "median_seconds": 0.07015120799999999,
+          "samples_seconds": [
+            0.07053475000000001,
+            0.068929958,
+            0.07015120799999999
+          ],
+          "peak_rss_mib": 1.53125
+        },
+        "bend-1": {
+          "best_seconds": 1.1616328340000002,
+          "median_seconds": 1.163122333,
+          "samples_seconds": [
+            1.1696319590000002,
+            1.1616328340000002,
+            1.163122333
+          ],
+          "peak_rss_mib": 1.5625
+        },
+        "bend-all": {
+          "best_seconds": 0.627080042,
+          "median_seconds": 0.6291169999999999,
+          "samples_seconds": [
+            0.6291169999999999,
+            0.631408708,
+            0.627080042
+          ],
+          "peak_rss_mib": 38.578125
+        }
+      }
+    },
+    {
+      "depth": 8,
+      "prefixes": 256,
+      "output": {
+        "status": "UNSAT",
+        "model": 0,
+        "nodes": 946176,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.109476667,
+          "median_seconds": 0.10949845799999999,
+          "samples_seconds": [
+            0.110853209,
+            0.109476667,
+            0.10949845799999999
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "c-all": {
+          "best_seconds": 0.08503737500000003,
+          "median_seconds": 0.085042708,
+          "samples_seconds": [
+            0.08673325,
+            0.085042708,
+            0.08503737500000003
+          ],
+          "peak_rss_mib": 1.5625
+        },
+        "bend-1": {
+          "best_seconds": 1.3150217080000002,
+          "median_seconds": 1.33156725,
+          "samples_seconds": [
+            1.467337917,
+            1.33156725,
+            1.3150217080000002
+          ],
+          "peak_rss_mib": 1.5625
+        },
+        "bend-all": {
+          "best_seconds": 0.5415643749999999,
+          "median_seconds": 0.5438920420000001,
+          "samples_seconds": [
+            0.5577809579999999,
+            0.5438920420000001,
+            0.5415643749999999
+          ],
+          "peak_rss_mib": 38.375
+        }
+      }
+    }
+  ]
+}
