@@ -95,6 +95,7 @@ Bend と C の定数を合わせれば出力は**ビット一致する**。一�
 | `sim/c4.bend` / `c4.c` | Connect Four の MCTS。同じ予算で「木 2^w 本 × 予算/2^w」と「木 1 本 × 予算」を対戦させ、root parallelization の質の落ち方を測る |
 | `sim/ttt.bend` | fmc と mcts が共有する三目並べ（盤面、プレイアウト、集計、対局の記録） |
 | `sim/probes/twin_leak.bend` | 共有リストを 2 つの引数に渡すとメモリが解放されない最小再現 |
+| `sim/probes/fork_cost.bend` / `fork_cost.sh` | 逐次ループの中の fork の費用の最小再現。fork する版・しない版・fork 木の版を、仕事の大きさを変えて 1 スレッドと全コアで測る |
 | `sim/check.sh` | 小さい規模で Bend と C の出力がビット一致するか（`just check-sim`） |
 | `sim/bench.sh` | C / Bend 1 core / Bend 全コアの best-of-3 と max RSS（`just bench-sim`） |
 | `sim/results.txt` | 生の計測値 |
