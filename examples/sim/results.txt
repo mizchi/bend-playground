@@ -117,3 +117,7 @@ w=1024:  plain 0.019/0.019  fork 0.019/0.816  tree 0.019/0.007
 w=4096:  plain 0.073/0.073  fork 0.073/0.829  tree 0.073/0.020
 w=16384: plain 0.287/0.287  fork 0.286/0.808  tree 0.287/0.074
 w=65536: plain 1.138/1.135  fork 1.139/1.286  tree 1.137/0.290
+
+# c4 with the leaf playouts in order (many.seq, the default), 2026-10-02, games=4
+c4       6.114s 10MB      6.296s 10MB      1.767s 10MB      (same output as the forked leaves and as C)
+# forked leaves (leaf.fork() = True): 1 thread 6.33s, 4 threads 11.75s

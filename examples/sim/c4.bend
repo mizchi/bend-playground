@@ -3,11 +3,11 @@ import ./ttt.bend as T
 # Monte Carlo search: MCTS (UCT) for Connect Four, root and leaf
 # parallelization against one tree at the same budget.
 # A player grows 2^w independent trees of k iterations each (the leaves of
-# a fork tree), plays 2^lp random playouts at every expansion (the leaves
-# of another fork tree, under the sequential descent), and plays the column
-# most visited over its trees, the lowest on a tie. One iteration is
-# mcts.bend's: expand the lowest untried column, else take the child of
-# highest UCT value, then the playouts, scores added along the path.
+# a fork tree), plays 2^lp random playouts at every expansion (in order by
+# default; forked with leaf.fork(), which is slower: see many.seq), and
+# plays the column most visited over its trees, the lowest on a tie. One
+# iteration is mcts.bend's: expand the lowest untried column, else take the
+# child of highest UCT value, then the playouts, scores added along the path.
 # Prints the summed root visits of the empty board for 2^dep() x iters() x
 # 1, then 2^games() games of each of 9 players against 1 tree x budget() x
 # 1 playout (the player is X in the even games): the control, the budget
@@ -33,6 +33,10 @@ def budget() -> U32:
 
 def games() -> Nat:
   4n
+
+# fork the leaf playouts (True) or run them in order (False, the default)
+def leaf.fork() -> Bool:
+  False{}
 
 # root visits per column
 type R7 is Data:
@@ -321,13 +325,33 @@ def Pos.st(p: Pos) -> U32:
 
 # 2^lp random playouts from pos (side t to move), playout j with seed
 # mix(s + j, 1): the leaves of a fork tree
-def many(+lp: Nat, +pos: Pos, +t: U32, +s: U32, +j: U32) -> O3:
+def many.fork(+lp: Nat, +pos: Pos, +t: U32, +s: U32, +j: U32) -> O3:
   match lp:
     case 0n:
       O3.of(playout(42n, pos, t, T.mix((s + j : U32), 1)), 1)
     case 1n+p:
-      a b = many(p, pos, t, s, j) many(p, pos, t, s, U32.add(j, U32.shln(1, p)))
+      a b = many.fork(p, pos, t, s, j) many.fork(p, pos, t, s, U32.add(j, U32.shln(1, p)))
       O3.add(a, b)
+
+# the same playouts one after another, with the same seeds and sum: a fork
+# inside the sequential descent costs a pool turn of the runtime (about
+# 200 us, probes/fork_cost.bend), so by default the games carry the
+# parallelism and the leaves run in order
+def many.seq(+lp: Nat, +pos: Pos, +t: U32, +s: U32, +j: U32) -> O3:
+  match lp:
+    case 0n:
+      O3.of(playout(42n, pos, t, T.mix((s + j : U32), 1)), 1)
+    case 1n+p:
+      a = many.seq(p, pos, t, s, j)
+      b = many.seq(p, pos, t, s, U32.add(j, U32.shln(1, p)))
+      O3.add(a, b)
+
+def many(+lp: Nat, +pos: Pos, +t: U32, +s: U32, fork: Bool) -> O3:
+  match fork:
+    case True{}:
+      many.fork(lp, pos, t, s, 0)
+    case False{}:
+      many.seq(lp, pos, t, s, 0)
 
 # the new child at column k: its playouts' outcomes c, its status st1
 def expand(k: U32, +w: U32, +n: U32, +st: U32, c0: Tr, c1: Tr, c2: Tr, c3: Tr, c4: Tr, c5: Tr, c6: Tr, +t: U32, +s: U32,
@@ -349,7 +373,7 @@ def descend(f: Nat, z: Z, pos: Pos, +t: U32, +lp: Nat, +s: U32) -> Res:
       +s1 = T.prng(s)
       # drop runs twice: a Pos this def computes cannot be matched here
       expand(k, w, n, st, c0, c1, c2, c3, c4, c5, c6, t, s1, Pos.st(drop(xl, xh, ol, oh, h, t, k)),
-        many(lp, drop(xl, xh, ol, oh, h, t, k), U32.xor(t, 1), s1, 0))
+        many(lp, drop(xl, xh, ol, oh, h, t, k), U32.xor(t, 1), s1, leaf.fork()))
     case 1n+p Z{+w, +n, +st, +k, False{}, True{}, kid, c0, c1, c2, c3, c4, c5, c6} Pos{+xl, +xh, +ol, +oh, +h, ps, pl}:
       +h1 = (h + U32.shln(1, U32.to_nat((3 * k : U32))) : U32)
       rebuild(k, w, n, st, c0, c1, c2, c3, c4, c5, c6, t,
