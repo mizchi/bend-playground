@@ -89,3 +89,6 @@ c4       6.962s 10MB      7.355s 10MB      2.009s 10MB      480 503 609 891 562 
 4 trees x 1024 vs 1 x 1024: 151 won 10 drawn 95 lost
 16 trees x 1024 vs 1 x 1024: 139 won 12 drawn 105 lost
 64 trees x 1024 vs 1 x 1024: 145 won 6 drawn 105 lost
+# c4.c variant, the wide player as one deeper tree, games=8:
+1 trees x 4096 vs 1 x 1024: 166 won 14 drawn 76 lost
+1 trees x 16384 vs 1 x 1024: 225 won 6 drawn 25 lost
