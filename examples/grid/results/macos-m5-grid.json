@@ -1,0 +1,864 @@
+{
+  "environment": {
+    "date": "2026-10-02T16:59:55+09:00",
+    "playground_commit": "c35e6271a8fa5b42cee0c403312d9fa95bd72a4e",
+    "bend_commit": "7d24b8d0235cb9781140512c0f163c48ea84a719",
+    "bend_version": "bend 2.0.34",
+    "platform": "Darwin arm64",
+    "threads": 10,
+    "compiler": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+    "c_flags": "-std=c11 -O3 -ffp-contract=off -pthread",
+    "python": "3.9.6",
+    "method": "serial median-of-3 wall clock; compilation and output rectangles excluded; CPU only",
+    "rss_unit": "MiB (helper output label MB)",
+    "c_scheduler": "pthread dynamic page queue, chunk 16; sequential layout within each page",
+    "source_state": "local Grid implementation on recorded playground commit",
+    "background": "existing UI applications running; no benchmark/build jobs launched concurrently by this run",
+    "source_sha256": {
+      "examples/grid/contract.bend": "17f865620633b026036385e9705f7b2abf21fb184b9147061bd0b9b27ee9fb3c",
+      "examples/grid/layout.bend": "c56d88f524dfb0a8890ec478f524d1f473cdea01c543f4e511a47233b6328535",
+      "examples/grid/placement.bend": "65c98a65ae8d723000f61217e595c886529605f4c0a9a59260dd0212a3391049",
+      "examples/grid/tracks.bend": "d16b5e866ee8d98f84b256e5d3e1fc5f8f08a712997c44652dbfc87a9a203c54",
+      "examples/grid/grid.h": "3cf14f78e84fbc2010086b58e787fb93b2b7f38cd1196d541bfc842dff1496a5",
+      "examples/grid/grid.c": "289f59e806a8f90111aa6e3e4e00c32819837c11922f75e6255bf3e50f272c63",
+      "scripts/grid.py": "9f905bdad6c72ba048cb82227ce137712c691fa66dd543dcfbe26f4243740f5e",
+      "scripts/grid_cases.py": "33e29e197a49750eb7483de7b04a6fe0341c8b00c445336bf79fd5a28df75459",
+      "scripts/grid_bench.py": "9d78d90e330b3aaa380809f9816ed3510734189f73e440f9b63429c87fd73923"
+    },
+    "cpu": "Apple M5",
+    "memory_bytes": 34359738368,
+    "os_version": "26.6.2",
+    "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+    "bend_scheduler": "fork across sibling subtrees and independent pages; immutable input tree shared",
+    "measurement_scope": "normalize/build excluded; placement, track sizing, recursive boxes, allocation, output checksum included",
+    "generated_sha256": {
+      "build/grid/bench/dashboard-latency-0-1/run.bend": "2b9921f701028f7906a7393e47a96efe4b0b2ec14c1a592761f1b06d08854fe6",
+      "build/grid/bench/dashboard-latency-0-1/run.c": "d75c5ecb6c73712b24de6773803f9f3e86818de8e59a784135008bb412cfdb18",
+      "build/grid/bench/dashboard-latency-0-2048/run.bend": "3dbe3aae7d4cad7421315412ec0375d7ed9dc8e485c646cc96353f6f7ff65d80",
+      "build/grid/bench/dashboard-latency-0-2048/run.c": "db9c17a69aea81bb7caceba363a4d7ad88104f94997e94dfc6cfa167c5aa1de1",
+      "build/grid/bench/dashboard-latency-0-16384/run.bend": "1625e2ce9f3e502c53387a232b4edae6781364aa59d301d4726b69ca3f9936a0",
+      "build/grid/bench/dashboard-latency-0-16384/run.c": "1c1e73aaf5604552aa4f6bcab4ef153c7d3da3f0e071ff0df0c1b5158ae07937",
+      "build/grid/bench/dashboard-batch-13-1/run.bend": "45af8975752a249d4a4aaf3ff70dc16ffbf846299006d76364ac83e9b17956d4",
+      "build/grid/bench/dashboard-batch-13-1/run.c": "00cbb53649d8f180acd91504d5f6630eb7f0c0dce18a20f2bcef4a8fa588fa31",
+      "build/grid/bench/dashboard-batch-16-1/run.bend": "b475378d8c944be5f1588790558e4e473835a6a09f82fac3d96b0d2b5d41b86d",
+      "build/grid/bench/dashboard-batch-16-1/run.c": "a91224522a58166fbd6a6cf2b37b0f76c1b1868d5c3e3aaae27e8ac2962b5b76",
+      "build/grid/bench/catalog-latency-0-1/run.bend": "f3ae859e65f34d377f44fc31d99cb0866ddde6a8aa2e83622bd8621a767d6cc4",
+      "build/grid/bench/catalog-latency-0-1/run.c": "57d6f98e0293666ac0e3479bd6eb259b0a7ed03b6e51b3771b86876c835c4ffe",
+      "build/grid/bench/catalog-latency-0-2048/run.bend": "3a837b31238df307d841e982ea070a1656ca588fbfb5ec2bf496ea5f94769143",
+      "build/grid/bench/catalog-latency-0-2048/run.c": "dd1c18b5efa085d10e5d78a4d0743f9239ae1c0e2d2e84379536edcc9da59dc5",
+      "build/grid/bench/catalog-latency-0-16384/run.bend": "68f88d7dda6eed321b5d9488cf91c1ae8c6d0be2107dd9a596930eabc1788b39",
+      "build/grid/bench/catalog-latency-0-16384/run.c": "bf77377e6eedb222eb2a424f8ad2ea166fd019e480881e52b839a2fb66f7f1c9",
+      "build/grid/bench/catalog-batch-13-1/run.bend": "8adfc12b6b082b758c7de8d7599970381c7660d33e91706eabda2bb6167a5dfd",
+      "build/grid/bench/catalog-batch-13-1/run.c": "fe2e45919e676477f8360bc11496e77a3cf670e3d2eece17b188d0b9612886d2",
+      "build/grid/bench/catalog-batch-16-1/run.bend": "acfef810ff3eab2bd0d9a7b4b18d42c0beac874409acc964d7d51bc74dcd8522",
+      "build/grid/bench/catalog-batch-16-1/run.c": "593791c702f166f1bc13e8b2ba24ea17b829400bdeb41e785599996f01fc6b20",
+      "build/grid/bench/nested-latency-0-1/run.bend": "29162ae572e6fba167137a39dcf4e4eaac04301de6e91c5a251b4962fcb097b2",
+      "build/grid/bench/nested-latency-0-1/run.c": "dee951a427bee447e23788b1c1337e1d1777c4ef9dcb42e8def024542fd9315c",
+      "build/grid/bench/nested-latency-0-2048/run.bend": "a0e4354fb0899ba85e5353c6424b8083755022f29ee360803d6a365148bb0025",
+      "build/grid/bench/nested-latency-0-2048/run.c": "bab6b76bf1b16a544cbde393a097436f2ed397111e98f945047256664a688d0f",
+      "build/grid/bench/nested-latency-0-16384/run.bend": "d4abcf3d52876639a39ba58cec9028cc65562cbe3060c1aff3aa2354c8b03cee",
+      "build/grid/bench/nested-latency-0-16384/run.c": "4bf8c101825977ebda5da8e77cc4e3a8110f64ed1eb64887d094219c78e9b4b9",
+      "build/grid/bench/nested-batch-13-1/run.bend": "54ca2f19e127deeb908b60a28041de38e0144059b2ab1e32cc3a7b927c84825e",
+      "build/grid/bench/nested-batch-13-1/run.c": "c541e2090f0873be37a555475e97fc07a077b9c8ec6ba04926fc338572470cfa",
+      "build/grid/bench/nested-batch-16-1/run.bend": "122160eaa2066bfbf3b8ab8a1a7e97bfc28720916dfd36373256ddda2e4704bf",
+      "build/grid/bench/nested-batch-16-1/run.c": "621ad756c4cbee9e0b7067201c7c49696c66ef77f00a72edc9bc01fe68274ac7"
+    },
+    "thermal_after": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded"
+  },
+  "cases": [
+    {
+      "workload": "dashboard",
+      "mode": "latency",
+      "nodes_per_page": 99,
+      "batch_depth": 0,
+      "repetitions": 1,
+      "layouts": 1,
+      "result": {
+        "checksum": 317295744,
+        "nodes": 99,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.001933375000000001,
+          "median_seconds": 0.0019418330000000004,
+          "samples_seconds": [
+            0.0022629169999999997,
+            0.0019418330000000004,
+            0.001933375000000001
+          ],
+          "peak_rss_mib": 1.359375
+        },
+        "bend-1": {
+          "best_seconds": 0.002133208000000001,
+          "median_seconds": 0.002152082999999999,
+          "samples_seconds": [
+            0.0024245840000000005,
+            0.002152082999999999,
+            0.002133208000000001
+          ],
+          "peak_rss_mib": 1.71875
+        },
+        "bend-10": {
+          "best_seconds": 0.0024263330000000027,
+          "median_seconds": 0.002446333000000002,
+          "samples_seconds": [
+            0.002703708000000001,
+            0.0024263330000000027,
+            0.002446333000000002
+          ],
+          "peak_rss_mib": 2.453125
+        }
+      }
+    },
+    {
+      "workload": "dashboard",
+      "mode": "latency",
+      "nodes_per_page": 99,
+      "batch_depth": 0,
+      "repetitions": 2048,
+      "layouts": 2048,
+      "result": {
+        "checksum": 2825805052,
+        "nodes": 202752,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.0043225,
+          "median_seconds": 0.004348000000000001,
+          "samples_seconds": [
+            0.0043225,
+            0.004348000000000001,
+            0.0045998340000000006
+          ],
+          "peak_rss_mib": 1.359375
+        },
+        "bend-1": {
+          "best_seconds": 0.055772375,
+          "median_seconds": 0.055955000000000005,
+          "samples_seconds": [
+            0.055772375,
+            0.055955000000000005,
+            0.05616212499999998
+          ],
+          "peak_rss_mib": 1.703125
+        },
+        "bend-10": {
+          "best_seconds": 0.267864625,
+          "median_seconds": 0.27630699999999997,
+          "samples_seconds": [
+            0.29398383299999997,
+            0.267864625,
+            0.27630699999999997
+          ],
+          "peak_rss_mib": 26.203125
+        }
+      }
+    },
+    {
+      "workload": "dashboard",
+      "mode": "latency",
+      "nodes_per_page": 99,
+      "batch_depth": 0,
+      "repetitions": 16384,
+      "layouts": 16384,
+      "result": {
+        "checksum": 1482560080,
+        "nodes": 1622016,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.020032542,
+          "median_seconds": 0.020351375000000005,
+          "samples_seconds": [
+            0.020032542,
+            0.020441874999999998,
+            0.020351375000000005
+          ],
+          "peak_rss_mib": 1.375
+        },
+        "bend-1": {
+          "best_seconds": 0.44585908300000004,
+          "median_seconds": 0.46613033400000004,
+          "samples_seconds": [
+            0.46741683300000003,
+            0.44585908300000004,
+            0.46613033400000004
+          ],
+          "peak_rss_mib": 1.71875
+        },
+        "bend-10": {
+          "best_seconds": 2.235568458,
+          "median_seconds": 2.2848014580000005,
+          "samples_seconds": [
+            2.235568458,
+            2.5075370830000003,
+            2.2848014580000005
+          ],
+          "peak_rss_mib": 32.671875
+        }
+      }
+    },
+    {
+      "workload": "dashboard",
+      "mode": "batch",
+      "nodes_per_page": 99,
+      "batch_depth": 13,
+      "repetitions": 1,
+      "layouts": 8192,
+      "result": {
+        "checksum": 2788490504,
+        "nodes": 811008,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.011402000000000002,
+          "median_seconds": 0.011873584,
+          "samples_seconds": [
+            0.012168499999999999,
+            0.011873584,
+            0.011402000000000002
+          ],
+          "peak_rss_mib": 1.375
+        },
+        "c-10": {
+          "best_seconds": 0.003258041999999999,
+          "median_seconds": 0.003413542000000002,
+          "samples_seconds": [
+            0.0037091669999999993,
+            0.003413542000000002,
+            0.003258041999999999
+          ],
+          "peak_rss_mib": 1.890625
+        },
+        "bend-1": {
+          "best_seconds": 0.21587104199999999,
+          "median_seconds": 0.215894459,
+          "samples_seconds": [
+            0.215894459,
+            0.21587104199999999,
+            0.225277542
+          ],
+          "peak_rss_mib": 1.703125
+        },
+        "bend-10": {
+          "best_seconds": 0.041055041000000014,
+          "median_seconds": 0.044250459000000006,
+          "samples_seconds": [
+            0.046633209,
+            0.044250459000000006,
+            0.041055041000000014
+          ],
+          "peak_rss_mib": 4.734375
+        }
+      }
+    },
+    {
+      "workload": "dashboard",
+      "mode": "batch",
+      "nodes_per_page": 99,
+      "batch_depth": 16,
+      "repetitions": 1,
+      "layouts": 65536,
+      "result": {
+        "checksum": 1685616792,
+        "nodes": 6488064,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.072419333,
+          "median_seconds": 0.07274708299999999,
+          "samples_seconds": [
+            0.072419333,
+            0.07274708299999999,
+            0.072866666
+          ],
+          "peak_rss_mib": 1.375
+        },
+        "c-10": {
+          "best_seconds": 0.014716082999999998,
+          "median_seconds": 0.014718249999999995,
+          "samples_seconds": [
+            0.015570334000000002,
+            0.014718249999999995,
+            0.014716082999999998
+          ],
+          "peak_rss_mib": 1.90625
+        },
+        "bend-1": {
+          "best_seconds": 1.775767084,
+          "median_seconds": 1.8029768329999998,
+          "samples_seconds": [
+            1.775767084,
+            1.877195375,
+            1.8029768329999998
+          ],
+          "peak_rss_mib": 1.71875
+        },
+        "bend-10": {
+          "best_seconds": 0.3925015420000001,
+          "median_seconds": 0.398419875,
+          "samples_seconds": [
+            0.398419875,
+            0.431128167,
+            0.3925015420000001
+          ],
+          "peak_rss_mib": 4.71875
+        }
+      }
+    },
+    {
+      "workload": "catalog",
+      "mode": "latency",
+      "nodes_per_page": 121,
+      "batch_depth": 0,
+      "repetitions": 1,
+      "layouts": 1,
+      "result": {
+        "checksum": 867830074,
+        "nodes": 121,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.0016128329999999975,
+          "median_seconds": 0.0017624159999999993,
+          "samples_seconds": [
+            0.0020638749999999997,
+            0.0017624159999999993,
+            0.0016128329999999975
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "bend-1": {
+          "best_seconds": 0.0022974579999999988,
+          "median_seconds": 0.002531958000000001,
+          "samples_seconds": [
+            0.0027521249999999994,
+            0.002531958000000001,
+            0.0022974579999999988
+          ],
+          "peak_rss_mib": 1.734375
+        },
+        "bend-10": {
+          "best_seconds": 0.002706374999999997,
+          "median_seconds": 0.0028139579999999983,
+          "samples_seconds": [
+            0.0031987909999999994,
+            0.002706374999999997,
+            0.0028139579999999983
+          ],
+          "peak_rss_mib": 2.375
+        }
+      }
+    },
+    {
+      "workload": "catalog",
+      "mode": "latency",
+      "nodes_per_page": 121,
+      "batch_depth": 0,
+      "repetitions": 2048,
+      "layouts": 2048,
+      "result": {
+        "checksum": 2127985531,
+        "nodes": 247808,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.019435374999999998,
+          "median_seconds": 0.019642667000000003,
+          "samples_seconds": [
+            0.019435374999999998,
+            0.019642667000000003,
+            0.020124167000000005
+          ],
+          "peak_rss_mib": 1.359375
+        },
+        "bend-1": {
+          "best_seconds": 0.7018314999999999,
+          "median_seconds": 0.72314475,
+          "samples_seconds": [
+            0.7018314999999999,
+            0.72314475,
+            0.7485047500000002
+          ],
+          "peak_rss_mib": 1.734375
+        },
+        "bend-10": {
+          "best_seconds": 1.4226584579999995,
+          "median_seconds": 1.430631541,
+          "samples_seconds": [
+            1.510762041,
+            1.430631541,
+            1.4226584579999995
+          ],
+          "peak_rss_mib": 21.25
+        }
+      }
+    },
+    {
+      "workload": "catalog",
+      "mode": "latency",
+      "nodes_per_page": 121,
+      "batch_depth": 0,
+      "repetitions": 16384,
+      "layouts": 16384,
+      "result": {
+        "checksum": 391369115,
+        "nodes": 1982464,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.13144720799999998,
+          "median_seconds": 0.14847066700000003,
+          "samples_seconds": [
+            0.1506285,
+            0.14847066700000003,
+            0.13144720799999998
+          ],
+          "peak_rss_mib": 1.359375
+        },
+        "bend-1": {
+          "best_seconds": 5.323734583,
+          "median_seconds": 5.354799165999999,
+          "samples_seconds": [
+            5.499328208,
+            5.323734583,
+            5.354799165999999
+          ],
+          "peak_rss_mib": 1.734375
+        },
+        "bend-10": {
+          "best_seconds": 11.452231,
+          "median_seconds": 11.564252417,
+          "samples_seconds": [
+            11.564252417,
+            11.452231,
+            11.750798417000002
+          ],
+          "peak_rss_mib": 24.765625
+        }
+      }
+    },
+    {
+      "workload": "catalog",
+      "mode": "batch",
+      "nodes_per_page": 121,
+      "batch_depth": 13,
+      "repetitions": 1,
+      "layouts": 8192,
+      "result": {
+        "checksum": 39283816,
+        "nodes": 991232,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.068822042,
+          "median_seconds": 0.07671962499999999,
+          "samples_seconds": [
+            0.077259583,
+            0.07671962499999999,
+            0.068822042
+          ],
+          "peak_rss_mib": 1.359375
+        },
+        "c-10": {
+          "best_seconds": 0.013650249999999996,
+          "median_seconds": 0.013840749999999999,
+          "samples_seconds": [
+            0.013650249999999996,
+            0.013840749999999999,
+            0.013891374999999997
+          ],
+          "peak_rss_mib": 1.8125
+        },
+        "bend-1": {
+          "best_seconds": 2.631071,
+          "median_seconds": 2.640343875,
+          "samples_seconds": [
+            2.631071,
+            2.6979636670000002,
+            2.640343875
+          ],
+          "peak_rss_mib": 1.734375
+        },
+        "bend-10": {
+          "best_seconds": 0.505879625,
+          "median_seconds": 0.5151743750000001,
+          "samples_seconds": [
+            0.505879625,
+            0.5151743750000001,
+            0.531462208
+          ],
+          "peak_rss_mib": 4.875
+        }
+      }
+    },
+    {
+      "workload": "catalog",
+      "mode": "batch",
+      "nodes_per_page": 121,
+      "batch_depth": 16,
+      "repetitions": 1,
+      "layouts": 65536,
+      "result": {
+        "checksum": 1644006284,
+        "nodes": 7929856,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.585596625,
+          "median_seconds": 0.592255833,
+          "samples_seconds": [
+            0.604947334,
+            0.592255833,
+            0.585596625
+          ],
+          "peak_rss_mib": 1.34375
+        },
+        "c-10": {
+          "best_seconds": 0.09614233399999997,
+          "median_seconds": 0.103259834,
+          "samples_seconds": [
+            0.139454833,
+            0.09614233399999997,
+            0.103259834
+          ],
+          "peak_rss_mib": 1.796875
+        },
+        "bend-1": {
+          "best_seconds": 21.457934541999997,
+          "median_seconds": 21.585933624999996,
+          "samples_seconds": [
+            21.775553375,
+            21.457934541999997,
+            21.585933624999996
+          ],
+          "peak_rss_mib": 1.71875
+        },
+        "bend-10": {
+          "best_seconds": 4.366480709,
+          "median_seconds": 4.529231082999999,
+          "samples_seconds": [
+            4.366480709,
+            5.120575209000001,
+            4.529231082999999
+          ],
+          "peak_rss_mib": 4.859375
+        }
+      }
+    },
+    {
+      "workload": "nested",
+      "mode": "latency",
+      "nodes_per_page": 341,
+      "batch_depth": 0,
+      "repetitions": 1,
+      "layouts": 1,
+      "result": {
+        "checksum": 3071552560,
+        "nodes": 341,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.002296874999999997,
+          "median_seconds": 0.00257425,
+          "samples_seconds": [
+            0.0027449999999999974,
+            0.00257425,
+            0.002296874999999997
+          ],
+          "peak_rss_mib": 1.390625
+        },
+        "bend-1": {
+          "best_seconds": 0.002460208999999998,
+          "median_seconds": 0.0025286249999999996,
+          "samples_seconds": [
+            0.0028969159999999994,
+            0.0025286249999999996,
+            0.002460208999999998
+          ],
+          "peak_rss_mib": 1.765625
+        },
+        "bend-10": {
+          "best_seconds": 0.002268166999999998,
+          "median_seconds": 0.002433875000000002,
+          "samples_seconds": [
+            0.0030337920000000004,
+            0.002433875000000002,
+            0.002268166999999998
+          ],
+          "peak_rss_mib": 2.5
+        }
+      }
+    },
+    {
+      "workload": "nested",
+      "mode": "latency",
+      "nodes_per_page": 341,
+      "batch_depth": 0,
+      "repetitions": 2048,
+      "layouts": 2048,
+      "result": {
+        "checksum": 80562448,
+        "nodes": 698368,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.010235707999999996,
+          "median_seconds": 0.011164167000000003,
+          "samples_seconds": [
+            0.012081583000000003,
+            0.011164167000000003,
+            0.010235707999999996
+          ],
+          "peak_rss_mib": 1.390625
+        },
+        "bend-1": {
+          "best_seconds": 0.227471,
+          "median_seconds": 0.234273334,
+          "samples_seconds": [
+            0.227471,
+            0.234273334,
+            0.23449183299999998
+          ],
+          "peak_rss_mib": 1.765625
+        },
+        "bend-10": {
+          "best_seconds": 0.42765600000000004,
+          "median_seconds": 0.4311305,
+          "samples_seconds": [
+            0.4311305,
+            0.45571358400000006,
+            0.42765600000000004
+          ],
+          "peak_rss_mib": 26.171875
+        }
+      }
+    },
+    {
+      "workload": "nested",
+      "mode": "latency",
+      "nodes_per_page": 341,
+      "batch_depth": 0,
+      "repetitions": 16384,
+      "layouts": 16384,
+      "result": {
+        "checksum": 3677057728,
+        "nodes": 5586944,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.0693235,
+          "median_seconds": 0.069560958,
+          "samples_seconds": [
+            0.0693235,
+            0.069560958,
+            0.06982512499999999
+          ],
+          "peak_rss_mib": 1.390625
+        },
+        "bend-1": {
+          "best_seconds": 1.796952291,
+          "median_seconds": 1.824638417,
+          "samples_seconds": [
+            1.796952291,
+            1.9511285420000002,
+            1.824638417
+          ],
+          "peak_rss_mib": 1.75
+        },
+        "bend-10": {
+          "best_seconds": 3.3811051249999995,
+          "median_seconds": 3.431629458,
+          "samples_seconds": [
+            3.431629458,
+            3.3811051249999995,
+            3.4984143750000003
+          ],
+          "peak_rss_mib": 32.8125
+        }
+      }
+    },
+    {
+      "workload": "nested",
+      "mode": "batch",
+      "nodes_per_page": 341,
+      "batch_depth": 13,
+      "repetitions": 1,
+      "layouts": 8192,
+      "result": {
+        "checksum": 972083680,
+        "nodes": 2793472,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.035456541999999994,
+          "median_seconds": 0.035811917,
+          "samples_seconds": [
+            0.036314957999999994,
+            0.035456541999999994,
+            0.035811917
+          ],
+          "peak_rss_mib": 1.375
+        },
+        "c-10": {
+          "best_seconds": 0.007610582999999997,
+          "median_seconds": 0.007668290999999997,
+          "samples_seconds": [
+            0.008066875000000001,
+            0.007668290999999997,
+            0.007610582999999997
+          ],
+          "peak_rss_mib": 1.96875
+        },
+        "bend-1": {
+          "best_seconds": 0.896362916,
+          "median_seconds": 0.916363833,
+          "samples_seconds": [
+            0.916363833,
+            0.936271416,
+            0.896362916
+          ],
+          "peak_rss_mib": 1.75
+        },
+        "bend-10": {
+          "best_seconds": 0.162764625,
+          "median_seconds": 0.16682625,
+          "samples_seconds": [
+            0.16682625,
+            0.162764625,
+            0.17578912500000005
+          ],
+          "peak_rss_mib": 4.890625
+        }
+      }
+    },
+    {
+      "workload": "nested",
+      "mode": "batch",
+      "nodes_per_page": 341,
+      "batch_depth": 16,
+      "repetitions": 1,
+      "layouts": 65536,
+      "result": {
+        "checksum": 2258341792,
+        "nodes": 22347776,
+        "errors": 0
+      },
+      "timings": {
+        "c-1": {
+          "best_seconds": 0.282295167,
+          "median_seconds": 0.28447695900000003,
+          "samples_seconds": [
+            0.282295167,
+            0.28447695900000003,
+            0.29449804200000007
+          ],
+          "peak_rss_mib": 1.390625
+        },
+        "c-10": {
+          "best_seconds": 0.051233917000000004,
+          "median_seconds": 0.05549404199999999,
+          "samples_seconds": [
+            0.051233917000000004,
+            0.05549404199999999,
+            0.06076183299999999
+          ],
+          "peak_rss_mib": 1.984375
+        },
+        "bend-1": {
+          "best_seconds": 7.300067916,
+          "median_seconds": 7.5164909170000005,
+          "samples_seconds": [
+            7.300067916,
+            7.70360375,
+            7.5164909170000005
+          ],
+          "peak_rss_mib": 1.765625
+        },
+        "bend-10": {
+          "best_seconds": 1.6119135,
+          "median_seconds": 1.6996983329999997,
+          "samples_seconds": [
+            1.6119135,
+            1.700216375,
+            1.6996983329999997
+          ],
+          "peak_rss_mib": 4.90625
+        }
+      }
+    }
+  ],
+  "latency_fits_ns_per_layout": {
+    "dashboard": {
+      "c-1": {
+        "intercept_seconds": 0.001992762152617582,
+        "nanoseconds_per_call": 1120.9744231621148,
+        "r_squared": 0.9999685294898594
+      },
+      "bend-1": {
+        "intercept_seconds": 7.540564380068004e-05,
+        "nanoseconds_per_call": 28427.884775598002,
+        "r_squared": 0.9999242279614747
+      },
+      "bend-10": {
+        "intercept_seconds": -0.003250045485936659,
+        "nanoseconds_per_call": 139603.1534453323,
+        "r_squared": 0.9999768734715441
+      }
+    },
+    "catalog": {
+      "c-1": {
+        "intercept_seconds": 0.0015321748162264379,
+        "nanoseconds_per_call": 8966.485409391891,
+        "r_squared": 0.999991110436594
+      },
+      "bend-1": {
+        "intercept_seconds": 0.027684670676853873,
+        "nanoseconds_per_call": 325363.30830409797,
+        "r_squared": 0.9999105001092113
+      },
+      "bend-10": {
+        "intercept_seconds": -0.006117787711112932,
+        "nanoseconds_per_call": 706127.6666377335,
+        "r_squared": 0.999998019225517
+      }
+    },
+    "nested": {
+      "c-1": {
+        "intercept_seconds": 0.0026783155042450525,
+        "nanoseconds_per_call": 4083.135056000915,
+        "r_squared": 0.9999897596346429
+      },
+      "bend-1": {
+        "intercept_seconds": 0.004420918923624062,
+        "nanoseconds_per_call": 111114.71921169251,
+        "r_squared": 0.9999952547498782
+      },
+      "bend-10": {
+        "intercept_seconds": 0.002337711613008997,
+        "nanoseconds_per_call": 209308.3436315832,
+        "r_squared": 0.9999999957345723
+      }
+    }
+  },
+  "post_measurement_formatting": {
+    "file": "scripts/grid.py",
+    "measured_sha256": "9f905bdad6c72ba048cb82227ce137712c691fa66dd543dcfbe26f4243740f5e",
+    "current_sha256": "c1ac047d11f35c4bdd58a618be7272a96e0bf760f78bc266eda240891920f7eb",
+    "change": "trailing whitespace removed; generated native source and engine unchanged"
+  }
+}

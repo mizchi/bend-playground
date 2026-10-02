@@ -213,9 +213,17 @@ CPU 側は 8GiB から in-place で倍々に伸びるのに対し、**GPU はヒ
 
 ---
 
-## 5. readback は低速化しないか → **実測でゼロ**
+## 5. readback は低速化しないか → **明示的な転送は不要**
 
-質問の核心。結論から言うと **Metal では readback が存在しません。**
+Metal backend は CPU と GPU が同じヒープを共有し、**明示的な device-to-host コピーを行いません。**
+GPU の完了待ちと、CPU が結果を読む・整形する時間は別に必要です。
+
+2026-10-02 の [Grid バッチ実測](examples/grid/GPU.md) では、4,096 ページの全矩形を
+CPU の連続バッファに取り出す時間は 9〜32 MiB に対して 19〜86 ms でした。
+GPU が共有連続バッファに直接書く[追加実験](examples/grid/GPU-FLAT.md)では、
+同じページ数の全座標の直接 read・有限値検査・checksum は **0.53〜1.81 ms**。
+連続バッファにすると、出力木の走査・変換・回収の費用を省けます。
+以下の当時の wall time 比較は、結果処理まで無料だと示すものではありません。
 
 ### 仕組み
 
@@ -251,7 +259,8 @@ gpu_buf = [gpu_dev newBufferWithBytesNoCopy:CORPUS length:bytes
                                         コピーは 0 回
 ```
 
-Apple Silicon は UMA (Unified Memory Architecture) なので、**物理的に同じ DRAM**。「readback」という概念自体がない。
+Apple Silicon は UMA (Unified Memory Architecture) なので、**物理的に同じ DRAM**。
+別の VRAM からコピーする必要はありませんが、CPU 側の結果アクセスには費用が残ります。
 
 ### 実測 1: 返す構造の大きさを 16 倍にしても時間が変わらない
 
@@ -286,7 +295,8 @@ def main() -> IO(Unit):
 | 100 万ノードの木を GPU から返す | 0.090s |
 | U32 を 1 個だけ返す (畳み込みも GPU) | 0.090s |
 
-**完全に同じ。** readback は文字通りタダです。
+この粗い wall time では差を観測できませんでした。完了待ちや結果の走査・整形を
+分離した測定ではないため、これだけで readback 相当の利用コストを 0 と判断できません。
 
 ### ただし本当のコストは別にある
 
@@ -352,7 +362,7 @@ static void gpu_run(u32 f) {
 | 確保 | `newBufferWithBytesNoCopy` + `StorageModeShared` | `cuMemAllocManaged(CU_MEM_ATTACH_GLOBAL)` |
 | 物理メモリ | **ホストと同じ DRAM (UMA)** | **別の VRAM** |
 | 配置ヒント | — | `SET_PREFERRED_LOCATION = DEVICE` |
-| readback | **ゼロ。概念として存在しない** | ホストが触るとページフォルト → **PCIe 越しにページ移送** |
+| 明示的な D2H 転送 | **不要。完了待ち・CPU 結果処理は別** | ホストが触るとページフォルト → **PCIe 越しにページ移送** |
 | 前提条件 | Metal が使えること | `CONCURRENT_MANAGED_ACCESS` 必須 (無ければ GPU を使わない) |
 
 CUDA 側は corpus 全体を `SET_PREFERRED_LOCATION = DEVICE` にしているので、**GPU の計算結果をホストが読むと managed memory のページ移送が走ります**。discrete GPU では PCIe 帯域がそのままコストになる。上で測った「16 倍のデータを返しても同じ時間」は **Metal 固有の結果**で、NVIDIA では成立しません。
@@ -364,8 +374,8 @@ CUDA 側は corpus 全体を `SET_PREFERRED_LOCATION = DEVICE` にしている�
   │  結論                                                         │
   │                                                               │
   │  Metal / Apple Silicon:                                       │
-  │    readback は存在しない。UMA で物理的に同じメモリ。           │
-  │    実測でデータ量に対して完全にフラット。                      │
+  │    明示的な D2H 転送は不要。UMA で同じメモリを共有する。       │
+  │    完了待ちと CPU 側の結果の走査・整形には時間がかかる。       │
   │    Bend の設計が一番綺麗にハマるのがこの組み合わせ。            │
   │                                                               │
   │  CUDA / discrete GPU:                                         │
@@ -389,8 +399,8 @@ Bend が M4 / M4 Max でピンを取り、`CUBE_LOG = 7` / `CUBE_T = 128` / `TG_
   ✓ 各枝の仕事量が揃っている                (90ms の起動コストで負ける)
   ✓ 数百 ms 以上かかる計算                ✗ 文字列処理
                                             (連結リストなので元から遅い)
-  ✓ 結果が大きくても構わない              ✗ 深い再帰
-    (Metal なら readback タダ)              (lane あたり 2048 ワード)
+  ✓ 結果を共有ヒープで受け取れる          ✗ 深い再帰
+    (結果処理の時間は別に測る)              (lane あたり 2048 ワード)
 ```
 
 ### 評価

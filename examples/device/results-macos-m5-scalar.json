@@ -1,0 +1,324 @@
+{
+  "environment": {
+    "date": "2026-10-02T19:22:46+09:00",
+    "playground_commit": "c35e6271a8fa5b42cee0c403312d9fa95bd72a4e",
+    "bend_commit": "7d24b8d0235cb9781140512c0f163c48ea84a719",
+    "bend_version": "bend 2.0.34",
+    "platform": "Darwin arm64",
+    "threads": 10,
+    "compiler": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+    "c_flags": "-std=c11 -O3 -ffp-contract=off -pthread",
+    "python": "3.9.6",
+    "method": "serial within-process timings; same total jobs/rounds across batch depths; 2 warmups + median-of-5 by default",
+    "rss_unit": "MiB (helper output label MB)",
+    "c_scheduler": "not applicable; controls use Bend's CPU fork/join runtime",
+    "source_state": "local synchronous CPU/GPU boundary experiment",
+    "background": "existing UI applications running; no benchmark/build jobs launched concurrently by this run",
+    "source_sha256": {
+      "examples/device/kernel.bend": "60e6422174b941865ee7c1a3fdbc008087bf2d18c62600c3920a37369f35d8c0",
+      "examples/device/probe.bend": "a00d1efb4be52a0193f62429201cde17bdd7408479c7e58d66513f9d1edb4a47",
+      "examples/device/probe.c": "484576731598cc69ca62a5e19faf587c0eef081f7e479f6df2cb838be16d59df",
+      "scripts/device_bench.py": "abd304ed366b973346b146b3413a78ba9352f9a301595f2645d48ed30e7e3a89",
+      "scripts/grid_gpu.py": "b2c247584e0b3fcd34c16bebb9191eda099353ab04c770287bdfc97a1921c22a",
+      "scripts/grid.py": "c1ac047d11f35c4bdd58a618be7272a96e0bf760f78bc266eda240891920f7eb",
+      "scripts/algorithm_bench.py": "413b450b074728b249d6c542ceacff3a23509db89e700630160795d3b912cf73"
+    },
+    "cpu": "Apple M5",
+    "memory_bytes": 34359738368,
+    "os_version": "26.6.2",
+    "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+    "gpu": [
+      {
+        "model": "Apple M5",
+        "cores": "10",
+        "metal": "spdisplays_metal4"
+      }
+    ],
+    "samples": 5,
+    "warmups": 2,
+    "measurement_scope": "CPU IO next consumes one U32 and supplies the next batch offset; GPU waits per bang; excludes build/setup, native oracle and stdout; no bulk result readback",
+    "control": "Bend CPU 1/all threads runs the same program with --gpu off; native oracle checks complete aggregate",
+    "bend_flags": "-std=c11 -O3 -ffp-contract=off -pthread -x objective-c -fobjc-arc -fmodules -DBEND_METAL=1 -lm plus DEVICE_JOBS/GROUP/ROUNDS",
+    "generated_sha256": {
+      "build/device/7-0-0/run.bend": "d856daef270aa80cc2ceefdb166f82705dca48af68c4409869e92cdec7e1a39f",
+      "build/device/7-0-0/bend.c": "b87e87ba04f453a202aa552ea6e54449d8939f5a28b92de14e8c2f788c319a29"
+    },
+    "thermal_after": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded"
+  },
+  "cases": [
+    {
+      "depth": 7,
+      "batch_depth": 0,
+      "rounds": 0,
+      "jobs": 128,
+      "jobs_per_call": 1,
+      "calls": 128,
+      "timings": {
+        "cpu-1": {
+          "samples": [
+            {
+              "round": 0,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 9000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            },
+            {
+              "round": 1,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 4000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            },
+            {
+              "round": 2,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 4000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            },
+            {
+              "round": 3,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 4000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            },
+            {
+              "round": 4,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 4000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            },
+            {
+              "round": 5,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 4000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            },
+            {
+              "round": 6,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 4000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            }
+          ],
+          "median": {
+            "gpu_submit_ns": 0,
+            "gpu_wait_ns": 0,
+            "elapsed_ns": 4000,
+            "gpu_execution_ns": 0,
+            "per_call_ns": 31.25
+          }
+        },
+        "cpu-all": {
+          "samples": [
+            {
+              "round": 0,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 10000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            },
+            {
+              "round": 1,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 3000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            },
+            {
+              "round": 2,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 4000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            },
+            {
+              "round": 3,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 4000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            },
+            {
+              "round": 4,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 4000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            },
+            {
+              "round": 5,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 3000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            },
+            {
+              "round": 6,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 3000,
+              "gpu_commands": 0,
+              "gpu_execution_ns": 0,
+              "gpu_wait_ns": 0,
+              "gpu_submit_ns": 0
+            }
+          ],
+          "median": {
+            "gpu_submit_ns": 0,
+            "gpu_wait_ns": 0,
+            "elapsed_ns": 4000,
+            "gpu_execution_ns": 0,
+            "per_call_ns": 31.25
+          }
+        },
+        "gpu": {
+          "samples": [
+            {
+              "round": 0,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 383011000,
+              "gpu_commands": 128,
+              "gpu_execution_ns": 11150735,
+              "gpu_wait_ns": 381588000,
+              "gpu_submit_ns": 1139000
+            },
+            {
+              "round": 1,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 35396000,
+              "gpu_commands": 128,
+              "gpu_execution_ns": 11081271,
+              "gpu_wait_ns": 34661000,
+              "gpu_submit_ns": 513000
+            },
+            {
+              "round": 2,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 35597000,
+              "gpu_commands": 128,
+              "gpu_execution_ns": 10974893,
+              "gpu_wait_ns": 34916000,
+              "gpu_submit_ns": 487000
+            },
+            {
+              "round": 3,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 36021000,
+              "gpu_commands": 128,
+              "gpu_execution_ns": 11607563,
+              "gpu_wait_ns": 35354000,
+              "gpu_submit_ns": 464000
+            },
+            {
+              "round": 4,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 36714000,
+              "gpu_commands": 128,
+              "gpu_execution_ns": 11727603,
+              "gpu_wait_ns": 36050000,
+              "gpu_submit_ns": 478000
+            },
+            {
+              "round": 5,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 35418000,
+              "gpu_commands": 128,
+              "gpu_execution_ns": 11172470,
+              "gpu_wait_ns": 34739000,
+              "gpu_submit_ns": 489000
+            },
+            {
+              "round": 6,
+              "calls": 128,
+              "jobs": 128,
+              "checksum": 439049152,
+              "elapsed_ns": 35442000,
+              "gpu_commands": 128,
+              "gpu_execution_ns": 10984890,
+              "gpu_wait_ns": 34775000,
+              "gpu_submit_ns": 474000
+            }
+          ],
+          "median": {
+            "gpu_submit_ns": 478000,
+            "gpu_wait_ns": 34916000,
+            "elapsed_ns": 35597000,
+            "gpu_execution_ns": 11172470,
+            "per_call_ns": 278101.5625
+          }
+        }
+      }
+    }
+  ]
+}

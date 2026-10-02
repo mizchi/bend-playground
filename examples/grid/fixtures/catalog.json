@@ -1,0 +1,613 @@
+{
+  "id": "catalog",
+  "width": 1280,
+  "height": 1800,
+  "grid": {
+    "columns": "repeat(6, minmax(100px, 1fr))",
+    "gap": 12,
+    "auto_rows": "90px",
+    "dense": true
+  },
+  "children": [
+    {
+      "id": "card-0",
+      "span_column": 2,
+      "span_row": 2
+    },
+    {
+      "id": "card-1",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-2",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-3",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-4",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-5",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-6",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-7",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-8",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-9",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-10",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-11",
+      "span_column": 1,
+      "span_row": 2
+    },
+    {
+      "id": "card-12",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-13",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-14",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-15",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-16",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-17",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-18",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-19",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-20",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-21",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-22",
+      "span_column": 1,
+      "span_row": 2
+    },
+    {
+      "id": "card-23",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-24",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-25",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-26",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-27",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-28",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-29",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-30",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-31",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-32",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-33",
+      "span_column": 1,
+      "span_row": 2
+    },
+    {
+      "id": "card-34",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-35",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-36",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-37",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-38",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-39",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-40",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-41",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-42",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-43",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-44",
+      "span_column": 1,
+      "span_row": 2
+    },
+    {
+      "id": "card-45",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-46",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-47",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-48",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-49",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-50",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-51",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-52",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-53",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-54",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-55",
+      "span_column": 1,
+      "span_row": 2
+    },
+    {
+      "id": "card-56",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-57",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-58",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-59",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-60",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-61",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-62",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-63",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-64",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-65",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-66",
+      "span_column": 1,
+      "span_row": 2
+    },
+    {
+      "id": "card-67",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-68",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-69",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-70",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-71",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-72",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-73",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-74",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-75",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-76",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-77",
+      "span_column": 2,
+      "span_row": 2
+    },
+    {
+      "id": "card-78",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-79",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-80",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-81",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-82",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-83",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-84",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-85",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-86",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-87",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-88",
+      "span_column": 1,
+      "span_row": 2
+    },
+    {
+      "id": "card-89",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-90",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-91",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-92",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-93",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-94",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-95",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-96",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-97",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-98",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-99",
+      "span_column": 1,
+      "span_row": 2
+    },
+    {
+      "id": "card-100",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-101",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-102",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-103",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-104",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-105",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-106",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-107",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-108",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-109",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-110",
+      "span_column": 1,
+      "span_row": 2
+    },
+    {
+      "id": "card-111",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-112",
+      "span_column": 2,
+      "span_row": 1
+    },
+    {
+      "id": "card-113",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-114",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-115",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-116",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-117",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-118",
+      "span_column": 1,
+      "span_row": 1
+    },
+    {
+      "id": "card-119",
+      "span_column": 2,
+      "span_row": 1
+    }
+  ]
+}

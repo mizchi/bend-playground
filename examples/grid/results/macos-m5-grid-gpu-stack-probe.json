@@ -1,0 +1,21 @@
+{
+  "bend_commit": "7d24b8d0235cb9781140512c0f163c48ea84a719",
+  "original_generated_sha256": "c89ad6031b00adfc5629ba1d4665b85b1907e2db2977b01020b9f352c6e40acc",
+  "diagnostic_generated_sha256": "aea46ada2dc2711baf9e9e7fc8e17848d6bae776c54eb9a2b5c5c543e98af9e2",
+  "instrumentation": "Generated scratch C only: print whether cube_run saw a device error and its code before the existing err_post; no scheduling or stack size changes",
+  "workload": "catalog, 16384 pages, serial page traversal, 2 warmups + 5 samples",
+  "runs": [
+    {
+      "gpu": "on",
+      "returncode": 1,
+      "stderr": "grid runtime diagnostic: gpu=1 error_code=7\nbend: memory fault (machine stack overflow?)\n",
+      "partial_stdout": ""
+    },
+    {
+      "gpu": "4GB",
+      "returncode": 1,
+      "stderr": "grid runtime diagnostic: gpu=1 error_code=7\nbend: memory fault (machine stack overflow?)\n",
+      "partial_stdout": ""
+    }
+  ]
+}

@@ -1,0 +1,397 @@
+{
+  "id": "dashboard",
+  "width": 1440,
+  "height": 900,
+  "grid": {
+    "columns": "240px repeat(4, minmax(80px, 1fr))",
+    "rows": "64px repeat(3, minmax(80px, 1fr))",
+    "gap": 12
+  },
+  "children": [
+    {
+      "id": "navigation",
+      "column": 1,
+      "row": 1,
+      "span_column": 1,
+      "span_row": 4,
+      "grid": {
+        "columns": "repeat(4, minmax(0px, 1fr))",
+        "rows": "32px 1fr",
+        "gap": 8,
+        "auto_rows": "minmax(20px, 1fr)"
+      },
+      "children": [
+        {
+          "id": "navigation-0",
+          "span_column": 4
+        },
+        {
+          "id": "navigation-1"
+        },
+        {
+          "id": "navigation-2"
+        },
+        {
+          "id": "navigation-3"
+        },
+        {
+          "id": "navigation-4"
+        },
+        {
+          "id": "navigation-5"
+        },
+        {
+          "id": "navigation-6"
+        },
+        {
+          "id": "navigation-7"
+        },
+        {
+          "id": "navigation-8"
+        },
+        {
+          "id": "navigation-9"
+        },
+        {
+          "id": "navigation-10"
+        },
+        {
+          "id": "navigation-11"
+        },
+        {
+          "id": "navigation-12"
+        },
+        {
+          "id": "navigation-13"
+        },
+        {
+          "id": "navigation-14"
+        },
+        {
+          "id": "navigation-15"
+        },
+        {
+          "id": "navigation-16"
+        }
+      ]
+    },
+    {
+      "id": "toolbar",
+      "column": 2,
+      "row": 1,
+      "span_column": 4,
+      "span_row": 1,
+      "grid": {
+        "columns": "repeat(4, minmax(0px, 1fr))",
+        "rows": "32px 1fr",
+        "gap": 8,
+        "auto_rows": "minmax(20px, 1fr)"
+      },
+      "children": [
+        {
+          "id": "toolbar-0",
+          "span_column": 4
+        },
+        {
+          "id": "toolbar-1"
+        },
+        {
+          "id": "toolbar-2"
+        },
+        {
+          "id": "toolbar-3"
+        },
+        {
+          "id": "toolbar-4"
+        }
+      ]
+    },
+    {
+      "id": "chart",
+      "column": 2,
+      "row": 2,
+      "span_column": 3,
+      "span_row": 2,
+      "grid": {
+        "columns": "repeat(4, minmax(0px, 1fr))",
+        "rows": "32px 1fr",
+        "gap": 8,
+        "auto_rows": "minmax(20px, 1fr)"
+      },
+      "children": [
+        {
+          "id": "chart-0",
+          "span_column": 4
+        },
+        {
+          "id": "chart-1"
+        },
+        {
+          "id": "chart-2"
+        },
+        {
+          "id": "chart-3"
+        },
+        {
+          "id": "chart-4"
+        },
+        {
+          "id": "chart-5"
+        },
+        {
+          "id": "chart-6"
+        },
+        {
+          "id": "chart-7"
+        },
+        {
+          "id": "chart-8"
+        },
+        {
+          "id": "chart-9"
+        },
+        {
+          "id": "chart-10"
+        },
+        {
+          "id": "chart-11"
+        },
+        {
+          "id": "chart-12"
+        },
+        {
+          "id": "chart-13"
+        },
+        {
+          "id": "chart-14"
+        },
+        {
+          "id": "chart-15"
+        },
+        {
+          "id": "chart-16"
+        },
+        {
+          "id": "chart-17"
+        },
+        {
+          "id": "chart-18"
+        },
+        {
+          "id": "chart-19"
+        },
+        {
+          "id": "chart-20"
+        },
+        {
+          "id": "chart-21"
+        },
+        {
+          "id": "chart-22"
+        },
+        {
+          "id": "chart-23"
+        },
+        {
+          "id": "chart-24"
+        }
+      ]
+    },
+    {
+      "id": "sales",
+      "column": 5,
+      "row": 2,
+      "span_column": 1,
+      "span_row": 1,
+      "grid": {
+        "columns": "repeat(4, minmax(0px, 1fr))",
+        "rows": "32px 1fr",
+        "gap": 8,
+        "auto_rows": "minmax(20px, 1fr)"
+      },
+      "children": [
+        {
+          "id": "sales-0",
+          "span_column": 4
+        },
+        {
+          "id": "sales-1"
+        },
+        {
+          "id": "sales-2"
+        },
+        {
+          "id": "sales-3"
+        },
+        {
+          "id": "sales-4"
+        },
+        {
+          "id": "sales-5"
+        },
+        {
+          "id": "sales-6"
+        },
+        {
+          "id": "sales-7"
+        },
+        {
+          "id": "sales-8"
+        }
+      ]
+    },
+    {
+      "id": "users",
+      "column": 5,
+      "row": 3,
+      "span_column": 1,
+      "span_row": 1,
+      "grid": {
+        "columns": "repeat(4, minmax(0px, 1fr))",
+        "rows": "32px 1fr",
+        "gap": 8,
+        "auto_rows": "minmax(20px, 1fr)"
+      },
+      "children": [
+        {
+          "id": "users-0",
+          "span_column": 4
+        },
+        {
+          "id": "users-1"
+        },
+        {
+          "id": "users-2"
+        },
+        {
+          "id": "users-3"
+        },
+        {
+          "id": "users-4"
+        },
+        {
+          "id": "users-5"
+        },
+        {
+          "id": "users-6"
+        },
+        {
+          "id": "users-7"
+        },
+        {
+          "id": "users-8"
+        }
+      ]
+    },
+    {
+      "id": "activity",
+      "column": 2,
+      "row": 4,
+      "span_column": 2,
+      "span_row": 1,
+      "grid": {
+        "columns": "repeat(4, minmax(0px, 1fr))",
+        "rows": "32px 1fr",
+        "gap": 8,
+        "auto_rows": "minmax(20px, 1fr)"
+      },
+      "children": [
+        {
+          "id": "activity-0",
+          "span_column": 4
+        },
+        {
+          "id": "activity-1"
+        },
+        {
+          "id": "activity-2"
+        },
+        {
+          "id": "activity-3"
+        },
+        {
+          "id": "activity-4"
+        },
+        {
+          "id": "activity-5"
+        },
+        {
+          "id": "activity-6"
+        },
+        {
+          "id": "activity-7"
+        },
+        {
+          "id": "activity-8"
+        },
+        {
+          "id": "activity-9"
+        },
+        {
+          "id": "activity-10"
+        },
+        {
+          "id": "activity-11"
+        },
+        {
+          "id": "activity-12"
+        }
+      ]
+    },
+    {
+      "id": "tasks",
+      "column": 4,
+      "row": 4,
+      "span_column": 2,
+      "span_row": 1,
+      "grid": {
+        "columns": "repeat(4, minmax(0px, 1fr))",
+        "rows": "32px 1fr",
+        "gap": 8,
+        "auto_rows": "minmax(20px, 1fr)"
+      },
+      "children": [
+        {
+          "id": "tasks-0",
+          "span_column": 4
+        },
+        {
+          "id": "tasks-1"
+        },
+        {
+          "id": "tasks-2"
+        },
+        {
+          "id": "tasks-3"
+        },
+        {
+          "id": "tasks-4"
+        },
+        {
+          "id": "tasks-5"
+        },
+        {
+          "id": "tasks-6"
+        },
+        {
+          "id": "tasks-7"
+        },
+        {
+          "id": "tasks-8"
+        },
+        {
+          "id": "tasks-9"
+        },
+        {
+          "id": "tasks-10"
+        },
+        {
+          "id": "tasks-11"
+        },
+        {
+          "id": "tasks-12"
+        }
+      ]
+    }
+  ]
+}

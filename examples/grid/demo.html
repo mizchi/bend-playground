@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bend Grid Lab</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f2f1ed; color: #172621; font: 15px/1.5 system-ui, sans-serif; }
+  header { padding: 30px 4vw 20px; border-bottom: 1px solid #cbd2cb; }
+  h1 { margin: 0; font-size: 32px; letter-spacing: -.04em; }
+  header p { margin: 6px 0 22px; color: #52635a; }
+  .controls { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  select { background: white; border: 1px solid #b7c4b9; border-radius: 6px; padding: 8px; color: inherit; font: inherit; }
+  label { display: flex; gap: 10px; align-items: center; }
+  #status { color: #356247; font-variant-numeric: tabular-nums; }
+  main { padding: 24px 4vw; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+  main > section { min-width: 0; }
+  h2 { font-size: 16px; margin: 0 0 12px; }
+  .viewport { border: 1px solid #b7c4b9; background: #e0e6df; padding: 12px; overflow: auto; max-height: 78vh; border-radius: 10px; }
+  .holder { position: relative; }
+  .canvas { position: relative; transform-origin: top left; }
+  .tile { box-sizing: content-box; position: relative; min-width: 0; min-height: 0; margin: 0; padding: 0; border: 0; }
+  .panel { background: #214a3c; border-radius: 8px; outline: 1px solid #46745c; }
+  .leaf { background: #f8faf4; color: #263a30; border-radius: 4px; outline: 1px solid #becdbd; }
+  .caption { position: absolute; inset: 8px; overflow: hidden; white-space: nowrap; font-size: 13px; }
+  footer { padding: 0 4vw 24px; color: #52635a; font-size: 13px; }
+  @media(max-width: 850px) { main { grid-template-columns: 1fr; } }
+</style>
+<header>
+  <h1>Bend Grid Lab</h1>
+  <p>同じレイアウトを、Bend が計算した矩形とブラウザの CSS Grid で比較します。</p>
+  <div class="controls">
+    <label>レイアウト <select id="layout"><option value="0">ダッシュボード</option><option value="3">カード一覧・dense</option><option value="6">カード一覧・sparse</option><option value="9">入れ子の Grid</option></select></label>
+    <label>幅 <select id="width"><option value="0">480 px</option><option value="1" selected>1024 px</option><option value="2">1440 px</option></select></label>
+    <span id="status"></span>
+  </div>
+</header>
+<main>
+  <section><h2>Bend の計算結果</h2><div class="viewport"><div class="holder"><div id="native" class="canvas"></div></div></div></section>
+  <section><h2>ブラウザの CSS Grid</h2><div class="viewport"><div class="holder"><div id="browser" class="canvas"></div></div></div></section>
+</main>
+<footer>表示はペイン幅に合わせて縮小しています。Bend の矩形は幅ごとにネイティブ実行して生成したものです。</footer>
+<script>
+const cases = __GRID_CASES__;
+const native = document.querySelector('#native');
+const browser = document.querySelector('#browser');
+function caption(el, name) {
+  const hash = [...name].reduce((value, char) => (value * 31 + char.charCodeAt(0)) >>> 0, 0);
+  el.style.background = ['#f8faf4', '#d9eac5', '#f5e2ba'][hash % 3];
+  const span = document.createElement('span'); span.className = 'caption'; span.textContent = name; el.append(span);
+}
+function render() {
+  const row = cases[Number(document.querySelector('#layout').value) + Number(document.querySelector('#width').value)];
+  const input = row.input;
+  native.replaceChildren(); browser.replaceChildren();
+  for (const el of [native, browser]) { el.style.width = `${input.width}px`; el.style.height = `${input.height}px`; }
+  const nodes = new Map();
+  function mount(node, parent, root = false) {
+    nodes.set(node.id, node);
+    const el = document.createElement('div'); el.dataset.id = node.id;
+    el.className = `tile ${node.grid ? 'panel' : 'leaf'}`;
+    if (root) { el.style.width = `${input.width}px`; el.style.height = `${input.height}px`; }
+    el.style.gridColumn = node.column ? `${node.column} / span ${node.span_column ?? 1}` : `span ${node.span_column ?? 1}`;
+    el.style.gridRow = node.row ? `${node.row} / span ${node.span_row ?? 1}` : `span ${node.span_row ?? 1}`;
+    if (node.grid) {
+      const g = node.grid;
+      Object.assign(el.style, { display: 'grid', gridTemplateColumns: g.columns ?? '1fr', gridTemplateRows: g.rows ?? '',
+        gridAutoColumns: g.auto_columns ?? '0px', gridAutoRows: g.auto_rows ?? '64px',
+        columnGap: `${g.column_gap ?? g.gap ?? 0}px`, rowGap: `${g.row_gap ?? g.gap ?? 0}px`, gridAutoFlow: g.dense ? 'row dense' : 'row' });
+    } else caption(el, node.id);
+    parent.append(el);
+    for (const child of node.children ?? []) mount(child, el);
+  }
+  mount(input, browser, true);
+  for (const [id, [x, y, w, h]] of Object.entries(row.bend.boxes)) {
+    const el = document.createElement('div'); el.className = `tile ${nodes.get(id).grid ? 'panel' : 'leaf'}`;
+    Object.assign(el.style, { position: 'absolute', left: `${x}px`, top: `${y}px`, width: `${w}px`, height: `${h}px` });
+    if (!nodes.get(id).grid) caption(el, id);
+    native.append(el);
+  }
+  let error = 0;
+  browser.style.transform = 'none';
+  const origin = browser.getBoundingClientRect();
+  for (const el of browser.querySelectorAll('[data-id]')) {
+    const r = el.getBoundingClientRect();
+    const actual = [r.x - origin.x, r.y - origin.y, r.width, r.height];
+    const target = row.bend.boxes[el.dataset.id];
+    error = Math.max(error, ...actual.map((value, i) => Math.abs(value - target[i])));
+  }
+  document.querySelector('#status').textContent = `${nodes.size} 要素 · 最大差 ${error.toFixed(3)} px`;
+  for (const canvas of [native, browser]) {
+    const scale = Math.min(1, (canvas.closest('.viewport').clientWidth - 24) / input.width);
+    canvas.style.transform = `scale(${scale})`;
+    canvas.parentElement.style.height = `${input.height * scale}px`;
+  }
+}
+document.querySelector('#layout').addEventListener('change', render);
+document.querySelector('#width').addEventListener('change', render);
+window.addEventListener('resize', render);
+render();
+</script>
+</html>

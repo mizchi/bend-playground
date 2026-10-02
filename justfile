@@ -19,6 +19,94 @@ test:
     python3 tests/algorithms.py
     python3 tests/sat.py
     python3 tests/ffi.py
+    python3 tests/grid.py
+
+# Lay out a supported CSS Grid JSON page with the Bend or C native engine.
+grid +args:
+    python3 scripts/grid.py "$@"
+
+# Generate a standalone Bend/browser layout comparison viewer.
+grid-demo:
+    python3 scripts/grid_demo.py
+
+# Install the pinned browser oracle dependencies and Chromium/Firefox.
+setup-grid-browser:
+    pnpm --dir examples/grid/browser install --frozen-lockfile
+    pnpm --dir examples/grid/browser exec playwright install chromium firefox
+
+# Verify Grid contracts and native correctness, then compare to real browsers.
+check-grid:
+    python3 tests/grid.py
+    python3 scripts/check_grid.py
+    pnpm --dir examples/grid/browser test
+
+# Measure page relayout latency and independent page throughput (serial timings).
+bench-grid *args="":
+    python3 scripts/grid_bench.py {{args}}
+
+# Verify full CPU/Metal rectangle handoffs and reject GPU fallback.
+check-grid-gpu:
+    python3 tests/grid_gpu.py
+
+# Verify direct shared-buffer coordinates and CPU read/copy checksums.
+check-grid-gpu-flat:
+    python3 tests/grid_gpu_flat.py
+
+# Measure independent page batches and full rectangle materialization on Metal.
+bench-grid-gpu *args="":
+    python3 scripts/grid_gpu.py {{args}}
+
+# Compare output Trees with direct packed buffers; measure read and memcpy.
+bench-grid-gpu-flat *args="":
+    python3 scripts/grid_gpu_flat.py {{args}}
+
+# Verify fixed-work CPU/Metal task-boundary checksums and real dispatch.
+check-device:
+    python3 tests/device_bench.py
+
+# Measure CPU/GPU handoffs for scalar and grouped independent jobs.
+bench-device *args="":
+    python3 scripts/device_bench.py {{args}}
+
+# Draw Bend Grid or procedural pixels in a native GPUI/Metal window (macOS).
+gpui *args="grid":
+    python3 scripts/gpui.py {{args}}
+
+# Verify C/Rust ABI and CPU/GPU output against independent NV12 pixel oracles.
+check-gpui:
+    CARGO_TARGET_DIR="$PWD/build/gpui/target" MACOSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET:-15.0}" cargo test --locked --manifest-path examples/gpui/Cargo.toml
+    python3 tests/gpui.py
+
+# Open actual GPUI windows, verify all output pixels, and close automatically.
+check-gpui-window:
+    python3 scripts/gpui.py grid --gpu off --frames 3 --verify
+    python3 scripts/gpui.py shader --gpu on --frames 3 --verify
+
+# Measure fixed-size frame preparation; excludes display/presentation latency.
+bench-gpui *args="":
+    python3 scripts/gpui_bench.py {{args}}
+
+# Simulate persistent particles and draw their shared buffer through GPUI.
+particles *args="":
+    python3 scripts/particles.py {{args}}
+
+# Compare every state field to independent C/Python float32 oracles.
+check-particles:
+    python3 tests/particles.py
+
+# Exercise real GPUI windows for each particle backend, then close them.
+check-particles-window:
+    python3 scripts/particles.py --backend bend-cpu --count 10000 --frames 3 --verify
+    python3 scripts/particles.py --backend bend-gpu --count 100000 --noise-rounds 64 --frames 3 --verify
+    python3 scripts/particles.py --backend metal --count 100000 --noise-rounds 64 --frames 3 --verify
+
+# Serial Bend CPU/Bend GPU/native Metal update and rendering measurements.
+bench-particles *args="":
+    python3 scripts/particles_bench.py {{args}}
+
+# Compare callback and flat Bend code with the same compiler and grain.
+bench-particles-code *args="":
+    python3 scripts/particles_bench.py --variant callback --variant flat {{args}}
 
 # Verify native FFI and its pure controls against an independent scalar oracle.
 check-ffi:

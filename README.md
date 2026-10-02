@@ -38,7 +38,7 @@ just bend examples/mc.bend -o build/mc
 （意図した型エラー4本を含む）、FWHT の involution、`@unsafe` な偽の証明が検査に落ちること、
 物理・モンテカルロの7本が C twin とビット一致すること、
 N-Queens・素因数分解・AST 変換・DPLL SAT が C の逐次・並列版と独立オラクルに一致すること、
-C FFI とその比較用ループが同じ結果になることを検証します
+C FFI とその比較用ループが同じ結果になること、CSS Grid サブセットの配置・サイズ・容量エラーを検証します
 （C コンパイラが必要、GPU は不要）。
 生成バイナリや作業ファイルは Git 管理から除外しています。
 
@@ -54,6 +54,7 @@ C FFI とその比較用ループが同じ結果になることを検証しま�
 | [02-affine-types.md](02-affine-types.md) | アフィン型とは何か。線形型・Rust との関係 |
 | [03-bend-wall.md](03-bend-wall.md) | Bend の賭け: アフィン性が宇宙階層を置き換える |
 | [04-gpu-execution.md](04-gpu-execution.md) | GPU 実行の制約とメリット、表現力、readback 実測 |
+| [PERFORMANCE.md](PERFORMANCE.md) | FFI・CPU/GPU 往復の費用、タスク分割、readback を省く描画経路の設計メモ |
 | [05-gpu-algorithm-fit.md](05-gpu-algorithm-fit.md) | どんなアルゴリズムが GPU に向くか、対照実験4本 |
 | [06-writing-bend.md](06-writing-bend.md) | Bend で何が書けて何が書けないか。壁5つと抜け道1つ、probe 9 本。03 の賭けの実行側の採点 |
 | [07-bend-intro.md](07-bend-intro.md) | Bend を知らない人向けの紹介記事。サンプル 13 本は型検査と実行を確認済み |
@@ -63,6 +64,10 @@ C FFI とその比較用ループが同じ結果になることを検証しま�
 | [examples/sim/](examples/sim/) | 08 の実験ソース（Galton board / 焼きなまし / 衝突する球）と C twin、生の計測値 |
 | [examples/algorithms/](examples/algorithms/README.md) | 適性の候補16項目と、N-Queens / Pollard ρ / AST 変換 / DPLL SAT の Mac CPU 実測。C の逐次・並列版とも比較 |
 | [examples/ffi/](examples/ffi/README.md) | C FFI の1呼出し当たりの追加時間と、処理をまとめた場合の比較 |
+| [examples/device/](examples/device/README.md) | CPU/GPU の同期往復と、同じ総計算量をまとめた場合の比較 |
+| [examples/gpui/](examples/gpui/README.md) | Bend → GPUI のmacOS描画バインディング。共有配列からMetal描画・NV12 surfaceへ接続し、CPUで画像・座標を読み出さない |
+| [examples/particles/](examples/particles/README.md) | 永続バッファの粒子シミュレーションとGPUI描画。Bend CPU / Bend GPU / 手書きMetalを比較し、[コード改善と本体の改善候補](examples/particles/OPTIMIZATION.md)を分けて記録 |
+| [examples/grid/](examples/grid/README.md) | CSS Grid の実用サブセット。Bend / C 実装、ブラウザ照合、CPU / Metal バッチ比較、出力木と共有連続バッファの読み取り時間 |
 
 ## 30 秒サマリ
 

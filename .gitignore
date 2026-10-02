@@ -5,6 +5,8 @@
 *.dSYM/
 __pycache__/
 /build/
+/examples/grid/browser/node_modules/
+/examples/gpui/target/
 /examples/ds/*/bin/*
 !/examples/ds/*/bin/*.bend
 /examples/ds/path/.check/
