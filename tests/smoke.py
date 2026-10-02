@@ -85,7 +85,15 @@ class PlaygroundSmokeTest(unittest.TestCase):
                 cwd=directory, env=environ, text=True, capture_output=True, timeout=120,
             )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertIn("PASS: 3 / 3", result.stdout)
+        self.assertIn("PASS: 7 / 7", result.stdout)
+
+    def test_generated_balls_flat_is_current(self):
+        result = subprocess.run(
+            ["python3", str(ROOT / "examples/sim/gen_balls_flat.py")],
+            text=True, capture_output=True, timeout=60,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout, (ROOT / "examples/sim/balls_flat.bend").read_text())
 
 
 if __name__ == "__main__":
