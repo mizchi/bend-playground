@@ -1,14 +1,14 @@
-// C twin of c4.bend: MCTS (UCT) for Connect Four, root parallelization
-// against one deep tree at the same budget.
-// A player grows 2^d independent trees of k iterations each and plays the
-// column most visited over all of them (the lowest on a tie); one iteration
-// is mcts.c's (expand the lowest untried column, else the child of highest
-// UCT value, one random playout, scores added along the path). Prints the
-// summed root visits of the empty board for 2^DEP x ITERS, then, for each
-// width 2^w in WIDTHS, 2^GAMES games of 2^w trees x BUDGET/2^w iterations
-// against 1 tree x BUDGET (colours alternate). Same arithmetic as the Bend
-// source, so the output matches it.
-// Build: cc -std=c11 -O3 -ffp-contract=off -DGAMES=6 c4.c -lm
+// C twin of c4.bend: MCTS (UCT) for Connect Four, root and leaf
+// parallelization against one tree at the same budget.
+// A player grows 2^w independent trees of k iterations each, plays 2^lp
+// random playouts at every expansion, and plays the column most visited
+// over its trees (the lowest on a tie); one iteration is mcts.c's (expand
+// the lowest untried column, else the child of highest UCT value, then the
+// playouts, scores added along the path). Prints the summed root visits of
+// the empty board for 2^DEP x ITERS x 1, then 2^GAMES games of each player
+// in MATCHES against 1 tree x BUDGET x 1 playout (colours alternate). Same
+// arithmetic as the Bend source, so the output matches it.
+// Build: cc -std=c11 -O3 -ffp-contract=off -DGAMES=4 c4.c -lm
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -24,7 +24,7 @@
 #define BUDGET 1024  // iterations per move in the matches
 #endif
 #ifndef GAMES
-#define GAMES 6      // 2^GAMES games per match
+#define GAMES 4      // 2^GAMES games per match
 #endif
 
 // a board: stones of each side in two words, rows 0-3 (bits r*7+c) and
@@ -119,7 +119,6 @@ static uint32_t playout(Board b, uint32_t t, uint32_t s) {
   return st;
 }
 
-static uint32_t score(uint32_t t, uint32_t st) { return t == 0 ? 2 - st : st; }
 
 typedef struct Node { uint32_t w, n, st; struct Node *kid[7]; } Node;
 
@@ -153,57 +152,81 @@ static uint32_t choose(const Node *a, uint32_t h) {
   return e != 7 ? e | 16 : b;
 }
 
+// the outcomes of 2^lp playouts: X wins, draws, and how many in all
+typedef struct { uint32_t x, d, m; } Counts;
+
+static Counts counts_of(uint32_t st, uint32_t m) {
+  Counts c = { st == 0 ? m : 0, st == 1 ? m : 0, m };
+  return c;
+}
+
+// the summed score of side t over the outcomes: win 2, draw 1, loss 0
+static uint32_t score_sum(uint32_t t, Counts c) {
+  return t == 0 ? 2 * c.x + c.d : 2 * (c.m - c.x - c.d) + c.d;
+}
+
 // one iteration below node a, whose position is b with side t to move and
-// status a->st; returns the playout status
-static uint32_t descend(Node *a, Board b, uint32_t t, uint32_t *s) {
-  uint32_t st = a->st;
-  if (st == ONGOING) {
+// status a->st: an expansion plays 2^lp playouts from the new node, playout
+// j with seed mix(s + j, 1); a node at the end of the game counts 2^lp of
+// its own outcome. Returns the outcomes added along the path.
+static Counts descend(Node *a, Board b, uint32_t t, uint32_t lp, uint32_t *s) {
+  uint32_t m = 1u << lp;
+  Counts c = counts_of(a->st, m);
+  if (a->st == ONGOING) {
     uint32_t ch = choose(a, b.h), k = ch & 15;
     uint32_t st1 = drop(&b, t, k);
     if (ch & 16) {
       *s = prng(*s);
-      st = st1 == ONGOING ? playout(b, t ^ 1, mix(*s, 1)) : st1;
-      a->kid[k] = node_new(score(t, st), 1, st1);
+      c.x = c.d = 0;
+      for (uint32_t j = 0; j < m; j++) {
+        uint32_t st = st1 == ONGOING ? playout(b, t ^ 1, mix(*s + j, 1)) : st1;
+        c.x += st == 0;
+        c.d += st == 1;
+      }
+      a->kid[k] = node_new(score_sum(t, c), m, st1);
     } else {
-      st = descend(a->kid[k], b, t ^ 1, s);
+      c = descend(a->kid[k], b, t ^ 1, lp, s);
     }
   }
-  a->w += score(t ^ 1, st);
-  a->n += 1;
-  return st;
+  a->w += score_sum(t ^ 1, c);
+  a->n += c.m;
+  return c;
 }
 
-// the summed root visits of 2^d trees of k iterations; tree r uses seed
+// a player: 2^w trees of k iterations, 2^lp playouts per expansion
+typedef struct { uint32_t w, k, lp; } Player;
+
+// the summed root visits of the player's trees; tree r uses seed
 // mix(salt + r, 77)
-static void visits(Board b, uint32_t t, uint32_t d, uint32_t k, uint32_t salt, uint32_t v[7]) {
+static void visits(Board b, uint32_t t, Player p, uint32_t salt, uint32_t v[7]) {
   for (int c = 0; c < 7; c++) v[c] = 0;
-  for (uint32_t r = 0; r < (1u << d); r++) {
+  for (uint32_t r = 0; r < (1u << p.w); r++) {
     Node *root = node_new(0, 0, ONGOING);
     uint32_t s = mix(salt + r, 77);
-    for (uint32_t i = 0; i < k; i++) descend(root, b, t, &s);
+    for (uint32_t i = 0; i < p.k; i++) descend(root, b, t, p.lp, &s);
     for (int c = 0; c < 7; c++) v[c] += root->kid[c] ? root->kid[c]->n : 0;
     node_free(root);
   }
 }
 
-static uint32_t best(Board b, uint32_t t, uint32_t d, uint32_t k, uint32_t salt) {
+static uint32_t best(Board b, uint32_t t, Player p, uint32_t salt) {
   uint32_t v[7], open = open_cols(b.h);
-  visits(b, t, d, k, salt, v);
+  visits(b, t, p, salt, v);
   uint32_t c = 7, cv = 0;
   for (uint32_t i = 0; i < 7; i++)
     if ((open >> i & 1) && (c == 7 || v[i] > cv)) { c = i; cv = v[i]; }
   return c;
 }
 
-// game g between the wide player (2^w trees x BUDGET >> w) and the deep one
-// (1 tree x BUDGET); the wide player is X in the even games
-static uint32_t game(uint32_t g, uint32_t w) {
+// game g between player p and the reference (1 tree x BUDGET x 1 playout);
+// p is X in the even games
+static uint32_t game(uint32_t g, Player p) {
+  Player ref = {0, BUDGET, 0};
   Board b = {0, 0, 0, 0, 0};
   uint32_t t = 0, st = ONGOING, me = g & 1, turn = 0;
   while (st == ONGOING) {
     uint32_t salt = g * 64 + turn * 4096 + t * 65536;
-    uint32_t c = t == me ? best(b, t, w, BUDGET >> w, salt) : best(b, t, 0, BUDGET, salt);
-    st = drop(&b, t, c);
+    st = drop(&b, t, best(b, t, t == me ? p : ref, salt));
     t ^= 1;
     turn++;
   }
@@ -213,18 +236,26 @@ static uint32_t game(uint32_t g, uint32_t w) {
 int main(void) {
   uint32_t v[7];
   Board b0 = {0, 0, 0, 0, 0};
-  visits(b0, 0, DEP, ITERS, 0, v);
+  Player first = {DEP, ITERS, 0};
+  visits(b0, 0, first, 0, v);
   for (int c = 0; c < 7; c++) printf(c ? " %u" : "%u", v[c]);
   printf("\n");
-  static const uint32_t WIDTHS[] = {0, 2, 4, 6};
-  for (int i = 0; i < 4; i++) {
-    uint32_t w = WIDTHS[i], res[3] = {0, 0, 0};  // wide player won, drew, lost
+  // the control, the budget split over trees, the budget split over leaf
+  // playouts, and leaf playouts as extra compute
+  const Player MATCHES[] = {
+    {0, BUDGET, 0}, {2, BUDGET >> 2, 0}, {4, BUDGET >> 4, 0}, {6, BUDGET >> 6, 0},
+    {0, BUDGET >> 2, 2}, {0, BUDGET >> 4, 4}, {0, BUDGET >> 6, 6},
+    {0, BUDGET, 2}, {0, BUDGET, 4},
+  };
+  for (unsigned i = 0; i < sizeof MATCHES / sizeof *MATCHES; i++) {
+    Player p = MATCHES[i];
+    uint32_t res[3] = {0, 0, 0};  // p won, drew, lost
     for (uint32_t g = 0; g < (1u << GAMES); g++) {
-      uint32_t st = game(g, w), me = g & 1;
+      uint32_t st = game(g, p), me = g & 1;
       res[st == 1 ? 1 : (st == 0) == (me == 0) ? 0 : 2] += 1;
     }
-    printf("%u trees x %u vs 1 x %u: %u won %u drawn %u lost\n",
-           1u << w, BUDGET >> w, BUDGET, res[0], res[1], res[2]);
+    printf("%u trees x %u x %u playouts vs 1 x %u x 1: %u won %u drawn %u lost\n",
+           1u << p.w, p.k, 1u << p.lp, BUDGET, res[0], res[1], res[2]);
   }
   return 0;
 }

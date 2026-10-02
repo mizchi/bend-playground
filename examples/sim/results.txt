@@ -92,3 +92,19 @@ c4       6.962s 10MB      7.355s 10MB      2.009s 10MB      480 503 609 891 562 
 # c4.c variant, the wide player as one deeper tree, games=8:
 1 trees x 4096 vs 1 x 1024: 166 won 14 drawn 76 lost
 1 trees x 16384 vs 1 x 1024: 225 won 6 drawn 25 lost
+
+# c4 with leaf parallelization (2^lp playouts per expansion), 2026-10-02, Bend 2.0.34 (7d24b8d0), games=4 (just bench-sim c4)
+c4       6.149s 10MB      6.164s 10MB      11.584s 45MB    (4 threads slower: the leaf forks)
+# games=8 (c4.c, bit-exact with c4.bend), score = won + drawn/2:
+480 503 609 891 562 572 479
+1 trees x 1024 x 1 playouts vs 1 x 1024 x 1: 125 won 9 drawn 122 lost
+4 trees x 256 x 1 playouts vs 1 x 1024 x 1: 106 won 7 drawn 143 lost
+16 trees x 64 x 1 playouts vs 1 x 1024 x 1: 88 won 12 drawn 156 lost
+64 trees x 16 x 1 playouts vs 1 x 1024 x 1: 16 won 2 drawn 238 lost
+1 trees x 256 x 4 playouts vs 1 x 1024 x 1: 120 won 20 drawn 116 lost
+1 trees x 64 x 16 playouts vs 1 x 1024 x 1: 114 won 12 drawn 130 lost
+1 trees x 16 x 64 playouts vs 1 x 1024 x 1: 51 won 11 drawn 194 lost
+1 trees x 1024 x 4 playouts vs 1 x 1024 x 1: 177 won 7 drawn 72 lost
+1 trees x 1024 x 16 playouts vs 1 x 1024 x 1: 221 won 3 drawn 32 lost
+# one move from the empty board, wall clock by threads (1 / 2 / 4):
+1 tree x 32767 x 1: 0.06 0.07 0.07 | 1 x 8192 x 4: 0.04 1.18 1.68 | 1 x 2048 x 16: 0.03 0.30 0.45 | 1 x 512 x 64: 0.03 0.10 0.13 | 4 trees x 8192 x 1: 0.06 0.04 0.03
