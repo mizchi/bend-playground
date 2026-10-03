@@ -171,3 +171,22 @@ Bendの生成ループをそのまま直接kernelから呼ぶ対照を作った�
 生成ループのGPU用型表現を分けて調べる。占有率・帯域・registerの寄与は未測定。
 
 同条件の画像準備まででは8.163 → 7.706 ms。描画の費用が大きく、表示FPSは測っていない。
+
+## Bend 本体のパッチ実験
+
+[段階別の実験計画](compiler-patches/README.md)を追加した。
+Step 1 は FFI が runtime segment の ID を参照できない問題を、別 checkout の compiler で修正した。
+回帰テスト9件と既存40件が通り、FFIとflat粒子を含む4プログラムのC生成結果は固定版と一致した。
+動作の修正であり速度改善は測っていない。
+
+[Step 2](compiler-patches/step-02-known-callbacks/README.md)では、固定版の別 checkout に
+既知 lambda の特殊化 pass を追加した。同じ `simulation.bend` から更新の closure segment が14→0になった。
+M5・100万粒子・乱数64回・同じ jobs で、CPU/10 workers は **25.768→11.866 ms**、
+Metal の完了待ち込み更新は **6.845→1.739 ms**、GPU 本体は **6.5278→1.3744 ms**。
+画像準備全体は **14.144→8.615 ms**で、表示FPSは測っていない。
+
+9回帰テスト、既存40テスト、上流12例の48実行、粒子288フレームを検証した。
+flat 版の生成 C は旧版と byte 単位で一致し、その計測の揺れを対照にした。
+共有MacのCPU負荷は残るため小さい差は性能改善としない。
+試作の `comp.ts` は65,994 ttokで上流の64,000上限を超える。提出には簡素化と最新mainへの移植が必要。
+ソース側とcompiler側は同じcallbackのコストを削るので、それぞれの改善倍率を掛け合わせない。

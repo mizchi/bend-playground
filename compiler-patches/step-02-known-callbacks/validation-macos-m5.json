@@ -1,0 +1,796 @@
+{
+  "date": "2026-10-03T16:21:49+09:00",
+  "base_commit": "7d24b8d0235cb9781140512c0f163c48ea84a719",
+  "patched_checkout_commit": "7d24b8d0235cb9781140512c0f163c48ea84a719",
+  "playground_commit": "b32048b96410c51f1fe1b7f7e451acfcf551a802",
+  "compiler_sha256": {
+    "base": "3bd7ed49d33f1c61334d75a905e38c0345fb15a10b45d85884b77f49833dc5ee",
+    "patched": "6b74beed5064228ee6d15aca42d437d72d50ff760dfe4513753c03f42dc6e616"
+  },
+  "patch_sha256": "b67026224dd9998824c0f653f1cac5657d4accee0edbdc0ebb12cecdc8ffe5cc",
+  "source_sha256": {
+    "compiler-patches/step-02-known-callbacks/known_callback.bend": "bdf48be20ebef822f7be5b56322184c5e03df3f9426371b797a37eb1ffd677f7",
+    "compiler-patches/step-02-known-callbacks/callback_dependent.bend": "b1f09e445ab7e227f19f034869b66daae1871ac86e8c830c75524a6c3dc09f78",
+    "compiler-patches/step-02-known-callbacks/callback_array.bend": "61d5e992ad8060ee3ad0ab156fe1b4cb15cda1cf7a668388b099470235467a65",
+    "compiler-patches/step-02-known-callbacks/callback_fallback.bend": "c60b99807c97ce1d432077d1e28430f92ca1733ac2677777a10e8f80fd984263",
+    "compiler-patches/step-02-known-callbacks/compile-repeat.ts": "09791d4e8b12f47ff4d3632da017efb651fa61b37dedbd83d95c735fcce45605",
+    "compiler-patches/step-02-known-callbacks/check-upstream.py": "9f37aac8bb9859b1f8b02b673412b0e5729ecc90e20ec4b2f346b31d610a8a88",
+    "compiler-patches/step-02-known-callbacks/compiler.patch": "b67026224dd9998824c0f653f1cac5657d4accee0edbdc0ebb12cecdc8ffe5cc",
+    "scripts/bend_step02.py": "4b59854e58b63eb0cbdfdd79065fb3e7d9d5bf5c3439e6c1f8cb71aa673a4228",
+    "scripts/bend_step02_bench.py": "67bf692b5de95c86cbc069ef1a9ba788923d68619c48212369362fedb59e084c",
+    "tests/bend_step02.py": "cf2b41fba2e40f007b4993406402a59ca580202000984e41aee914c86c765a63",
+    "justfile": "bfb1f9da3c9f7642c5b7f02b600cdff6d13b97e918bcef28b9d524b1a8023795"
+  },
+  "language_implementation_unchanged": true,
+  "pinned_submodule_status": "",
+  "red": {
+    "total": 9,
+    "failures": 1,
+    "log": "python3 scripts/bend_step02.py check\n......F..\n======================================================================\nFAIL: test_known_callback_has_no_live_closure_segments (__main__.CallbackTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/mz/ghq/github.com/mizchi/bend-playground/tests/bend_step02.py\", line 120, in test_known_callback_has_no_live_closure_segments\n    self.assertEqual(closures, [])\nAssertionError: Lists differ: ['WL_CASE(FID_MAIN_C13)', 'WL_CASE(FID_MAI[78 chars]20)'] != []\n\nFirst list contains 5 additional elements.\nFirst extra element 0:\n'WL_CASE(FID_MAIN_C13)'\n\n+ []\n- ['WL_CASE(FID_MAIN_C13)',\n-  'WL_CASE(FID_MAIN_C15)',\n-  'WL_CASE(FID_MAIN_C16)',\n-  'WL_CASE(FID_MAIN_C18)',\n-  'WL_CASE(FID_MAIN_C20)']\n\n----------------------------------------------------------------------\nRan 9 tests in 4.726s\n\nFAILED (failures=1)\nerror: Recipe `check-bend-step02` failed on line 193 with exit code 1\n"
+  },
+  "green": {
+    "total": 9,
+    "failures": 0,
+    "log": "python3 scripts/bend_step02.py check\n.........\n----------------------------------------------------------------------\nRan 9 tests in 3.906s\n\nOK\n"
+  },
+  "core": {
+    "total": 40,
+    "failures": 0,
+    "log": "python3 tests/smoke.py\ntest_fwht_involution (__main__.PlaygroundSmokeTest) ... ok\ntest_generated_balls_flat_is_current (__main__.PlaygroundSmokeTest) ... ok\ntest_intro_includes_expected_type_errors (__main__.PlaygroundSmokeTest) ... ok\ntest_just_forwards_multiple_arguments (__main__.PlaygroundSmokeTest) ... ok\ntest_missing_compiler_explains_setup (__main__.PlaygroundSmokeTest) ... ok\ntest_run_from_unrelated_directory_with_spaces (__main__.PlaygroundSmokeTest) ... ok\ntest_simulations_match_their_c_twins (__main__.PlaygroundSmokeTest) ... ok\ntest_unsafe_proof_fails_the_check (__main__.PlaygroundSmokeTest) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 11.763s\n\nOK\npython3 tests/benchmark.py\ntest_benchmark_scripts_parse_with_system_bash (__main__.BenchmarkTest) ... ok\ntest_failed_program_does_not_produce_a_measurement (__main__.BenchmarkTest) ... ok\ntest_json_measurement_records_samples_and_units (__main__.BenchmarkTest) ... ok\ntest_max_rss_has_the_same_units_on_macos_and_linux (__main__.BenchmarkTest) ... ok\ntest_measurement_suppresses_program_output (__main__.BenchmarkTest) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.182s\n\nOK\npython3 tests/algorithms.py\ntest_ast_fold_preserves_values_and_removes_nodes (__main__.AlgorithmTest) ... ok\ntest_default_cli_selects_all_programs (__main__.AlgorithmTest) ... ok\ntest_invalid_case_cannot_change_the_problem_silently (__main__.AlgorithmTest) ... ok\ntest_nqueens_matches_known_solution_counts (__main__.AlgorithmTest) ... ok\ntest_pollard_rho_matches_independent_trial_division (__main__.AlgorithmTest) ... ok\ntest_result_parser_rejects_missing_or_extra_fields (__main__.AlgorithmTest) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 6.258s\n\nOK\npython3 tests/sat.py\ntest_answer_parser_rejects_unknown_and_invalid_witness_fields (__main__.SatTest) ... ok\ntest_bit_32_and_invalid_split_contract (__main__.SatTest) ... ok\ntest_dimacs_comments_multiline_duplicate_literals_and_empty_clause (__main__.SatTest) ... ok\ntest_dimacs_rejects_unsupported_or_malformed_inputs (__main__.SatTest) ... ok\ntest_generated_batch_matches_truth_tables_and_validated_witnesses (__main__.SatTest) ... ok\ntest_pigeonhole_and_repeated_single_formula (__main__.SatTest) ... ok\ntest_prefix_partition_preserves_sat_unsat_and_witnesses (__main__.SatTest) ... ok\ntest_random_cnfs_against_exhaustive_oracle (__main__.SatTest) ... ok\ntest_truth_tables_units_tautologies_and_backtracking (__main__.SatTest) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 9.969s\n\nOK\npython3 tests/ffi.py\ntest_builder_rejects_invalid_sizes_before_compilation (__main__.FfiTest) ... ok\ntest_fit_rejects_degenerate_or_nonfinite_measurements (__main__.FfiTest) ... ok\ntest_native_and_pure_loops_match_independent_oracle (__main__.FfiTest) ... ok\ntest_output_parser_rejects_invalid_values (__main__.FfiTest) ... ok\ntest_regression_removes_startup_and_reports_nanoseconds (__main__.FfiTest) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 7.855s\n\nOK\npython3 tests/grid.py\ntest_benchmark_counts_all_dynamic_layouts (__main__.GridTest) ... ok\ntest_capacity_exhaustion_is_an_error (__main__.GridTest) ... ok\ntest_css_track_parser_and_repeat (__main__.GridTest) ... ok\ntest_native_engines_match_hand_computed_geometry (__main__.GridTest) ... ok\ntest_placement_exhaustion_never_wraps_owned_arrays (__main__.GridTest) ... ok\ntest_sparse_fixed_rows_keep_cursors_by_start_row (__main__.GridTest) ... ok\ntest_unsupported_or_invalid_inputs_fail_explicitly (__main__.GridTest) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 5.437s\n\nOK\n"
+  },
+  "upstream_local_checks": [
+    {
+      "test": "closures_hof",
+      "lane": "interpreter",
+      "output": "64180"
+    },
+    {
+      "test": "closures_hof",
+      "lane": "js",
+      "output": "64180"
+    },
+    {
+      "test": "closures_hof",
+      "lane": "c-1",
+      "output": "64180"
+    },
+    {
+      "test": "closures_hof",
+      "lane": "c-4",
+      "output": "64180"
+    },
+    {
+      "test": "fn_capture_owns",
+      "lane": "interpreter",
+      "output": "184n"
+    },
+    {
+      "test": "fn_capture_owns",
+      "lane": "js",
+      "output": "184n"
+    },
+    {
+      "test": "fn_capture_owns",
+      "lane": "c-1",
+      "output": "184n"
+    },
+    {
+      "test": "fn_capture_owns",
+      "lane": "c-4",
+      "output": "184n"
+    },
+    {
+      "test": "unsafe_mutual",
+      "lane": "interpreter",
+      "output": "\"y\""
+    },
+    {
+      "test": "unsafe_mutual",
+      "lane": "js",
+      "output": "\"y\""
+    },
+    {
+      "test": "unsafe_mutual",
+      "lane": "c-1",
+      "output": "\"y\""
+    },
+    {
+      "test": "unsafe_mutual",
+      "lane": "c-4",
+      "output": "\"y\""
+    },
+    {
+      "test": "array_map_loop",
+      "lane": "interpreter",
+      "output": "690\n1"
+    },
+    {
+      "test": "array_map_loop",
+      "lane": "js",
+      "output": "690\n1"
+    },
+    {
+      "test": "array_map_loop",
+      "lane": "c-1",
+      "output": "690\n1"
+    },
+    {
+      "test": "array_map_loop",
+      "lane": "c-4",
+      "output": "690\n1"
+    },
+    {
+      "test": "js_tail_closure",
+      "lane": "interpreter",
+      "output": "0"
+    },
+    {
+      "test": "js_tail_closure",
+      "lane": "js",
+      "output": "0"
+    },
+    {
+      "test": "js_tail_closure",
+      "lane": "c-1",
+      "output": "0"
+    },
+    {
+      "test": "js_tail_closure",
+      "lane": "c-4",
+      "output": "0"
+    },
+    {
+      "test": "js_loop_capture",
+      "lane": "interpreter",
+      "output": "55"
+    },
+    {
+      "test": "js_loop_capture",
+      "lane": "js",
+      "output": "55"
+    },
+    {
+      "test": "js_loop_capture",
+      "lane": "c-1",
+      "output": "55"
+    },
+    {
+      "test": "js_loop_capture",
+      "lane": "c-4",
+      "output": "55"
+    },
+    {
+      "test": "array_poly_elem",
+      "lane": "interpreter",
+      "output": "102122"
+    },
+    {
+      "test": "array_poly_elem",
+      "lane": "js",
+      "output": "102122"
+    },
+    {
+      "test": "array_poly_elem",
+      "lane": "c-1",
+      "output": "102122"
+    },
+    {
+      "test": "array_poly_elem",
+      "lane": "c-4",
+      "output": "102122"
+    },
+    {
+      "test": "array_boxed_get",
+      "lane": "interpreter",
+      "output": "777113"
+    },
+    {
+      "test": "array_boxed_get",
+      "lane": "js",
+      "output": "777113"
+    },
+    {
+      "test": "array_boxed_get",
+      "lane": "c-1",
+      "output": "777113"
+    },
+    {
+      "test": "array_boxed_get",
+      "lane": "c-4",
+      "output": "777113"
+    },
+    {
+      "test": "array_split_join",
+      "lane": "interpreter",
+      "output": "145896"
+    },
+    {
+      "test": "array_split_join",
+      "lane": "js",
+      "output": "145896"
+    },
+    {
+      "test": "array_split_join",
+      "lane": "c-1",
+      "output": "145896"
+    },
+    {
+      "test": "array_split_join",
+      "lane": "c-4",
+      "output": "145896"
+    },
+    {
+      "test": "array_wrap_index",
+      "lane": "interpreter",
+      "output": "111211"
+    },
+    {
+      "test": "array_wrap_index",
+      "lane": "js",
+      "output": "111211"
+    },
+    {
+      "test": "array_wrap_index",
+      "lane": "c-1",
+      "output": "111211"
+    },
+    {
+      "test": "array_wrap_index",
+      "lane": "c-4",
+      "output": "111211"
+    },
+    {
+      "test": "array_fill_fold",
+      "lane": "interpreter",
+      "output": "140375"
+    },
+    {
+      "test": "array_fill_fold",
+      "lane": "js",
+      "output": "140375"
+    },
+    {
+      "test": "array_fill_fold",
+      "lane": "c-1",
+      "output": "140375"
+    },
+    {
+      "test": "array_fill_fold",
+      "lane": "c-4",
+      "output": "140375"
+    },
+    {
+      "test": "ids_unique",
+      "lane": "interpreter",
+      "output": "11115"
+    },
+    {
+      "test": "ids_unique",
+      "lane": "js",
+      "output": "11115"
+    },
+    {
+      "test": "ids_unique",
+      "lane": "c-1",
+      "output": "11115"
+    },
+    {
+      "test": "ids_unique",
+      "lane": "c-4",
+      "output": "11115"
+    }
+  ],
+  "typecheck": {
+    "patched_log": "build/bend-steps/step-02/bend/bend2/bend.ts(2037,42): error TS2339: Property 'k' does not exist on type 'LTerm'.\n  Property 'k' does not exist on type '{ $: \"Qnt\"; } & { s?: Span; }'.\nbuild/bend-steps/step-02/bend/bend2/bend.ts(3758,33): error TS2339: Property 'v' does not exist on type 'TLD'.\n  Property 'v' does not exist on type 'ADT'.\n",
+    "baseline_log": "upstream/bend/bend2/bend.ts(2037,42): error TS2339: Property 'k' does not exist on type 'LTerm'.\n  Property 'k' does not exist on type '{ $: \"Qnt\"; } & { s?: Span; }'.\nupstream/bend/bend2/bend.ts(3758,33): error TS2339: Property 'v' does not exist on type 'TLD'.\n  Property 'v' does not exist on type 'ADT'.\n",
+    "introduced_errors": 0
+  },
+  "repo_gate": {
+    "result": "FAIL",
+    "passed": 48,
+    "total": 49,
+    "base_compiler_ttok": 63765,
+    "patched_compiler_ttok": 65994,
+    "compiler_cap": 64000,
+    "log": "FAIL bend2/comp.ts: 65994 > 64000 ttok\nPASS: 48 / 49\n"
+  },
+  "particle_builds": 16,
+  "particle_verification_cases": 72,
+  "particle_verified_frames": 288,
+  "particle_codegen": [
+    {
+      "lane": "base",
+      "variant": "callback",
+      "rounds": 0,
+      "jobs": 1024,
+      "live_closure_segments": 16,
+      "codegen": {
+        "particle_loops": [],
+        "runtime_particle_closure_segments": 14
+      },
+      "compiler_sha256": "3bd7ed49d33f1c61334d75a905e38c0345fb15a10b45d85884b77f49833dc5ee",
+      "generated_sha256": {
+        "run.bend": "ef7b5d5e893e6bd061866fa629ee4662c99e05e550f6f2c3bdc5c2529cf75088",
+        "particle-config.h": "e7c9af537eb73de36fb6850d8b2a0d2d12f8b916be3b87573e9ff9dac37ac43f",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "0b96498962acd63893649ac029b51e970329f2450557741ca0377c7fb361bc8c",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "base",
+      "variant": "callback",
+      "rounds": 0,
+      "jobs": 16384,
+      "live_closure_segments": 16,
+      "codegen": {
+        "particle_loops": [],
+        "runtime_particle_closure_segments": 14
+      },
+      "compiler_sha256": "3bd7ed49d33f1c61334d75a905e38c0345fb15a10b45d85884b77f49833dc5ee",
+      "generated_sha256": {
+        "run.bend": "715106b8cd4a3e21edc7201d544d848e0f9c9724899fc9d17c9623212dd44eed",
+        "particle-config.h": "86ef3c927423a986c19976131000737b38dcba1e4bca2983797f360054917f90",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "c3ac9f5e5d1b579c1b7fc106a5aed3143cdf5469d1d216342a3ea2872d7044f9",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "base",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 1024,
+      "live_closure_segments": 16,
+      "codegen": {
+        "particle_loops": [],
+        "runtime_particle_closure_segments": 14
+      },
+      "compiler_sha256": "3bd7ed49d33f1c61334d75a905e38c0345fb15a10b45d85884b77f49833dc5ee",
+      "generated_sha256": {
+        "run.bend": "d6aeef06f1987ba5e4facdd0db813eb10b68bd7c520ace683d193ba21258f453",
+        "particle-config.h": "3174465affab1326ca106f260b6e67683c51ab5a103b08eb00a1957d90b3b069",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "6fda56910e5a90ddb5ffb5ea7935df9723e17651ab5d545b08d776079f73ce1c",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "base",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 16384,
+      "live_closure_segments": 16,
+      "codegen": {
+        "particle_loops": [],
+        "runtime_particle_closure_segments": 14
+      },
+      "compiler_sha256": "3bd7ed49d33f1c61334d75a905e38c0345fb15a10b45d85884b77f49833dc5ee",
+      "generated_sha256": {
+        "run.bend": "0af29a1919c0880f0cd74da89b8fdde5f57ee0da026763802de7f4817f81c072",
+        "particle-config.h": "450ec7c46ac3011ff6bcd4ac024dafd0b7c194d66c0c2b6961695c8d5d2e3df6",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "8312f0053426f2127bfd854a7ba5b308d5df418dff5491ca30b54acfdfce2573",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "rounds": 0,
+      "jobs": 1024,
+      "live_closure_segments": 2,
+      "codegen": {
+        "particle_loops": [
+          {
+            "function": "spin_16",
+            "transitive_helpers": [
+              "spin_0",
+              "spin_1",
+              "spin_10",
+              "spin_11",
+              "spin_12",
+              "spin_13",
+              "spin_2",
+              "spin_3",
+              "spin_4",
+              "spin_5",
+              "spin_6",
+              "spin_7",
+              "spin_8",
+              "spin_9"
+            ],
+            "heap_alloc_sites": 0,
+            "closure_sites": 0,
+            "dynamic_apply_sites": 0
+          }
+        ],
+        "runtime_particle_closure_segments": 0
+      },
+      "compiler_sha256": "3bd7ed49d33f1c61334d75a905e38c0345fb15a10b45d85884b77f49833dc5ee",
+      "generated_sha256": {
+        "run.bend": "c78346158389ac2dd5305a7a6c9ba5257df5bc7a7b92d1a28a941b9f8b943c92",
+        "particle-config.h": "e7c9af537eb73de36fb6850d8b2a0d2d12f8b916be3b87573e9ff9dac37ac43f",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "16e1c72cf249abbc4c553126a429342aa5ba02f0c727571e7ecb4cc97fc7df4b",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "rounds": 0,
+      "jobs": 16384,
+      "live_closure_segments": 2,
+      "codegen": {
+        "particle_loops": [
+          {
+            "function": "spin_16",
+            "transitive_helpers": [
+              "spin_0",
+              "spin_1",
+              "spin_10",
+              "spin_11",
+              "spin_12",
+              "spin_13",
+              "spin_2",
+              "spin_3",
+              "spin_4",
+              "spin_5",
+              "spin_6",
+              "spin_7",
+              "spin_8",
+              "spin_9"
+            ],
+            "heap_alloc_sites": 0,
+            "closure_sites": 0,
+            "dynamic_apply_sites": 0
+          }
+        ],
+        "runtime_particle_closure_segments": 0
+      },
+      "compiler_sha256": "3bd7ed49d33f1c61334d75a905e38c0345fb15a10b45d85884b77f49833dc5ee",
+      "generated_sha256": {
+        "run.bend": "eede099f4aeb62f2e111b1e0e271885572ee66ff1988171495c995e87ce7ce5b",
+        "particle-config.h": "86ef3c927423a986c19976131000737b38dcba1e4bca2983797f360054917f90",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "7c7754c8b9672f67486083fe73c2200aa01d984871f66ba7d3f15a8969562278",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 1024,
+      "live_closure_segments": 2,
+      "codegen": {
+        "particle_loops": [
+          {
+            "function": "spin_16",
+            "transitive_helpers": [
+              "spin_0",
+              "spin_1",
+              "spin_10",
+              "spin_11",
+              "spin_12",
+              "spin_13",
+              "spin_2",
+              "spin_3",
+              "spin_4",
+              "spin_5",
+              "spin_6",
+              "spin_7",
+              "spin_8",
+              "spin_9"
+            ],
+            "heap_alloc_sites": 0,
+            "closure_sites": 0,
+            "dynamic_apply_sites": 0
+          }
+        ],
+        "runtime_particle_closure_segments": 0
+      },
+      "compiler_sha256": "3bd7ed49d33f1c61334d75a905e38c0345fb15a10b45d85884b77f49833dc5ee",
+      "generated_sha256": {
+        "run.bend": "b0d5f2764ced4b158a4dca273bc4128edd7054a2a4b3b9599e70d0baf1be6935",
+        "particle-config.h": "3174465affab1326ca106f260b6e67683c51ab5a103b08eb00a1957d90b3b069",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "399ee62efb52ff735e75997e069974ea41e1fa85e2c43ba67987d091effbc6c0",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 16384,
+      "live_closure_segments": 2,
+      "codegen": {
+        "particle_loops": [
+          {
+            "function": "spin_16",
+            "transitive_helpers": [
+              "spin_0",
+              "spin_1",
+              "spin_10",
+              "spin_11",
+              "spin_12",
+              "spin_13",
+              "spin_2",
+              "spin_3",
+              "spin_4",
+              "spin_5",
+              "spin_6",
+              "spin_7",
+              "spin_8",
+              "spin_9"
+            ],
+            "heap_alloc_sites": 0,
+            "closure_sites": 0,
+            "dynamic_apply_sites": 0
+          }
+        ],
+        "runtime_particle_closure_segments": 0
+      },
+      "compiler_sha256": "3bd7ed49d33f1c61334d75a905e38c0345fb15a10b45d85884b77f49833dc5ee",
+      "generated_sha256": {
+        "run.bend": "b3c95bd03849b106fe6fcd25cb7659638b19cbcf947e582ff34fc53756b8aa16",
+        "particle-config.h": "450ec7c46ac3011ff6bcd4ac024dafd0b7c194d66c0c2b6961695c8d5d2e3df6",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "69a3f7cc9adf6188cc42f24d4d75c7d8740b4937b2585d2221b1cc5336fc5b78",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "rounds": 0,
+      "jobs": 1024,
+      "live_closure_segments": 2,
+      "codegen": {
+        "particle_loops": [],
+        "runtime_particle_closure_segments": 0
+      },
+      "compiler_sha256": "6b74beed5064228ee6d15aca42d437d72d50ff760dfe4513753c03f42dc6e616",
+      "generated_sha256": {
+        "run.bend": "ef7b5d5e893e6bd061866fa629ee4662c99e05e550f6f2c3bdc5c2529cf75088",
+        "particle-config.h": "e7c9af537eb73de36fb6850d8b2a0d2d12f8b916be3b87573e9ff9dac37ac43f",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "beff45ab65721235e7d8b03ea7df18062f40148353d5602e2c36fc741443956d",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "rounds": 0,
+      "jobs": 16384,
+      "live_closure_segments": 2,
+      "codegen": {
+        "particle_loops": [],
+        "runtime_particle_closure_segments": 0
+      },
+      "compiler_sha256": "6b74beed5064228ee6d15aca42d437d72d50ff760dfe4513753c03f42dc6e616",
+      "generated_sha256": {
+        "run.bend": "715106b8cd4a3e21edc7201d544d848e0f9c9724899fc9d17c9623212dd44eed",
+        "particle-config.h": "86ef3c927423a986c19976131000737b38dcba1e4bca2983797f360054917f90",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "a6283cbe583f16dcad56009531e08136ddf647d00ffb2784314a890d7c7f5af0",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 1024,
+      "live_closure_segments": 2,
+      "codegen": {
+        "particle_loops": [],
+        "runtime_particle_closure_segments": 0
+      },
+      "compiler_sha256": "6b74beed5064228ee6d15aca42d437d72d50ff760dfe4513753c03f42dc6e616",
+      "generated_sha256": {
+        "run.bend": "d6aeef06f1987ba5e4facdd0db813eb10b68bd7c520ace683d193ba21258f453",
+        "particle-config.h": "3174465affab1326ca106f260b6e67683c51ab5a103b08eb00a1957d90b3b069",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "05b68c19ed82e4d9f81f27ac64b402979ae1f72e98f504507bce9a7fd1d67018",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 16384,
+      "live_closure_segments": 2,
+      "codegen": {
+        "particle_loops": [],
+        "runtime_particle_closure_segments": 0
+      },
+      "compiler_sha256": "6b74beed5064228ee6d15aca42d437d72d50ff760dfe4513753c03f42dc6e616",
+      "generated_sha256": {
+        "run.bend": "0af29a1919c0880f0cd74da89b8fdde5f57ee0da026763802de7f4817f81c072",
+        "particle-config.h": "450ec7c46ac3011ff6bcd4ac024dafd0b7c194d66c0c2b6961695c8d5d2e3df6",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "b721ecbb57becf72668167569e13c7a6382bb47f67f8903ae68c7ed246f474fc",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "rounds": 0,
+      "jobs": 1024,
+      "live_closure_segments": 2,
+      "codegen": {
+        "particle_loops": [
+          {
+            "function": "spin_16",
+            "transitive_helpers": [
+              "spin_0",
+              "spin_1",
+              "spin_10",
+              "spin_11",
+              "spin_12",
+              "spin_13",
+              "spin_2",
+              "spin_3",
+              "spin_4",
+              "spin_5",
+              "spin_6",
+              "spin_7",
+              "spin_8",
+              "spin_9"
+            ],
+            "heap_alloc_sites": 0,
+            "closure_sites": 0,
+            "dynamic_apply_sites": 0
+          }
+        ],
+        "runtime_particle_closure_segments": 0
+      },
+      "compiler_sha256": "6b74beed5064228ee6d15aca42d437d72d50ff760dfe4513753c03f42dc6e616",
+      "generated_sha256": {
+        "run.bend": "c78346158389ac2dd5305a7a6c9ba5257df5bc7a7b92d1a28a941b9f8b943c92",
+        "particle-config.h": "e7c9af537eb73de36fb6850d8b2a0d2d12f8b916be3b87573e9ff9dac37ac43f",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "16e1c72cf249abbc4c553126a429342aa5ba02f0c727571e7ecb4cc97fc7df4b",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "rounds": 0,
+      "jobs": 16384,
+      "live_closure_segments": 2,
+      "codegen": {
+        "particle_loops": [
+          {
+            "function": "spin_16",
+            "transitive_helpers": [
+              "spin_0",
+              "spin_1",
+              "spin_10",
+              "spin_11",
+              "spin_12",
+              "spin_13",
+              "spin_2",
+              "spin_3",
+              "spin_4",
+              "spin_5",
+              "spin_6",
+              "spin_7",
+              "spin_8",
+              "spin_9"
+            ],
+            "heap_alloc_sites": 0,
+            "closure_sites": 0,
+            "dynamic_apply_sites": 0
+          }
+        ],
+        "runtime_particle_closure_segments": 0
+      },
+      "compiler_sha256": "6b74beed5064228ee6d15aca42d437d72d50ff760dfe4513753c03f42dc6e616",
+      "generated_sha256": {
+        "run.bend": "eede099f4aeb62f2e111b1e0e271885572ee66ff1988171495c995e87ce7ce5b",
+        "particle-config.h": "86ef3c927423a986c19976131000737b38dcba1e4bca2983797f360054917f90",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "7c7754c8b9672f67486083fe73c2200aa01d984871f66ba7d3f15a8969562278",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 1024,
+      "live_closure_segments": 2,
+      "codegen": {
+        "particle_loops": [
+          {
+            "function": "spin_16",
+            "transitive_helpers": [
+              "spin_0",
+              "spin_1",
+              "spin_10",
+              "spin_11",
+              "spin_12",
+              "spin_13",
+              "spin_2",
+              "spin_3",
+              "spin_4",
+              "spin_5",
+              "spin_6",
+              "spin_7",
+              "spin_8",
+              "spin_9"
+            ],
+            "heap_alloc_sites": 0,
+            "closure_sites": 0,
+            "dynamic_apply_sites": 0
+          }
+        ],
+        "runtime_particle_closure_segments": 0
+      },
+      "compiler_sha256": "6b74beed5064228ee6d15aca42d437d72d50ff760dfe4513753c03f42dc6e616",
+      "generated_sha256": {
+        "run.bend": "b0d5f2764ced4b158a4dca273bc4128edd7054a2a4b3b9599e70d0baf1be6935",
+        "particle-config.h": "3174465affab1326ca106f260b6e67683c51ab5a103b08eb00a1957d90b3b069",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "399ee62efb52ff735e75997e069974ea41e1fa85e2c43ba67987d091effbc6c0",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 16384,
+      "live_closure_segments": 2,
+      "codegen": {
+        "particle_loops": [
+          {
+            "function": "spin_16",
+            "transitive_helpers": [
+              "spin_0",
+              "spin_1",
+              "spin_10",
+              "spin_11",
+              "spin_12",
+              "spin_13",
+              "spin_2",
+              "spin_3",
+              "spin_4",
+              "spin_5",
+              "spin_6",
+              "spin_7",
+              "spin_8",
+              "spin_9"
+            ],
+            "heap_alloc_sites": 0,
+            "closure_sites": 0,
+            "dynamic_apply_sites": 0
+          }
+        ],
+        "runtime_particle_closure_segments": 0
+      },
+      "compiler_sha256": "6b74beed5064228ee6d15aca42d437d72d50ff760dfe4513753c03f42dc6e616",
+      "generated_sha256": {
+        "run.bend": "b3c95bd03849b106fe6fcd25cb7659638b19cbcf947e582ff34fc53756b8aa16",
+        "particle-config.h": "450ec7c46ac3011ff6bcd4ac024dafd0b7c194d66c0c2b6961695c8d5d2e3df6",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "69a3f7cc9adf6188cc42f24d4d75c7d8740b4937b2585d2221b1cc5336fc5b78",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    }
+  ],
+  "unrun": [
+    "cluster gates/test and gates/perf",
+    "CUDA execution",
+    "Lean kernel validation"
+  ],
+  "setup": "idempotent reverse-apply check; separate pinned checkout; never resets existing conflicting edits"
+}

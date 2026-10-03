@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "step": 1,
+  "date": "2026-10-03T15:15:28+09:00",
+  "playground_base_commit": "b32048b96410c51f1fe1b7f7e451acfcf551a802",
+  "source_state": "Uncommitted step 1 patch, fixtures and validation tools on the recorded playground base commit",
+  "bend_base_commit": "7d24b8d0235cb9781140512c0f163c48ea84a719",
+  "bend_version": "bend 2.0.34",
+  "environment": {
+    "platform": "Darwin arm64",
+    "cpu": "Apple M5",
+    "memory_bytes": 34359738368,
+    "os_version": "26.6.2",
+    "clang": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+    "bun": "1.3.5",
+    "python": "3.9.6",
+    "c_flags": "-std=c11 -O3 -pthread -lm",
+    "execution": "CPU only, --gpu off, --threads 1 and 4; JS twins via Bun and Bend interpreter"
+  },
+  "compiler_sha256": {
+    "fixed_comp.ts": "3bd7ed49d33f1c61334d75a905e38c0345fb15a10b45d85884b77f49833dc5ee",
+    "patched_comp.ts": "de98fd1bd81330c30ee786248e44758d68f0aaf8796c170a96ee424ada69901d",
+    "unchanged_bend.ts": "de2b39db2fcbd2f9115053e85e34d791693e1297bfeb6874da1013ff7b44b7dd"
+  },
+  "source_sha256": {
+    "compiler-patches/step-01-ffi-runtime-ids/compile-repeat.ts": "ed759524b05ad285667c6574a8514edc652a66692e632adb5a97e40ff8f9cdc2",
+    "compiler-patches/step-01-ffi-runtime-ids/compiler.patch": "a6a5d5064fc94aed978cdafb843f98a8ac784a3e5e65b181c8dfbd8f762e3117",
+    "compiler-patches/step-01-ffi-runtime-ids/foreign_runtime_apply.bend": "f946ea30a2a5d64d0085c76464a6d56b82cac7a27d347c1ed85f39fe3222ac09",
+    "compiler-patches/step-01-ffi-runtime-ids/foreign_runtime_apply.c": "26d5fe9f2ae13452beffde8cebf97f48f31d1f9ae4bd6717e16737d4de06c86d",
+    "compiler-patches/step-01-ffi-runtime-ids/foreign_runtime_apply.js": "4e1eb122f5d1b5361a0e1113cd04f388590d26a5c0e217c06b1773d847840fd5",
+    "compiler-patches/step-01-ffi-runtime-ids/foreign_runtime_emit.bend": "07b413679fce6708b09fe5d117b51ebac7fcf27c14b09064799fcbc729b7fb3f",
+    "compiler-patches/step-01-ffi-runtime-ids/foreign_runtime_emit.c": "f423ebe74c60de6d5bdbdc39d59a0e1620890058131e0605e81a013c6764f92e",
+    "compiler-patches/step-01-ffi-runtime-ids/foreign_runtime_emit.js": "0646e7862a23d6799dc1da9729112b38c1692d95042ab82c31fb3d97aa1f6d63",
+    "examples/ffi/common.bend": "a402a24d5325f3037d97aee25fcb1373bd0e29af685ebebba5a7c1742cdd2a98",
+    "examples/ffi/direct.c": "a918d0f771dc31a749b809da8285d0f7642b5f5fe78d1bd97723506a4cabd9f2",
+    "examples/ffi/effect.c": "4b2a871ddbcd71ddca6601b013abc67c2aab9828782d305195aaf18cd551d33d",
+    "examples/ffi/foreign.bend": "eabf103f09ebbb557efd0bd8d8ef88902499cad4370f7305afb2620138713984",
+    "examples/ffi/io-pure.bend": "b2f4d03179dc03b468cf253492220083621bdf3df0209e354219b831e5790705",
+    "examples/ffi/kernel.c": "e8dd94c7f2dc2e92bbb37ef4a4c7bde2154ee6cb055c6a37b398ed571b5f40a0",
+    "examples/ffi/kernel.h": "3fab8f2f1661c34dcbffa816a850bed00005d5fb944b007ab38cf7eb4f3ed88b",
+    "examples/ffi/pure.bend": "4638d846975bc21e31caa6c309da16371c369f42663bcb5af904abac9228c329",
+    "examples/particles/api.bend": "7d14c7ec73e8272c624401168bf8f48652f744311f835ad9df2f5c839f839ef2",
+    "examples/particles/cpu.c": "62814c0e8b4ca2c14fb2e7dfab9dd79ac5e61c1df6f0db9cf77fc6a79c6148f1",
+    "examples/particles/cpu.h": "707de68ee027b6a72f41a5467e03659d242f484e56371cc7ee226c6a55f566e0",
+    "examples/particles/gpu-leaf.metal": "baa172da073df8411c7964e4df3ec1eaf7521c310cd7ba1cd86310ba3a2adaaa",
+    "examples/particles/gpu-profile.h": "77a2792de278aa9f6dd295c5f7631e51277530414c0e4d663e23e50ed7c026c8",
+    "examples/particles/native.c": "ab06cc3e73be0546f06b788382c019298bf1194c9bc0a3d03d568c2daa96f0b0",
+    "examples/particles/oracle.h": "876e18cf50000c3e369c2c8b602460f108d40c5d39aeebdc38c78ad5b0b87c0f",
+    "examples/particles/particles.metal": "0c50b907e27608411093b506a4cbb698c489431706a31c1b076e8a92a72dad9d",
+    "examples/particles/simulation-flat.bend": "3fef23c714214e683e2cdaf4a0748630a1d4765944df0909b25c97af5998ca43",
+    "examples/particles/simulation.bend": "35ee4808b1bc070915b0807d15db27630c94a879c40e5568bdecbd14474c112b",
+    "examples/particles/state.h": "e64b9423113428aecf438ffe18aec597b7f569116bdf09332fad5016d57503c2",
+    "justfile": "062d9033df0724aeec1924dbaaf274bfedcb5bd72841988ef34334997974625e",
+    "scripts/bend.sh": "a503684b2aab40d1c06355f2b125541ed4c1711da078733b6f72ad84540394bb",
+    "scripts/bend_step01.py": "941ea909794fd536ca5ecc31705aeb058a33073d1682640dbc6061dfa74cf0d6",
+    "tests/bend_step01.py": "dc71170386f6cbbf3f657a5680b75468b6996a6ce934998598c5624f9bd0019d"
+  },
+  "red": {
+    "command": "BEND_REPO=\"$PWD/upstream/bend\" just check-bend-step01",
+    "exit_code": 1,
+    "tests": 9,
+    "failed_test_methods": 6,
+    "failures_including_subtests": 7,
+    "log": "python3 scripts/bend_step01.py check\ntest_c_compilation_resets_ids_after_c_and_js_compilation (__main__.RuntimeIdsTest) ... FAIL\ntest_comment_and_string_literals_keep_existing_behavior (__main__.RuntimeIdsTest) ... FAIL\ntest_existing_programs_keep_byte_identical_c_codegen (__main__.RuntimeIdsTest) ... ok\ntest_foreign_closure_without_bend_dynamic_application (__main__.RuntimeIdsTest) ... FAIL\ntest_foreign_emit_without_bend_declaration (__main__.RuntimeIdsTest) ... FAIL\ntest_javascript_twins_and_interpreter_match_native_effects (__main__.RuntimeIdsTest) ... ok\ntest_macro_name_collisions_preserve_symbolic_runtime_ids (__main__.RuntimeIdsTest) ... FAIL\ntest_namespaced_effects_fall_back_to_runtime_ids (__main__.RuntimeIdsTest) ... test_unknown_ids_still_fail (__main__.RuntimeIdsTest) ... ok\n\n======================================================================\nFAIL: test_c_compilation_resets_ids_after_c_and_js_compilation (__main__.RuntimeIdsTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 101, in test_c_compilation_resets_ids_after_c_and_js_compilation\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : 1931 | \n1932 | // Die\n1933 | // ===\n1934 | \n1935 | function die(m: string): never {\n1936 |   throw new Error(m);\n                   ^\nerror: FID(Clo~apply) names no constructor or def\n      at die (<PLAYGROUND>/upstream/bend/bend2/comp.ts:1936:13)\n      at <anonymous> (<PLAYGROUND>/upstream/bend/bend2/comp.ts:2869:10)\n      at map (1:11)\n      at compile_reqs (<PLAYGROUND>/upstream/bend/bend2/comp.ts:2901:16)\n      at compile_book (<PLAYGROUND>/upstream/bend/bend2/comp.ts:3005:12)\n      at <PLAYGROUND>/compiler-patches/step-01-ffi-runtime-ids/compile-repeat.ts:17:20\n\nBun v1.3.5 (macOS arm64)\n\n\n======================================================================\nFAIL: test_comment_and_string_literals_keep_existing_behavior (__main__.RuntimeIdsTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 114, in test_comment_and_string_literals_keep_existing_behavior\n    self.compile_run(self.work / \"foreign_runtime_apply.bend\")\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 33, in compile_run\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : Error: FID(Clo~apply) names no constructor or def\n\n\n======================================================================\nFAIL: test_foreign_closure_without_bend_dynamic_application (__main__.RuntimeIdsTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 43, in test_foreign_closure_without_bend_dynamic_application\n    self.compile_run(self.work / \"foreign_runtime_apply.bend\")\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 33, in compile_run\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : Error: FID(Clo~apply) names no constructor or def\n\n\n======================================================================\nFAIL: test_foreign_emit_without_bend_declaration (__main__.RuntimeIdsTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 46, in test_foreign_emit_without_bend_declaration\n    self.compile_run(self.work / \"foreign_runtime_emit.bend\")\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 33, in compile_run\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : Error: FID(IO~emit) names no constructor or def\n\n\n======================================================================\nFAIL: test_macro_name_collisions_preserve_symbolic_runtime_ids (__main__.RuntimeIdsTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 82, in test_macro_name_collisions_preserve_symbolic_runtime_ids\n    self.compile_run(source)\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 33, in compile_run\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : Error: FID(Clo~apply) names no constructor or def\n\n\n======================================================================\nFAIL: test_namespaced_effects_fall_back_to_runtime_ids (__main__.RuntimeIdsTest) (segment='apply')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 71, in test_namespaced_effects_fall_back_to_runtime_ids\n    self.compile_run(source)\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 33, in compile_run\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : Error: FID(Clo~apply) names no constructor or def\n\n\n======================================================================\nFAIL: test_namespaced_effects_fall_back_to_runtime_ids (__main__.RuntimeIdsTest) (segment='emit')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 71, in test_namespaced_effects_fall_back_to_runtime_ids\n    self.compile_run(source)\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 33, in compile_run\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : Error: FID(IO~emit) names no constructor or def\n\n\n----------------------------------------------------------------------\nRan 9 tests in 3.866s\n\nFAILED (failures=7)\nerror: Recipe `check-bend-step01` failed on line 133 with exit code 1\n"
+  },
+  "green": {
+    "command": "just check-bend-step01",
+    "exit_code": 0,
+    "tests": 9,
+    "log": "python3 scripts/bend_step01.py check\ntest_c_compilation_resets_ids_after_c_and_js_compilation (__main__.RuntimeIdsTest) ... ok\ntest_comment_and_string_literals_keep_existing_behavior (__main__.RuntimeIdsTest) ... ok\ntest_existing_programs_keep_byte_identical_c_codegen (__main__.RuntimeIdsTest) ... ok\ntest_foreign_closure_without_bend_dynamic_application (__main__.RuntimeIdsTest) ... ok\ntest_foreign_emit_without_bend_declaration (__main__.RuntimeIdsTest) ... ok\ntest_javascript_twins_and_interpreter_match_native_effects (__main__.RuntimeIdsTest) ... ok\ntest_macro_name_collisions_preserve_symbolic_runtime_ids (__main__.RuntimeIdsTest) ... ok\ntest_namespaced_effects_fall_back_to_runtime_ids (__main__.RuntimeIdsTest) ... ok\ntest_unknown_ids_still_fail (__main__.RuntimeIdsTest) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 6.400s\n\nOK\n"
+  },
+  "existing_suite": {
+    "command": "BEND_REPO=\"$PWD/build/bend-steps/step-01/bend\" just test",
+    "exit_code": 0,
+    "tests": 40,
+    "log": "python3 tests/smoke.py\ntest_fwht_involution (__main__.PlaygroundSmokeTest) ... ok\ntest_generated_balls_flat_is_current (__main__.PlaygroundSmokeTest) ... ok\ntest_intro_includes_expected_type_errors (__main__.PlaygroundSmokeTest) ... ok\ntest_just_forwards_multiple_arguments (__main__.PlaygroundSmokeTest) ... ok\ntest_missing_compiler_explains_setup (__main__.PlaygroundSmokeTest) ... ok\ntest_run_from_unrelated_directory_with_spaces (__main__.PlaygroundSmokeTest) ... ok\ntest_simulations_match_their_c_twins (__main__.PlaygroundSmokeTest) ... ok\ntest_unsafe_proof_fails_the_check (__main__.PlaygroundSmokeTest) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 11.766s\n\nOK\npython3 tests/benchmark.py\ntest_benchmark_scripts_parse_with_system_bash (__main__.BenchmarkTest) ... ok\ntest_failed_program_does_not_produce_a_measurement (__main__.BenchmarkTest) ... ok\ntest_json_measurement_records_samples_and_units (__main__.BenchmarkTest) ... ok\ntest_max_rss_has_the_same_units_on_macos_and_linux (__main__.BenchmarkTest) ... ok\ntest_measurement_suppresses_program_output (__main__.BenchmarkTest) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.228s\n\nOK\npython3 tests/algorithms.py\ntest_ast_fold_preserves_values_and_removes_nodes (__main__.AlgorithmTest) ... ok\ntest_default_cli_selects_all_programs (__main__.AlgorithmTest) ... ok\ntest_invalid_case_cannot_change_the_problem_silently (__main__.AlgorithmTest) ... ok\ntest_nqueens_matches_known_solution_counts (__main__.AlgorithmTest) ... ok\ntest_pollard_rho_matches_independent_trial_division (__main__.AlgorithmTest) ... ok\ntest_result_parser_rejects_missing_or_extra_fields (__main__.AlgorithmTest) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 5.989s\n\nOK\npython3 tests/sat.py\ntest_answer_parser_rejects_unknown_and_invalid_witness_fields (__main__.SatTest) ... ok\ntest_bit_32_and_invalid_split_contract (__main__.SatTest) ... ok\ntest_dimacs_comments_multiline_duplicate_literals_and_empty_clause (__main__.SatTest) ... ok\ntest_dimacs_rejects_unsupported_or_malformed_inputs (__main__.SatTest) ... ok\ntest_generated_batch_matches_truth_tables_and_validated_witnesses (__main__.SatTest) ... ok\ntest_pigeonhole_and_repeated_single_formula (__main__.SatTest) ... ok\ntest_prefix_partition_preserves_sat_unsat_and_witnesses (__main__.SatTest) ... ok\ntest_random_cnfs_against_exhaustive_oracle (__main__.SatTest) ... ok\ntest_truth_tables_units_tautologies_and_backtracking (__main__.SatTest) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 10.300s\n\nOK\npython3 tests/ffi.py\ntest_builder_rejects_invalid_sizes_before_compilation (__main__.FfiTest) ... ok\ntest_fit_rejects_degenerate_or_nonfinite_measurements (__main__.FfiTest) ... ok\ntest_native_and_pure_loops_match_independent_oracle (__main__.FfiTest) ... ok\ntest_output_parser_rejects_invalid_values (__main__.FfiTest) ... ok\ntest_regression_removes_startup_and_reports_nanoseconds (__main__.FfiTest) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 7.904s\n\nOK\npython3 tests/grid.py\ntest_benchmark_counts_all_dynamic_layouts (__main__.GridTest) ... ok\ntest_capacity_exhaustion_is_an_error (__main__.GridTest) ... ok\ntest_css_track_parser_and_repeat (__main__.GridTest) ... ok\ntest_native_engines_match_hand_computed_geometry (__main__.GridTest) ... ok\ntest_placement_exhaustion_never_wraps_owned_arrays (__main__.GridTest) ... ok\ntest_sparse_fixed_rows_keep_cursors_by_start_row (__main__.GridTest) ... ok\ntest_unsupported_or_invalid_inputs_fail_explicitly (__main__.GridTest) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 7.425s\n\nOK\n"
+  },
+  "codegen": {
+    "comparison": "byte-identical C output between fixed and patched compilers",
+    "programs": [
+      "ffi/pure",
+      "ffi/io-pure",
+      "ffi/foreign",
+      "particles/flat-noise64-jobs16384"
+    ],
+    "all_equal": true
+  },
+  "packaging": {
+    "fresh_clone_patch_applied": true,
+    "reverse_check_passed": true,
+    "fixture_and_compiler_bytes_match": true,
+    "setup_repeated_twice": true,
+    "pinned_submodule_clean": true,
+    "language_implementation_unchanged": true
+  },
+  "performance_measured": false,
+  "unrun": [
+    "CUDA execution",
+    "upstream cluster gates",
+    "GPU effect execution"
+  ]
+}

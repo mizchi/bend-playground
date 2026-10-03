@@ -1,0 +1,279 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-10-03T15:44:41+09:00",
+  "request": "Verify latest upstream HEAD and rewrite What/Why using the bug issue template",
+  "upstream_head": "947db722640c86247849343657bf2f7ef01cb7f1",
+  "pr_parent": "947db722640c86247849343657bf2f7ef01cb7f1",
+  "pr_head": "f5fadf405df89f339d33582e4f4b937acb603d10",
+  "previous_pr": {
+    "baseRefOid": "947db722640c86247849343657bf2f7ef01cb7f1",
+    "body": "At `main` @ `947db722`, an effect's C source using `FID(Clo~apply)` or `FID(IO~emit)` fails with `names no constructor or def` when Bend code has not already registered that runtime segment's ID. The new `foreign_runtime_apply` test passes a closure to C, with no dynamic application in Bend, and calls it from C.\n\n`compile_book` resolves effect-source IDs before constructing the runtime entries. Reserve both names with `seg_fid` immediately after `file_book` clears the ID table, before reading effect sources. The runtime entries and numeric ID table are still generated at the same place.\n\nAdds two regressions in `tests/io/`: applying the closure and extracting an emit payload. Both have C/JS twins and print `42`. Before the fix, their C compilation fails during ID resolution.\n\n## Checks\n\nReproduced locally on Apple M5 / macOS 26.6.2 / clang 21.\n\n- The two new tests and six existing controls match their expected output in the interpreter, emitted JS and C (`--gpu off`, 1/4 threads).\n- Nine local checks pass, covering namespaces, ID-name collisions, unknown-ID rejection, comment/string substitution and repeated C/JS compilation in one process.\n- Four codegen controls (pure, IO-pure, native effect and flat particle update) produce byte-identical C before and after the fix.\n- `gates/repo.ts`: PASS 49 / 49. `comp.ts`: 63,933 → 63,961 ttok (cap 64,000).\n\nThe full cluster test/perf gates and CUDA were not run locally.\n\nCreated with AI assistance (Codex).\n",
+    "headRefOid": "f5fadf405df89f339d33582e4f4b937acb603d10",
+    "state": "OPEN",
+    "title": "Foreign C sources can name runtime segments before any emitted call uses them",
+    "url": "https://github.com/bendlang/bend/pull/1286"
+  },
+  "updated_pr": {
+    "baseRefOid": "947db722640c86247849343657bf2f7ef01cb7f1",
+    "body": "A native C effect should be able to call a callback received from Bend. This can currently fail at compile time because the compiler resolves the runtime helper's ID before registering it.\n\n### What you did\n\nSaved the two files below and compiled on upstream `main` @ `947db722`, still the latest HEAD when checked on 2026-10-03:\n\n```sh\nbend main.bend -o main.c\n```\n\nThe C effect calls the Bend callback with `40`; the callback adds `2`.\n\n### What happened\n\nC emission fails before clang runs:\n\n```text\nError: FID(Clo~apply) names no constructor or def\n```\n\nExpected: compilation succeeds and the native program prints `42`.\n\n### The file\n\n`main.bend`:\n\n```python\nimport Base\n\ndef native.apply(step: U32 -> U32, value: U32) -> IO(Unit):\n  import \"./native.c\"\n\ndef main() -> IO(Unit):\n  native.apply(x => (x + 2 : U32), 40)\n```\n\n`native.c`:\n\n```c\nstatic Term native_apply_run(Env e, Term* f, IoWork* w) {\n  (void)w;\n  u64 at = task_node(e, FID(Clo~apply), TERM_HOLE, 0, 0);\n  e.mem[at] = f[0];\n  e.mem[at + 1] = f[1];\n  Term result = corpus_eval(e.mem, term_tsk(FID(Clo~apply), at));\n  if (err_seen(e.mem)) err_fail(\"foreign closure application failed\");\n  printf(\"%u\\n\", (u32)result);\n  return term_pak(CID(Unit), 0);\n}\n\nstatic void __attribute__((constructor)) native_apply_use(void) {\n  io_eff(CID(native.apply), native_apply_run, 0);\n}\n```\n\n### Why\n\n`Clo~apply` is the runtime code that applies a closure, and `IO~emit` wraps an IO result. They are implemented in the generated runtime, rather than declared in the Bend book.\n\n`compile_book` reads foreign C sources through `effect_srcs` before creating these runtime segments. `c_ids` accepts a name only if it is in the book or the ID table. When no emitted Bend call has registered the helper yet, it rejects the valid runtime name.\n\n### Change\n\nRegister `IO_EMIT` and `CLO_APPLY` with `seg_fid` immediately after `file_book` resets the ID table. Their names are then available when foreign sources are read. Runtime entries and numeric IDs are still generated at the same place.\n\nAdds two C/JS regression tests: calling the Bend callback from C and extracting an `IO~emit` payload. Both print `42`.\n\n### Verification\n\n- The two-file reproducer fails on upstream main and prints `42` with this patch (C, 1/4 threads, GPU off).\n- Both new tests and six existing controls match their expected output in the interpreter, JS and C.\n- Nine local checks pass; four codegen controls produce byte-identical C before/after.\n- `gates/repo.ts`: PASS 49/49. `comp.ts`: 63,933 → 63,961 ttok (cap 64,000).\n\nFull cluster test/perf gates and CUDA were not run locally.\n\n### bend --version\n\nOutput of `bend version`:\n\n```text\nbend 2.0.34\n```\n\nBase: `947db722640c86247849343657bf2f7ef01cb7f1`; PR head: `f5fadf405df89f339d33582e4f4b937acb603d10`.\n\n### uname -sm\n\n```text\nDarwin arm64\n```\n\nApple M5, macOS 26.6.2.\n\n### clang --version (the first line)\n\n```text\nApple clang version 21.0.0 (clang-2100.0.123.102)\n```\n\nCreated with AI assistance (Codex).\n",
+    "headRefOid": "f5fadf405df89f339d33582e4f4b937acb603d10",
+    "number": 1286,
+    "state": "OPEN",
+    "title": "Fix C emission when a native effect invokes a Bend callback",
+    "updatedAt": "2026-10-03T06:43:54Z",
+    "url": "https://github.com/bendlang/bend/pull/1286"
+  },
+  "template": ".github/ISSUE_TEMPLATE/bug.yml at upstream main 947db722640c86247849343657bf2f7ef01cb7f1",
+  "template_fields": [
+    "What you did",
+    "What happened",
+    "The file",
+    "bend --version",
+    "uname -sm",
+    "clang --version (the first line)"
+  ],
+  "additional_fields": [
+    "Why",
+    "Change",
+    "Verification"
+  ],
+  "reproducer": {
+    "main.bend": "import Base\n\ndef native.apply(step: U32 -> U32, value: U32) -> IO(Unit):\n  import \"./native.c\"\n\ndef main() -> IO(Unit):\n  native.apply(x => (x + 2 : U32), 40)\n",
+    "native.c": "static Term native_apply_run(Env e, Term* f, IoWork* w) {\n  (void)w;\n  u64 at = task_node(e, FID(Clo~apply), TERM_HOLE, 0, 0);\n  e.mem[at] = f[0];\n  e.mem[at + 1] = f[1];\n  Term result = corpus_eval(e.mem, term_tsk(FID(Clo~apply), at));\n  if (err_seen(e.mem)) err_fail(\"foreign closure application failed\");\n  printf(\"%u\\n\", (u32)result);\n  return term_pak(CID(Unit), 0);\n}\n\nstatic void __attribute__((constructor)) native_apply_use(void) {\n  io_eff(CID(native.apply), native_apply_run, 0);\n}\n",
+    "results": {
+      "before": {
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "Error: FID(Clo~apply) names no constructor or def\n"
+      },
+      "after": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "native_outputs": {
+          "1": "42\n",
+          "4": "42\n"
+        }
+      }
+    }
+  },
+  "source_sha256": {
+    "compiler-patches/step-01-ffi-runtime-ids/draft.en.md": "622ba1f68a88d594b28793530b06fe1898f2e9dfe1666b1e9b13716007bd02f1",
+    "compiler-patches/step-01-ffi-runtime-ids/draft.ja.md": "90d11302cf0b4339b6afce2ecd669812816baa33226f3fc9e5234cb13df8b496",
+    "build/bend-prs/ffi-runtime-ids/.github/ISSUE_TEMPLATE/bug.yml": "96e183537da99e4de785c995ae07055b7fb91061ffd4ff7d6102c14a5c8f4347"
+  },
+  "checks": {
+    "latest_head_equals_pr_parent": true,
+    "code_commit_unchanged": true,
+    "published_body_matches_draft": true,
+    "fresh_reader": "PASS",
+    "gate": "ok: visible 3052/3589 chars (pr p90), language en ok, 0 other repository references",
+    "lint_en": {
+      "lang": "en",
+      "paragraphs": 16,
+      "list_items": 4,
+      "headings": 10,
+      "code_blocks": 7,
+      "table_rows_excluded": 0,
+      "signals": [
+        {
+          "id": "style_words",
+          "label": "rare style words",
+          "hits": 0,
+          "measured": "0.00/500",
+          "threshold": "<3/500",
+          "over": false,
+          "note": "post-2022 academic use rose 9-25x",
+          "samples": []
+        },
+        {
+          "id": "corporate_verbs",
+          "label": "corporate verb inflation",
+          "hits": 0,
+          "measured": "0.00/300",
+          "threshold": "<1/300",
+          "over": false,
+          "note": "judge against register",
+          "samples": []
+        },
+        {
+          "id": "empty_openers",
+          "label": "empty-opener cliches",
+          "hits": 0,
+          "measured": "0.00/500",
+          "threshold": "<2/500",
+          "over": false,
+          "note": "one is a yellow flag",
+          "samples": []
+        },
+        {
+          "id": "fake_authority",
+          "label": "uncited authority",
+          "hits": 0,
+          "measured": "0.00/500",
+          "threshold": "<1/500",
+          "over": false,
+          "note": "each needs a name/number/link",
+          "samples": []
+        },
+        {
+          "id": "pseudo_wisdom",
+          "label": "pseudo-wisdom filler",
+          "hits": 0,
+          "measured": "0.00/500",
+          "threshold": "<2/500",
+          "over": false,
+          "note": "survives the deletion test",
+          "samples": []
+        },
+        {
+          "id": "not_just_x",
+          "label": "not-just-X-but-Y",
+          "hits": 0,
+          "measured": "0 total",
+          "threshold": "<3",
+          "over": false,
+          "note": "absolute count per article",
+          "samples": []
+        },
+        {
+          "id": "hedge_preamble",
+          "label": "hedge preambles",
+          "hits": 0,
+          "measured": "0.00/500",
+          "threshold": "<2/500",
+          "over": false,
+          "note": "a human cuts these in pass 2",
+          "samples": []
+        }
+      ],
+      "notes": [],
+      "prose_units": 213,
+      "sentences": 20,
+      "sentence_mean": 10.8,
+      "burstiness_cv": 0.552,
+      "short_pct": 35,
+      "long_pct": 0,
+      "burstiness_ok": true,
+      "burstiness_advisory": false,
+      "mattr100": 0.723,
+      "connector_opens_pct": 0,
+      "em_dash_per_1000w": 0.0,
+      "removable_tells": 0,
+      "floor_exceeded": false,
+      "file": "compiler-patches/step-01-ffi-runtime-ids/draft.en.md"
+    },
+    "lint_ja": {
+      "lang": "ja",
+      "paragraphs": 16,
+      "list_items": 4,
+      "headings": 10,
+      "code_blocks": 7,
+      "table_rows_excluded": 0,
+      "signals": [
+        {
+          "id": "ja_dekimasu",
+          "label": "冗長な丁寧表現 (することができます)",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<2/10000",
+          "over": false,
+          "note": "「できる」で足りる",
+          "samples": []
+        },
+        {
+          "id": "ja_juuyou",
+          "label": "空虚な規範 (〜することが重要です)",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<1/10000",
+          "over": false,
+          "note": "主語のない当為",
+          "samples": []
+        },
+        {
+          "id": "ja_kyocho",
+          "label": "空虚な強調語",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<3/10000",
+          "over": false,
+          "note": "具体性で置換する",
+          "samples": []
+        },
+        {
+          "id": "ja_ryouron",
+          "label": "無意味な両論併記",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<1/10000",
+          "over": false,
+          "note": "自分の立場を出す",
+          "samples": []
+        },
+        {
+          "id": "ja_ippanron",
+          "label": "出典なき一般論",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<1/10000",
+          "over": false,
+          "note": "誰が言ったのかを書く",
+          "samples": []
+        },
+        {
+          "id": "ja_tekisetsu",
+          "label": "「適切に」「バランスが重要」",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<1/10000",
+          "over": false,
+          "note": "判断を読者に丸投げしている",
+          "samples": []
+        },
+        {
+          "id": "ja_shinkou",
+          "label": "進行実況 (本章では / ここまでで)",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<2/10000",
+          "over": false,
+          "note": "文書を更新する文",
+          "samples": []
+        },
+        {
+          "id": "ja_shimekukuri",
+          "label": "定型の締め",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<1/10000",
+          "over": false,
+          "note": "「おわり」で足りる",
+          "samples": []
+        }
+      ],
+      "notes": [],
+      "prose_units": 823,
+      "sentences": 20,
+      "sentence_mean": 39.5,
+      "burstiness_cv": 0.483,
+      "short_pct": 5,
+      "long_pct": 5,
+      "burstiness_ok": true,
+      "burstiness_advisory": true,
+      "mattr100": 0.664,
+      "connector_opens_pct": 0,
+      "taigendome": 0,
+      "rhetorical_q": 0,
+      "sents_per_para": 1.44,
+      "one_sent_para_pct": 69,
+      "five_plus_para_pct": 0,
+      "first_para_sents": 1,
+      "heading_label_pct": 90,
+      "heading_len_median": 12,
+      "removable_tells": 0,
+      "floor_exceeded": false,
+      "file": "compiler-patches/step-01-ffi-runtime-ids/draft.ja.md"
+    }
+  }
+}

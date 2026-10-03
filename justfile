@@ -124,6 +124,14 @@ bench-particles-gpu *args="":
 check-ffi:
     python3 tests/ffi.py
 
+# Prepare the isolated pinned compiler with the step 1 patch.
+setup-bend-step01:
+    python3 scripts/bend_step01.py setup
+
+# Verify step 1 on the isolated compiler; explicit BEND_REPO overrides it.
+check-bend-step01:
+    python3 scripts/bend_step01.py check
+
 # Measure per-call native FFI overhead and optional batching.
 bench-ffi *args="":
     python3 scripts/ffi_bench.py {{args}}
@@ -179,3 +187,19 @@ build-sort depth="25":
 # Run the existing sorting correctness matrix (requires a GPU).
 check-sort:
     ./examples/ds/sort/verify.sh
+
+# Verify compiler-side specialization of statically known callbacks.
+check-bend-step02:
+    python3 scripts/bend_step02.py check
+
+# Prepare the pinned compiler checkout for the callback specialization experiment.
+setup-bend-step02:
+    python3 scripts/bend_step02.py setup
+
+# Build, validate, then measure old/new compilers with unchanged particle sources.
+bench-bend-step02 *args="":
+    python3 scripts/bend_step02_bench.py {{args}}
+
+# Run upstream closure and array regressions locally across interpreter/JS/C lanes.
+check-bend-step02-upstream:
+    python3 scripts/bend_step02.py check-upstream

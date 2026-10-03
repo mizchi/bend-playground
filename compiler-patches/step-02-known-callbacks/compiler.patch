@@ -1,0 +1,184 @@
+diff --git a/bend2/comp.ts b/bend2/comp.ts
+index a824dce0..d376048e 100644
+--- a/bend2/comp.ts
++++ b/bend2/comp.ts
+@@ -1343,6 +1343,171 @@ function flat_of(k: Name): boolean {
+   });
+ }
+ 
++// Known callbacks
++// ===============
++
++// Specialize a checked C book, never the caller's book or JS/interpreter code.
++// Scalar captures become leading parameters. Keep dynamic, dependent, foreign
++// and recursive callees on the generic path; cap generated definitions too.
++function book_callbacks(src: Bend.Book): Bend.Book {
++  const book = { ...src, tlds: { ...src.tlds } };
++  let made = 0;
++  let budget = FOLD_FUEL;
++  const strip = (t: Bend.LTerm): Bend.LTerm => Bend.term_strip(t);
++  const children = (t: Bend.LTerm): Bend.LTerm[] => {
++    switch (t.$) {
++      case "Ann": return [t.x];
++      case "Lam": return [t.f];
++      case "Let": return [...t.v, t.f];
++      case "App": return [t.f, t.x];
++      case "Mat": return [t.h, t.m];
++      case "Ctr": return t.x;
++      case "Rwt": return [t.f];
++      default: return [];
++    }
++  };
++  const any = (t: Bend.LTerm, p: (s: Bend.LTerm) => boolean): boolean =>
++    p(t) || children(t).some((x) => any(x, p));
++  const closed = (t: HTerm): boolean => {
++    const walk = (s: Bend.LTerm): boolean => {
++      s = Bend.term_force(s);
++      if (s.$ === "Var") return false;
++      if (s.$ === "All") return walk(s.A) && walk(s.B);
++      if (s.$ === "Typ") return walk(s.g);
++      if (s.$ === "Min") return walk(s.a) && walk(s.b);
++      if (s.$ === "Eql") return walk(s.a) && walk(s.b) && walk(s.T);
++      if (s.$ === "ADT" || s.$ === "Ctr") return s.x.every(walk);
++      return children(s).every(walk);
++    };
++    return walk(Bend.term_lower(t));
++  };
++  const remove = (T: HTerm, at: number, cb: HTerm): HTerm => {
++    const a = Bend.tele_open(book, T)!;
++    return at === 0 ? a.B(cb) : Bend.All(a.q, a.k, a.i, a.A,
++      (x: HTerm) => remove(a.B(x), at - 1, cb), a.s);
++  };
++  const bake = (t: HTerm, T: HTerm, at: number, cb: HTerm): HTerm => {
++    const [s, ty] = ty_peel(t, T);
++    if (s.$ === "Lam") {
++      const a = Bend.tele_open(book, ty!)!;
++      if (at === 0) return s.f(cb);
++      return Bend.Ann(Bend.Lam(s.k, s.i, (x: HTerm) =>
++        bake(s.f(x), a.B(x), at - 1, cb), s.s, s.q), remove(ty!, at, cb));
++    }
++    if (s.$ === "Mat" && at > 0) {
++      return Bend.Ann(Bend.Mat(s.k,
++        bake(s.h, ty_ann(s.h)!, at - 1 + book.ctrs[s.k].n, cb),
++        bake(s.m, ty_ann(s.m)!, at, cb), s.s), remove(ty!, at, cb));
++    }
++    if (s.$ === "Efq") return Bend.Ann(s, remove(ty!, at, cb));
++    throw new Error("callback binder is not exposed");
++  };
++  const go = (t: Bend.LTerm, depth: number): Bend.LTerm => {
++    if (budget-- <= 0) return t;
++    if (t.$ === "App") {
++      const args: Bend.LTerm[] = [];
++      let head: Bend.LTerm = t;
++      while (strip(head).$ === "App") {
++        const a = strip(head) as Extract<Bend.LTerm, { $: "App" }>;
++        args.unshift(a.x);
++        head = a.f;
++      }
++      if (strip(head).$ === "Lam") {
++        let env: Bend.Env = null;
++        for (let i = 0; i < depth; ++i) env = Bend.list_set(env, i, Bend.Var("v", i));
++        const apply = (f: HTerm, j: number): HTerm => {
++          const lam = Bend.term_strip(f);
++          if (j === args.length || lam.$ !== "Lam") {
++            return args.slice(j).reduce((g, a) =>
++              Bend.App(g, Bend.term_higher(a, env)), f);
++          }
++          const a = Bend.term_higher(args[j], env);
++          if (term_strip(a).$ === "Var" || term_const(a)) return apply(lam.f(a), j + 1);
++          return Bend.Let(["arg"], [0], [a], (xs: HTerm[]) =>
++            apply(lam.f(xs[0]), j + 1));
++        };
++        return go(Bend.term_lower(apply(Bend.term_higher(head, env), 0), depth), depth);
++      }
++      const ref = strip(head);
++      const d = ref.$ === "Ref" ? book.tlds[ref.k] : undefined;
++      const at = args.findIndex((x) => strip(x).$ === "Lam");
++      if (ref.$ === "Ref" && !ref.b && d?.$ === "Def" && d.e && !d.i
++        && at >= 0 && args.length === d.n && made < 64
++        && !any(d.e, (s) => s.$ === "Ref" && s.k === ref.k)) {
++        const callback = args[at];
++        const captures = new Map<number, { k: string; T: HTerm }>();
++        let safe = true;
++        any(callback, (s) => {
++          if (s.$ === "Ann") {
++            const v = strip(s.x);
++            if (v.$ === "Var" && v.i >= 0 && v.i < depth) {
++              const T = Bend.term_force(s.T as HTerm);
++              if (!closed(T) || ty_clo(book, T)
++                || lay_of(book, T).ks.includes("box")) safe = false;
++              captures.set(v.i, { k: v.k, T });
++            }
++          }
++          return false;
++        });
++        const doms = Bend.tele_unbind(book, d.T).doms;
++        // This first experiment requires closed parameter/result types.
++        safe &&= doms.every(([, , T]) => closed(T))
++          && closed(Bend.tele_unbind(book, d.T).ret);
++        if (safe) {
++          safe &&= !any(callback, (s) => s.$ === "Var" && s.i >= 0
++            && s.i < depth && !captures.has(s.i));
++          if (!safe) return { ...t, f: go(t.f, depth), x: go(t.x, depth) };
++          const caps = [...captures];
++          const T = caps.reduceRight((T, [, c]) =>
++            Bend.All<Bend.HBody>(Bend.Lone(), c.k, 0, c.T, () => T), remove(d.T, at, DUMMY));
++          const wrap = (j: number, env: Bend.Env): HTerm => {
++            if (j === caps.length) return bake(Bend.term_higher(d.e!), d.T,
++              at, Bend.term_higher(callback, env));
++            const [i, c] = caps[j];
++            return Bend.Lam(c.k, 0, (x: HTerm) => wrap(j + 1, Bend.list_set(env, i, x)));
++          };
++          try {
++            const h = wrap(0, null);
++            let name: Name;
++            do { name = ref.k + "~callback" + made++; } while (book.tlds[name]);
++            const body = Bend.term_lower(h);
++            const def: Bend.Def = { ...d, n: d.n - 1 + caps.length,
++              T, v: h, e: body };
++            book.tlds[name] = def;
++            // Re-run on the baked body so nested known continuations specialize.
++            book.tlds[name] = { ...def, e: go(body, 0) };
++            return [...caps.map(([i, { k, T }]): Bend.LTerm =>
++              Bend.Ann(Bend.Var(k, i), T as Bend.LTerm)), ...args.filter((_, i) => i !== at)]
++              .reduce((f, x) => Bend.App(f, go(x, depth)),
++                Bend.Ann<[Bend.LTerm]>(Bend.Ref(name), T as Bend.LTerm));
++          } catch (e) {
++            // Pattern shapes outside this subset retain the original call.
++            if (!(e instanceof Error) || e.message !== "callback binder is not exposed") throw e;
++          }
++        }
++      }
++      return { ...t, f: go(t.f, depth), x: go(t.x, depth) };
++    }
++    switch (t.$) {
++      case "Ann": return { ...t, x: go(t.x, depth) };
++      case "Lam": return { ...t, f: go(t.f, Math.max(depth, t.i + 1)) };
++      case "Let": return { ...t, v: t.v.map((x) => go(x, depth)),
++        f: go(t.f, Math.max(depth, ...t.i.map((i) => i + 1))) };
++      case "Mat": return { ...t, h: go(t.h, depth), m: go(t.m, depth) };
++      case "Ctr": return { ...t, x: t.x.map((x) => go(x, depth)) };
++      case "Rwt": return { ...t, f: go(t.f, depth) };
++      default: return t;
++    }
++  };
++  for (const [k, d] of Object.entries(src.tlds)) {
++    if (d.$ === "Def" && d.e && !d.b) {
++      budget = FOLD_FUEL;
++      book.tlds[k] = { ...d, e: go(d.e, 0) };
++    }
++  }
++  return book;
++}
++
+ // Io
+ // ==
+ 
+@@ -2979,6 +3144,7 @@ function compile_segs(fl: File, dev: Set<string>): string {
+ }
+ 
+ export function compile_book(book: Bend.Book): string {
++  book = book_callbacks(book);
+   // a pure main's descriptor names constructors of the types it prints,
+   // so their datatypes are roots too
+   const show = show_main(book);

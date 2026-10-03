@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-03T15:35:13+09:00",
+  "pr": {
+    "number": 1286,
+    "url": "https://github.com/bendlang/bend/pull/1286",
+    "title": "Foreign C sources can name runtime segments before any emitted call uses them",
+    "state": "OPEN",
+    "isDraft": false,
+    "baseRefName": "main",
+    "headRefName": "fix/ffi-runtime-segment-ids",
+    "headRefOid": "f5fadf405df89f339d33582e4f4b937acb603d10",
+    "mergeable": "MERGEABLE",
+    "statusCheckRollup": []
+  },
+  "validated_base_commit": "947db722640c86247849343657bf2f7ef01cb7f1",
+  "playground_base_commit": "b32048b96410c51f1fe1b7f7e451acfcf551a802",
+  "source_state": "Upstream patch committed and pushed; playground validation/report additions uncommitted",
+  "environment": {
+    "platform": "Darwin arm64",
+    "cpu": "Apple M5",
+    "memory_bytes": 34359738368,
+    "os_version": "26.6.2",
+    "clang": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+    "bun": "1.3.5",
+    "python": "3.9.6",
+    "c_flags": "-std=c11 -O3 -pthread -lm",
+    "execution": "CPU only, --gpu off, --threads 1 and 4; JS twins via Bun and Bend interpreter"
+  },
+  "compiler_sha256": {
+    "base_comp.ts": "453e5452f7d5ea1d501b29ce2332623c3f9f4c9e89f407352209716d31638c89",
+    "pr_comp.ts": "6ee41d34c5a2feb41fe16a1a4d43b62ea3a9157eb4b4b84722531bd0c4462244"
+  },
+  "source_sha256": {
+    "compiler-patches/step-01-ffi-runtime-ids/compile-repeat.ts": "ed759524b05ad285667c6574a8514edc652a66692e632adb5a97e40ff8f9cdc2",
+    "compiler-patches/step-01-ffi-runtime-ids/draft.en.md": "da6dc7e7934dc41957447c96505efe3fb7907494e4c66624cf43abb1784097aa",
+    "compiler-patches/step-01-ffi-runtime-ids/draft.ja.md": "766ab49a8db48154fabe505f06bf508e4857306de23b8451dcf641b584f88007",
+    "compiler-patches/step-01-ffi-runtime-ids/foreign_runtime_apply.bend": "f946ea30a2a5d64d0085c76464a6d56b82cac7a27d347c1ed85f39fe3222ac09",
+    "compiler-patches/step-01-ffi-runtime-ids/foreign_runtime_apply.c": "26d5fe9f2ae13452beffde8cebf97f48f31d1f9ae4bd6717e16737d4de06c86d",
+    "compiler-patches/step-01-ffi-runtime-ids/foreign_runtime_apply.js": "4e1eb122f5d1b5361a0e1113cd04f388590d26a5c0e217c06b1773d847840fd5",
+    "compiler-patches/step-01-ffi-runtime-ids/foreign_runtime_emit.bend": "07b413679fce6708b09fe5d117b51ebac7fcf27c14b09064799fcbc729b7fb3f",
+    "compiler-patches/step-01-ffi-runtime-ids/foreign_runtime_emit.c": "f423ebe74c60de6d5bdbdc39d59a0e1620890058131e0605e81a013c6764f92e",
+    "compiler-patches/step-01-ffi-runtime-ids/foreign_runtime_emit.js": "0646e7862a23d6799dc1da9729112b38c1692d95042ab82c31fb3d97aa1f6d63",
+    "compiler-patches/step-01-ffi-runtime-ids/maintainer.md": "1bcd720a1a28cfa683f2578cd647a66a408f65b98cfeef4270a67031b42aaf28",
+    "compiler-patches/step-01-ffi-runtime-ids/pr.patch": "0b0015e117f0e2c83034203d439ad98843ab3f52b3c6472e3eb65f6e8e5891fe",
+    "justfile": "062d9033df0724aeec1924dbaaf274bfedcb5bd72841988ef34334997974625e",
+    "scripts/bend.sh": "a503684b2aab40d1c06355f2b125541ed4c1711da078733b6f72ad84540394bb",
+    "scripts/bend_step01.py": "941ea909794fd536ca5ecc31705aeb058a33073d1682640dbc6061dfa74cf0d6",
+    "tests/bend_step01.py": "eb152e49a576eb56e5f70425c1687b4323ae99fadb3bfddf9e7fcf5b5f2c08e1"
+  },
+  "red": {
+    "tests": 9,
+    "failed_test_methods": 6,
+    "failures_including_subtests": 7,
+    "exit_code": 1,
+    "log": "python3 scripts/bend_step01.py check\ntest_c_compilation_resets_ids_after_c_and_js_compilation (__main__.RuntimeIdsTest) ... FAIL\ntest_comment_and_string_literals_keep_existing_behavior (__main__.RuntimeIdsTest) ... FAIL\ntest_existing_programs_keep_byte_identical_c_codegen (__main__.RuntimeIdsTest) ... ok\ntest_foreign_closure_without_bend_dynamic_application (__main__.RuntimeIdsTest) ... FAIL\ntest_foreign_emit_without_bend_declaration (__main__.RuntimeIdsTest) ... FAIL\ntest_javascript_twins_and_interpreter_match_native_effects (__main__.RuntimeIdsTest) ... ok\ntest_macro_name_collisions_preserve_symbolic_runtime_ids (__main__.RuntimeIdsTest) ... FAIL\ntest_namespaced_effects_fall_back_to_runtime_ids (__main__.RuntimeIdsTest) ... test_unknown_ids_still_fail (__main__.RuntimeIdsTest) ... ok\n\n======================================================================\nFAIL: test_c_compilation_resets_ids_after_c_and_js_compilation (__main__.RuntimeIdsTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 102, in test_c_compilation_resets_ids_after_c_and_js_compilation\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : 1816 | \n1817 | // Die\n1818 | // ===\n1819 | \n1820 | function die(m: string): never {\n1821 |   throw new Error(m);\n                   ^\nerror: FID(Clo~apply) names no constructor or def\n      at die (<PLAYGROUND>/build/bend-prs/ffi-runtime-ids-base/bend2/comp.ts:1821:13)\n      at <anonymous> (<PLAYGROUND>/build/bend-prs/ffi-runtime-ids-base/bend2/comp.ts:2717:10)\n      at map (1:11)\n      at compile_book (<PLAYGROUND>/build/bend-prs/ffi-runtime-ids-base/bend2/comp.ts:2772:12)\n      at <PLAYGROUND>/compiler-patches/step-01-ffi-runtime-ids/compile-repeat.ts:17:20\n\nBun v1.3.5 (macOS arm64)\n\n\n======================================================================\nFAIL: test_comment_and_string_literals_keep_existing_behavior (__main__.RuntimeIdsTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 115, in test_comment_and_string_literals_keep_existing_behavior\n    self.compile_run(self.work / \"foreign_runtime_apply.bend\")\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 34, in compile_run\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : Error: FID(Clo~apply) names no constructor or def\n\n\n======================================================================\nFAIL: test_foreign_closure_without_bend_dynamic_application (__main__.RuntimeIdsTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 44, in test_foreign_closure_without_bend_dynamic_application\n    self.compile_run(self.work / \"foreign_runtime_apply.bend\")\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 34, in compile_run\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : Error: FID(Clo~apply) names no constructor or def\n\n\n======================================================================\nFAIL: test_foreign_emit_without_bend_declaration (__main__.RuntimeIdsTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 47, in test_foreign_emit_without_bend_declaration\n    self.compile_run(self.work / \"foreign_runtime_emit.bend\")\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 34, in compile_run\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : Error: FID(IO~emit) names no constructor or def\n\n\n======================================================================\nFAIL: test_macro_name_collisions_preserve_symbolic_runtime_ids (__main__.RuntimeIdsTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 83, in test_macro_name_collisions_preserve_symbolic_runtime_ids\n    self.compile_run(source)\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 34, in compile_run\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : Error: FID(Clo~apply) names no constructor or def\n\n\n======================================================================\nFAIL: test_namespaced_effects_fall_back_to_runtime_ids (__main__.RuntimeIdsTest) (segment='apply')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 72, in test_namespaced_effects_fall_back_to_runtime_ids\n    self.compile_run(source)\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 34, in compile_run\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : Error: FID(Clo~apply) names no constructor or def\n\n\n======================================================================\nFAIL: test_namespaced_effects_fall_back_to_runtime_ids (__main__.RuntimeIdsTest) (segment='emit')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 72, in test_namespaced_effects_fall_back_to_runtime_ids\n    self.compile_run(source)\n  File \"<PLAYGROUND>/tests/bend_step01.py\", line 34, in compile_run\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : Error: FID(IO~emit) names no constructor or def\n\n\n----------------------------------------------------------------------\nRan 9 tests in 2.900s\n\nFAILED (failures=7)\nerror: Recipe `check-bend-step01` failed on line 133 with exit code 1\n"
+  },
+  "green": {
+    "tests": 9,
+    "exit_code": 0,
+    "log": "python3 scripts/bend_step01.py check\ntest_c_compilation_resets_ids_after_c_and_js_compilation (__main__.RuntimeIdsTest) ... ok\ntest_comment_and_string_literals_keep_existing_behavior (__main__.RuntimeIdsTest) ... ok\ntest_existing_programs_keep_byte_identical_c_codegen (__main__.RuntimeIdsTest) ... ok\ntest_foreign_closure_without_bend_dynamic_application (__main__.RuntimeIdsTest) ... ok\ntest_foreign_emit_without_bend_declaration (__main__.RuntimeIdsTest) ... ok\ntest_javascript_twins_and_interpreter_match_native_effects (__main__.RuntimeIdsTest) ... ok\ntest_macro_name_collisions_preserve_symbolic_runtime_ids (__main__.RuntimeIdsTest) ... ok\ntest_namespaced_effects_fall_back_to_runtime_ids (__main__.RuntimeIdsTest) ... ok\ntest_unknown_ids_still_fail (__main__.RuntimeIdsTest) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 4.483s\n\nOK\n"
+  },
+  "pinned_compiler_after_harness_update": {
+    "tests": 9,
+    "exit_code": 0,
+    "log": "python3 scripts/bend_step01.py check\ntest_c_compilation_resets_ids_after_c_and_js_compilation (__main__.RuntimeIdsTest) ... ok\ntest_comment_and_string_literals_keep_existing_behavior (__main__.RuntimeIdsTest) ... ok\ntest_existing_programs_keep_byte_identical_c_codegen (__main__.RuntimeIdsTest) ... ok\ntest_foreign_closure_without_bend_dynamic_application (__main__.RuntimeIdsTest) ... ok\ntest_foreign_emit_without_bend_declaration (__main__.RuntimeIdsTest) ... ok\ntest_javascript_twins_and_interpreter_match_native_effects (__main__.RuntimeIdsTest) ... ok\ntest_macro_name_collisions_preserve_symbolic_runtime_ids (__main__.RuntimeIdsTest) ... ok\ntest_namespaced_effects_fall_back_to_runtime_ids (__main__.RuntimeIdsTest) ... ok\ntest_unknown_ids_still_fail (__main__.RuntimeIdsTest) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 6.733s\n\nOK\n"
+  },
+  "upstream_tests": [
+    {
+      "program": "io/foreign_runtime_apply",
+      "expected": "42",
+      "outputs": {
+        "interpreter": "42",
+        "js": "42",
+        "c_threads_1": "42",
+        "c_threads_4": "42"
+      }
+    },
+    {
+      "program": "io/foreign_runtime_emit",
+      "expected": "42",
+      "outputs": {
+        "interpreter": "42",
+        "js": "42",
+        "c_threads_1": "42",
+        "c_threads_4": "42"
+      }
+    },
+    {
+      "program": "io/effect_cid_in_comment",
+      "expected": "42",
+      "outputs": {
+        "interpreter": "42",
+        "js": "42",
+        "c_threads_1": "42",
+        "c_threads_4": "42"
+      }
+    },
+    {
+      "program": "io/foreign_shared",
+      "expected": "216",
+      "outputs": {
+        "interpreter": "216",
+        "js": "216",
+        "c_threads_1": "216",
+        "c_threads_4": "216"
+      }
+    },
+    {
+      "program": "io/foreign_types",
+      "expected": "77",
+      "outputs": {
+        "interpreter": "77",
+        "js": "77",
+        "c_threads_1": "77",
+        "c_threads_4": "77"
+      }
+    },
+    {
+      "program": "io/cid_capture",
+      "expected": "None\n6",
+      "outputs": {
+        "interpreter": "None\n6",
+        "js": "None\n6",
+        "c_threads_1": "None\n6",
+        "c_threads_4": "None\n6"
+      }
+    },
+    {
+      "program": "io/effect_undefined_word",
+      "expected": "18",
+      "outputs": {
+        "interpreter": "18",
+        "js": "18",
+        "c_threads_1": "18",
+        "c_threads_4": "18"
+      }
+    },
+    {
+      "program": "run/ids_unique",
+      "expected": "11115",
+      "outputs": {
+        "interpreter": "11115",
+        "js": "11115",
+        "c_threads_1": "11115",
+        "c_threads_4": "11115"
+      }
+    }
+  ],
+  "codegen_controls": {
+    "programs": [
+      "ffi/pure",
+      "ffi/io-pure",
+      "ffi/foreign",
+      "particles/flat-noise64-jobs16384"
+    ],
+    "all_c_bytes_equal": true,
+    "particle_copy_adjustment": "CID(api.Tick) resolved as CID(Tick) in both copies"
+  },
+  "repo_gate": {
+    "output": "PASS: 49 / 49",
+    "temporary_violation_rejected": true,
+    "temporary_violation_removed": true,
+    "ttok_base": 63933,
+    "ttok_pr": 63961,
+    "comp_cap": 64000
+  },
+  "submission_checks": {
+    "gate": "ok: visible 1552/3589 chars (pr p90), language en ok, 0 other repository references",
+    "fresh_reader": "PASS",
+    "english_corpus_n": 22,
+    "english_baseline_removable_tells_max": 1,
+    "japanese_corpus_n": 0,
+    "ja_lint": {
+      "lang": "ja",
+      "paragraphs": 6,
+      "list_items": 4,
+      "headings": 2,
+      "code_blocks": 0,
+      "table_rows_excluded": 0,
+      "signals": [
+        {
+          "id": "ja_dekimasu",
+          "label": "冗長な丁寧表現 (することができます)",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<2/10000",
+          "over": false,
+          "note": "「できる」で足りる",
+          "samples": []
+        },
+        {
+          "id": "ja_juuyou",
+          "label": "空虚な規範 (〜することが重要です)",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<1/10000",
+          "over": false,
+          "note": "主語のない当為",
+          "samples": []
+        },
+        {
+          "id": "ja_kyocho",
+          "label": "空虚な強調語",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<3/10000",
+          "over": false,
+          "note": "具体性で置換する",
+          "samples": []
+        },
+        {
+          "id": "ja_ryouron",
+          "label": "無意味な両論併記",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<1/10000",
+          "over": false,
+          "note": "自分の立場を出す",
+          "samples": []
+        },
+        {
+          "id": "ja_ippanron",
+          "label": "出典なき一般論",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<1/10000",
+          "over": false,
+          "note": "誰が言ったのかを書く",
+          "samples": []
+        },
+        {
+          "id": "ja_tekisetsu",
+          "label": "「適切に」「バランスが重要」",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<1/10000",
+          "over": false,
+          "note": "判断を読者に丸投げしている",
+          "samples": []
+        },
+        {
+          "id": "ja_shinkou",
+          "label": "進行実況 (本章では / ここまでで)",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<2/10000",
+          "over": false,
+          "note": "文書を更新する文",
+          "samples": []
+        },
+        {
+          "id": "ja_shimekukuri",
+          "label": "定型の締め",
+          "hits": 0,
+          "measured": "0.00/10000",
+          "threshold": "<1/10000",
+          "over": false,
+          "note": "「おわり」で足りる",
+          "samples": []
+        }
+      ],
+      "notes": [],
+      "prose_units": 528,
+      "sentences": 11,
+      "sentence_mean": 46.8,
+      "burstiness_cv": 0.437,
+      "short_pct": 0,
+      "long_pct": 9,
+      "burstiness_ok": true,
+      "burstiness_advisory": true,
+      "mattr100": null,
+      "connector_opens_pct": 0,
+      "taigendome": 0,
+      "rhetorical_q": 0,
+      "sents_per_para": 1.83,
+      "one_sent_para_pct": 50,
+      "five_plus_para_pct": 0,
+      "first_para_sents": 2,
+      "heading_label_pct": 50,
+      "heading_len_median": 26,
+      "removable_tells": 0,
+      "floor_exceeded": false,
+      "file": "compiler-patches/step-01-ffi-runtime-ids/draft.ja.md"
+    },
+    "en_lint": {
+      "lang": "en",
+      "paragraphs": 6,
+      "list_items": 4,
+      "headings": 2,
+      "code_blocks": 0,
+      "table_rows_excluded": 0,
+      "signals": [
+        {
+          "id": "style_words",
+          "label": "rare style words",
+          "hits": 0,
+          "measured": "0.00/500",
+          "threshold": "<3/500",
+          "over": false,
+          "note": "post-2022 academic use rose 9-25x",
+          "samples": []
+        },
+        {
+          "id": "corporate_verbs",
+          "label": "corporate verb inflation",
+          "hits": 0,
+          "measured": "0.00/300",
+          "threshold": "<1/300",
+          "over": false,
+          "note": "judge against register",
+          "samples": []
+        },
+        {
+          "id": "empty_openers",
+          "label": "empty-opener cliches",
+          "hits": 0,
+          "measured": "0.00/500",
+          "threshold": "<2/500",
+          "over": false,
+          "note": "one is a yellow flag",
+          "samples": []
+        },
+        {
+          "id": "fake_authority",
+          "label": "uncited authority",
+          "hits": 0,
+          "measured": "0.00/500",
+          "threshold": "<1/500",
+          "over": false,
+          "note": "each needs a name/number/link",
+          "samples": []
+        },
+        {
+          "id": "pseudo_wisdom",
+          "label": "pseudo-wisdom filler",
+          "hits": 0,
+          "measured": "0.00/500",
+          "threshold": "<2/500",
+          "over": false,
+          "note": "survives the deletion test",
+          "samples": []
+        },
+        {
+          "id": "not_just_x",
+          "label": "not-just-X-but-Y",
+          "hits": 0,
+          "measured": "0 total",
+          "threshold": "<3",
+          "over": false,
+          "note": "absolute count per article",
+          "samples": []
+        },
+        {
+          "id": "hedge_preamble",
+          "label": "hedge preambles",
+          "hits": 0,
+          "measured": "0.00/500",
+          "threshold": "<2/500",
+          "over": false,
+          "note": "a human cuts these in pass 2",
+          "samples": []
+        }
+      ],
+      "notes": [],
+      "prose_units": 128,
+      "sentences": 11,
+      "sentence_mean": 11.6,
+      "burstiness_cv": 0.4,
+      "short_pct": 36,
+      "long_pct": 0,
+      "burstiness_ok": true,
+      "burstiness_advisory": false,
+      "mattr100": 0.73,
+      "connector_opens_pct": 0,
+      "em_dash_per_1000w": 0.0,
+      "removable_tells": 0,
+      "floor_exceeded": false,
+      "file": "compiler-patches/step-01-ffi-runtime-ids/draft.en.md"
+    }
+  },
+  "verification": {
+    "pinned_submodule_clean": true,
+    "pr_checkout_clean": true,
+    "published_body_matches_draft": true,
+    "published_paths_match_7_file_patch": true
+  },
+  "unrun": [
+    "full upstream cluster test/perf gates",
+    "CUDA"
+  ],
+  "performance_measured": false
+}

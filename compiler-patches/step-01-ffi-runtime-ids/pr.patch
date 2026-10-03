@@ -1,0 +1,116 @@
+diff --git a/bend2/comp.ts b/bend2/comp.ts
+index a979a039..ea0d638b 100644
+--- a/bend2/comp.ts
++++ b/bend2/comp.ts
+@@ -2752,6 +2752,9 @@ export function compile_book(book: Bend.Book): string {
+   const fams = (show ?? []).flatMap((c) =>
+     typeof c === "string" ? [Bend.book_fam(book, c)] : []);
+   const fl = file_book(book, ["main", ...RUNTIME_ADTS, ...fams], false);
++  // Foreign sources may name these segments before any emitted call does.
++  seg_fid(IO_EMIT);
++  seg_fid(CLO_APPLY);
+   const facts = () => fl.own.size + fl.hot.size + fl.stat.size;
+   let was: number;
+   let reqs: string;
+diff --git a/tests/io/foreign_runtime_apply.bend b/tests/io/foreign_runtime_apply.bend
+new file mode 100644
+index 00000000..574134f2
+--- /dev/null
++++ b/tests/io/foreign_runtime_apply.bend
+@@ -0,0 +1,12 @@
++# A closure is passed to C without any dynamic application in Bend. The
++# effect must still be able to name the runtime's Clo~apply segment.
++import Base
++
++def native.apply(step: U32 -> U32, value: U32) -> IO(Unit):
++  import "./foreign_runtime_apply.c"
++  import "./foreign_runtime_apply.js"
++
++def main() -> IO(Unit):
++  native.apply(x => (x + 2 : U32), 40)
++
++#|42
+diff --git a/tests/io/foreign_runtime_apply.c b/tests/io/foreign_runtime_apply.c
+new file mode 100644
+index 00000000..9d665faa
+--- /dev/null
++++ b/tests/io/foreign_runtime_apply.c
+@@ -0,0 +1,14 @@
++static Term native_apply_run(Env e, Term* f, IoWork* w) {
++  (void)w;
++  u64 at = task_node(e, FID(Clo~apply), TERM_HOLE, 0, 0);
++  e.mem[at] = f[0];
++  e.mem[at + 1] = f[1];
++  Term result = corpus_eval(e.mem, term_tsk(FID(Clo~apply), at));
++  if (err_seen(e.mem)) err_fail("foreign closure application failed");
++  printf("%u\n", (u32)result);
++  return term_pak(CID(Unit), 0);
++}
++
++static void __attribute__((constructor)) native_apply_use(void) {
++  io_eff(CID(native.apply), native_apply_run, 0);
++}
+diff --git a/tests/io/foreign_runtime_apply.js b/tests/io/foreign_runtime_apply.js
+new file mode 100644
+index 00000000..8a0318d0
+--- /dev/null
++++ b/tests/io/foreign_runtime_apply.js
+@@ -0,0 +1,6 @@
++function native_apply(step, value) {
++  console.log(step(value));
++  return { $: CID(Unit) };
++}
++
++io_eff(CID(native.apply), native_apply);
+diff --git a/tests/io/foreign_runtime_emit.bend b/tests/io/foreign_runtime_emit.bend
+new file mode 100644
+index 00000000..99a9576a
+--- /dev/null
++++ b/tests/io/foreign_runtime_emit.bend
+@@ -0,0 +1,11 @@
++# IO~emit is another runtime segment that has no declaration in the book.
++import Base
++
++def native.emit(value: U32) -> IO(Unit):
++  import "./foreign_runtime_emit.c"
++  import "./foreign_runtime_emit.js"
++
++def main() -> IO(Unit):
++  native.emit(42)
++
++#|42
+diff --git a/tests/io/foreign_runtime_emit.c b/tests/io/foreign_runtime_emit.c
+new file mode 100644
+index 00000000..6c51d967
+--- /dev/null
++++ b/tests/io/foreign_runtime_emit.c
+@@ -0,0 +1,17 @@
++static Term native_emit_run(Env e, Term* f, IoWork* w) {
++  (void)w;
++  u64 at = task_node(e, FID(IO~emit), TERM_HOLE, 0, 0);
++  e.mem[at] = f[0];
++  Term result = corpus_eval(e.mem, term_tsk(FID(IO~emit), at));
++  if (err_seen(e.mem) || term_aux(result) != CID(Emit))
++    err_fail("foreign emit failed");
++  u64 loc = term_loc(result);
++  Term value = e.mem[loc];
++  heap_free(e, 0, loc);
++  printf("%u\n", (u32)value);
++  return term_pak(CID(Unit), 0);
++}
++
++static void __attribute__((constructor)) native_emit_use(void) {
++  io_eff(CID(native.emit), native_emit_run, 0);
++}
+diff --git a/tests/io/foreign_runtime_emit.js b/tests/io/foreign_runtime_emit.js
+new file mode 100644
+index 00000000..eada646c
+--- /dev/null
++++ b/tests/io/foreign_runtime_emit.js
+@@ -0,0 +1,6 @@
++function native_emit(value) {
++  console.log(value);
++  return { $: CID(Unit) };
++}
++
++io_eff(CID(native.emit), native_emit);
