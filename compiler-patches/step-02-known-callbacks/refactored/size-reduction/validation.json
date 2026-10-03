@@ -1,0 +1,211 @@
+{
+  "upstream_main": "947db722640c86247849343657bf2f7ef01cb7f1",
+  "published_callback": "b59588e2a9c63092b542739bb6908c3329d2e353",
+  "tokens": {
+    "main": 63933,
+    "published": 64777,
+    "compacted_main": 63082,
+    "compacted_callback": 63909,
+    "cap": 64000
+  },
+  "reductions": {
+    "type_notation": 239,
+    "constructor_imports": 38,
+    "comments": 591,
+    "total": 868
+  },
+  "compiler_sha256": {
+    "compacted_main": "086d124fbeed211286ba01ab2edf834b554a9c14a5d5f2354659ac9f409af90c",
+    "compacted_callback": "17dfee4514a2089246dad2028258a33d4b9a323eaa029427c41718ce81d5d1ab"
+  },
+  "compiler_diff_after_compaction": {
+    "added": 69,
+    "removed": 15
+  },
+  "logs": {
+    "contracts": ".............\n----------------------------------------------------------------------\nRan 13 tests in 12.092s\n\nOK\n",
+    "upstream": "PASS closures_hof\nPASS fn_capture_owns\nPASS unsafe_mutual\nPASS array_map_loop\nPASS js_tail_closure\nPASS js_loop_capture\nPASS array_poly_elem\nPASS array_boxed_get\nPASS array_split_join\nPASS array_wrap_index\nPASS array_fill_fold\nPASS ids_unique\n",
+    "repo_gate": "PASS: 49 / 49\n",
+    "typescript": "build/bend-prs/known-callbacks-size-probe/bend2/bend.ts(2040,51): error TS2339: Property 'k' does not exist on type 'LTerm'.\n  Property 'k' does not exist on type '{ $: \"Qnt\"; } & { s?: Span; }'.\nbuild/bend-prs/known-callbacks-size-probe/bend2/bend.ts(3764,27): error TS2339: Property 'v' does not exist on type 'TLD'.\n  Property 'v' does not exist on type 'ADT'.\n",
+    "compaction_upstream": "PASS closures_hof\nPASS fn_capture_owns\nPASS unsafe_mutual\nPASS array_map_loop\nPASS js_tail_closure\nPASS js_loop_capture\nPASS array_poly_elem\nPASS array_boxed_get\nPASS array_split_join\nPASS array_wrap_index\nPASS array_fill_fold\nPASS ids_unique\n",
+    "compaction_repo_gate": "PASS: 49 / 49\n"
+  },
+  "particle_codegen": [
+    {
+      "variant": "callback",
+      "jobs": 1024,
+      "byte_identical": true,
+      "reference_sha256": "a2dfc61d7bf61cc38a113344545ca3566bee6b9d17ba5f863d32e5dd6634d4a9"
+    },
+    {
+      "variant": "callback",
+      "jobs": 16384,
+      "byte_identical": true,
+      "reference_sha256": "e652499c256abb9a10b8c4755ade4fd0a835c26cbc1984922f9be080b10367a5"
+    },
+    {
+      "variant": "flat",
+      "jobs": 1024,
+      "byte_identical": true,
+      "reference_sha256": "5e4f32ac5e507dc562002274068661b474a7302c6ac45f65c240a69863ff7e55"
+    },
+    {
+      "variant": "flat",
+      "jobs": 16384,
+      "byte_identical": true,
+      "reference_sha256": "752a042b63ce55f5366a7857eaddd65e6f90eb3298c6ee0af1dda37a7138b2af"
+    }
+  ],
+  "upstream_codegen": [
+    {
+      "program": "closures_hof",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "closures_hof",
+      "backend": "js",
+      "byte_identical": true
+    },
+    {
+      "program": "fn_capture_owns",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "fn_capture_owns",
+      "backend": "js",
+      "byte_identical": true
+    },
+    {
+      "program": "unsafe_mutual",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "unsafe_mutual",
+      "backend": "js",
+      "byte_identical": true
+    },
+    {
+      "program": "array_map_loop",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "array_map_loop",
+      "backend": "js",
+      "byte_identical": true
+    },
+    {
+      "program": "js_tail_closure",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "js_tail_closure",
+      "backend": "js",
+      "byte_identical": true
+    },
+    {
+      "program": "js_loop_capture",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "js_loop_capture",
+      "backend": "js",
+      "byte_identical": true
+    },
+    {
+      "program": "array_poly_elem",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "array_poly_elem",
+      "backend": "js",
+      "byte_identical": true
+    },
+    {
+      "program": "array_boxed_get",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "array_boxed_get",
+      "backend": "js",
+      "byte_identical": true
+    },
+    {
+      "program": "array_split_join",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "array_split_join",
+      "backend": "js",
+      "byte_identical": true
+    },
+    {
+      "program": "array_wrap_index",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "array_wrap_index",
+      "backend": "js",
+      "byte_identical": true
+    },
+    {
+      "program": "array_fill_fold",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "array_fill_fold",
+      "backend": "js",
+      "byte_identical": true
+    },
+    {
+      "program": "ids_unique",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "ids_unique",
+      "backend": "js",
+      "byte_identical": true
+    },
+    {
+      "program": "known_callback",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "known_callback",
+      "backend": "js",
+      "byte_identical": true
+    },
+    {
+      "program": "known_callback_array",
+      "backend": "c",
+      "byte_identical": true
+    },
+    {
+      "program": "known_callback_array",
+      "backend": "js",
+      "byte_identical": true
+    }
+  ],
+  "not_run": [
+    "full upstream cluster gates",
+    "CUDA hardware",
+    "new timing run: tested generated C is byte-identical to published measurements"
+  ],
+  "sequential_patch_application": "both patches applied to a fresh main checkout; compiler hash matched the verified candidate",
+  "patch_sha256": {
+    "callback-after-compaction.patch": "96155d595139134a1008318fa8007ad630b71c293bf193bb6d9a3dde1745c86d",
+    "compiler-compaction.patch": "98b07ef51a90e20171c3887050b11b9b3c735353fbd72b4fc62516192717b2a2"
+  }
+}
