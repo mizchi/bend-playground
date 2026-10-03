@@ -1,12 +1,14 @@
 # 既知callbackのコンパイラ最適化: リファレンス実装
 
+[上流PR #1288](https://github.com/bendlang/bend/pull/1288)を作成した。最新main `5a0b523f`を基準に、GPUIバインディングで見つかったcallbackのコストを一般的なコンパイラ最適化として改善する。
+
 Bendの一般的なCコンパイラ最適化を、GPUIのパーティクル更新で検証する。通常の関数に既知のlambdaを渡す場合に、closureの確保と動的適用を省く。CPUとGPUは同じC生成処理を使う。[仕様](SPEC.md)、[English instructions](README.en.md)、[日本語のPR下書き](draft.ja.md)、[英語のPR下書き](draft.en.md)を用意した。
 
 ## 公開した比較対象
 
 | 対象 | 固定コミット |
 | --- | --- |
-| 上流main（2026-10-03確認） | [`947db722`](https://github.com/bendlang/bend/commit/947db722640c86247849343657bf2f7ef01cb7f1) |
+| 計測対象の上流main（2026-10-03確認） | [`947db722`](https://github.com/bendlang/bend/commit/947db722640c86247849343657bf2f7ef01cb7f1) |
 | mizchi/bend `perf/known-callback-fusion` | [`b59588e2`](https://github.com/mizchi/bend/commit/b59588e2a9c63092b542739bb6908c3329d2e353) |
 | playgroundの計測ソース | [`0d2b737a`](https://github.com/mizchi/bend-playground/commit/0d2b737a2b0e020428e223e572d85e6d2c4d748e) |
 
@@ -18,7 +20,7 @@ Bendの一般的なCコンパイラ最適化を、GPUIのパーティクル更�
 
 [compiler.patch](compiler.patch)はコンパイラだけ、[pr.patch](pr.patch)は`comp.ts`とBendの回帰例2ファイルの差分。基準コミットへの`git apply --check`を確認した。GPUIのバインディング、描画方式、手書きMetal kernelはコンパイラの変更に含まれない。
 
-**上流PRは未提出。** コード量のゲートは48/49で、`comp.ts`が63,933 → **64,777 ttok**となり、64,000の恒久上限を超える。今回の整理で直前の64,856から79トークン減ったが、提出にはさらに777トークンの削減が必要。上限の変更や別ファイルへの移動で回避しない。
+計測対象の`b59588e2`は`comp.ts`が**64,777 ttok**で、コード量ゲートは48/49だった。[提出用の版](submission/README.md)は最新main `5a0b523f`（Bend 2.0.35）を基準に、表記の整理と最適化を2コミットに分けて**63,956 ttok、repo gate 49/49**を確認した。恒久上限は変更せず、別ファイルへの移動も行っていない。
 
 [追加の整理の試作](size-reduction/README.md)では、型・import・説明を整理して**63,909 ttok、repo gate 49/49**を確認した。基礎の整理とcallbackの変更を別パッチに分け、検証した生成C/JSが公開版とbyte一致することも確認している。
 
@@ -69,4 +71,4 @@ calleeのbindingを呼び出し元から分離し、captureの早い解放を防
 
 flat版は生成Cが同一でも、GPU完了待ちの中央値が1.572 → 1.524 ms、反復の範囲が1.543–1.841／1.514–1.725 msと揺れた。マシンは専有できず、計測前のCPU idleは2回の観測で74.60%／60.51%。callback版の大きな差は確認できるが、小さい割合の差をコンパイラの効果として扱わない。
 
-PR下書きのfresh readerは全7基準に合格。英文lintは0、corpusの最大は1（13件）。本文のゲートは`ok: visible 3109/3589 chars (pr p90), language en ok`。参照先の2リポジトリは公開済み。
+提出用の版はcallbackの13契約と、上流の16プログラム×4実行方式（64実行）が成功。最新mainのownership回帰2件も含めた。表記の整理のみでは14プログラムの生成C/JSが一致し、計測対象のパーティクルCも両lane計8ファイルが一致したため、時間は再計測していない。[検証記録](submission/validation-macos-m5.json)に最新のコミット・hash・結果を記録した。

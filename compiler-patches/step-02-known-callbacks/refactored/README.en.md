@@ -1,19 +1,21 @@
 # Known-callback fusion: reference implementation
 
+[Upstream PR #1288](https://github.com/bendlang/bend/pull/1288) is based on main `5a0b523f`. It describes the GPUI binding work that exposed the callback cost and the resulting general compiler optimization.
+
 This experiment adds a general optimization to Bend's C compiler: fuse saturated calls that pass one literal lambda with unboxed captures, avoiding closure allocation and dynamic application. The GPUI particle update is a downstream example. CPU and GPU share the C emitter; the compiler patch contains no GPUI bindings or Metal kernels.
 
 ## Pinned comparison
 
 | Compiler | Commit |
 | --- | --- |
-| Upstream main, checked on 2026-10-03 | [`947db722`](https://github.com/bendlang/bend/commit/947db722640c86247849343657bf2f7ef01cb7f1) |
+| Measured upstream main, checked on 2026-10-03 | [`947db722`](https://github.com/bendlang/bend/commit/947db722640c86247849343657bf2f7ef01cb7f1) |
 | mizchi/bend, `perf/known-callback-fusion` | [`b59588e2`](https://github.com/mizchi/bend/commit/b59588e2a9c63092b542739bb6908c3329d2e353) |
 
 [reference.json](reference.json) contains repository URLs, full revisions and compiler SHA-256 hashes. The harness fetches these commits and refuses a different HEAD, dirty checkout or mismatched compiler. Both published commits were also fetched into fresh checkouts for verification.
 
 [compiler.patch](compiler.patch) changes only `comp.ts`. [pr.patch](pr.patch) also includes two Bend regression fixtures. The compiler has 69 added and 15 removed lines, versus 166 added lines in the earlier standalone transformation pass. It reuses function expansion, argument binding and lambda application, with separate callee capture bindings and stable admission caching across ANF rebuilding.
 
-**Experimental; no upstream PR submitted.** Functional checks pass. The repository gate passes 48/49 checks: `comp.ts` is 64,777 ttok, exceeding the permanent 64,000 cap by 777. Full upstream cluster test/perf/safe gates and CUDA hardware have not been tested.
+The measured `b59588e2` compiler is 64,777 ttok and passes 48/49 repository checks. The [submission branch](submission/README.md) is based on main `5a0b523f` (Bend 2.0.35) and separates notation/comment compaction from specialization into two commits. It is **63,956 ttok, repo gate 49/49**, with the permanent cap unchanged. All eight particle C outputs match the respective measured versions byte-for-byte; timings were not rerun. Full upstream cluster test/perf/safe gates and CUDA hardware have not been tested.
 
 ## Reproduce
 

@@ -1,0 +1,662 @@
+{
+  "compaction": [
+    {
+      "program": "closures_hof.bend",
+      "backend": "c",
+      "sha256": "7ae47cb2afe9a47795b54391b40af5ae726416f7c9c11f03fe986e666659360a",
+      "byte_identical": true
+    },
+    {
+      "program": "closures_hof.bend",
+      "backend": "js",
+      "sha256": "db367ae21d492cc82079d3d1a090175e755b4db134d3832223481cf5bc6fee78",
+      "byte_identical": true
+    },
+    {
+      "program": "fn_capture_owns.bend",
+      "backend": "c",
+      "sha256": "260842c14a12bd9775ebf17fb656e3d3d18ddb49f6ffd32adca0f4160ae99817",
+      "byte_identical": true
+    },
+    {
+      "program": "fn_capture_owns.bend",
+      "backend": "js",
+      "sha256": "7668ad8d6f616b86b3d43524dd565c00bb81bb59e0a52510a8d911ed89775a78",
+      "byte_identical": true
+    },
+    {
+      "program": "unsafe_mutual.bend",
+      "backend": "c",
+      "sha256": "1d445e591cd045eb991cad72a181df0d4a8ccf692ba6da74942cba980fd1795c",
+      "byte_identical": true
+    },
+    {
+      "program": "unsafe_mutual.bend",
+      "backend": "js",
+      "sha256": "1303919498f26443c0dbd354e8416b5233c51620c22f1af538ad000313ed77fa",
+      "byte_identical": true
+    },
+    {
+      "program": "array_map_loop.bend",
+      "backend": "c",
+      "sha256": "70fee705f5ec23686d83a7ed17e6978bed5a88405d3e1f6f71652a6485638d8a",
+      "byte_identical": true
+    },
+    {
+      "program": "array_map_loop.bend",
+      "backend": "js",
+      "sha256": "22af7f16e5d133f7ec7da6b4f27749562ae5052d4a384591a71611415f0ad87c",
+      "byte_identical": true
+    },
+    {
+      "program": "js_tail_closure.bend",
+      "backend": "c",
+      "sha256": "7ae9350b4f398fb0daaaf56bf09434a3f6e67218db38a1b201eef72e166c8051",
+      "byte_identical": true
+    },
+    {
+      "program": "js_tail_closure.bend",
+      "backend": "js",
+      "sha256": "2aa7991c692b3f0e55f837fe1032b11aa92e91b09525f27ca31089afa6346017",
+      "byte_identical": true
+    },
+    {
+      "program": "js_loop_capture.bend",
+      "backend": "c",
+      "sha256": "3efb636b924eefff48162e8982e92c571224b5114b9d470bbf49ffc4ec238e93",
+      "byte_identical": true
+    },
+    {
+      "program": "js_loop_capture.bend",
+      "backend": "js",
+      "sha256": "c54cca4cb1e093c5aa697189a6cb6856a83e625086aceb89a647c87a977340fe",
+      "byte_identical": true
+    },
+    {
+      "program": "array_poly_elem.bend",
+      "backend": "c",
+      "sha256": "fba21c97efcdf45994ab46e83e635ab27cc1e3cd50532c5659418a377551591f",
+      "byte_identical": true
+    },
+    {
+      "program": "array_poly_elem.bend",
+      "backend": "js",
+      "sha256": "b73d3235a4aaa6ddcdd46fc9826b91d4deb8a15b075135fd0ba000c5abae2776",
+      "byte_identical": true
+    },
+    {
+      "program": "array_boxed_get.bend",
+      "backend": "c",
+      "sha256": "b01c05e769d0c23bde012963bbe592e9a0a244fb4a26011728d263f9d56134bb",
+      "byte_identical": true
+    },
+    {
+      "program": "array_boxed_get.bend",
+      "backend": "js",
+      "sha256": "7ef62b6842cac0cafffda414eeb56439a1cfd323a6aaf7d3e3de4e9456f69e84",
+      "byte_identical": true
+    },
+    {
+      "program": "array_split_join.bend",
+      "backend": "c",
+      "sha256": "7e67dfc766e79c87024194349d54f5dc28f01d354ddfead5cbd670c375bbaa5c",
+      "byte_identical": true
+    },
+    {
+      "program": "array_split_join.bend",
+      "backend": "js",
+      "sha256": "dd77b2d2002d6a5b39e02f8eb2250e269f1727ad3086c06446dc2c4bc1989bbc",
+      "byte_identical": true
+    },
+    {
+      "program": "array_wrap_index.bend",
+      "backend": "c",
+      "sha256": "346aed5af2bfd065b3bfc40d2aaf5d9a469f6bb69b587660c35de6ed18d33472",
+      "byte_identical": true
+    },
+    {
+      "program": "array_wrap_index.bend",
+      "backend": "js",
+      "sha256": "13ffa70c1b183ac7f12cb6dc0a06ce58a7b667058a4dbe6c88d8fb87d5d2db16",
+      "byte_identical": true
+    },
+    {
+      "program": "array_fill_fold.bend",
+      "backend": "c",
+      "sha256": "31c5aa1716d511aebfb420b86561412c4d3d992e5a3d562dd0d969c90c184f81",
+      "byte_identical": true
+    },
+    {
+      "program": "array_fill_fold.bend",
+      "backend": "js",
+      "sha256": "ccde34af518b03798eba102bde2e6a0534c2371411a5715fce641ddde6ea9d22",
+      "byte_identical": true
+    },
+    {
+      "program": "ids_unique.bend",
+      "backend": "c",
+      "sha256": "dd0a4bb7e5e7bfb16aa9ceb4d2002d7e92bf70d3d22ad5ac699010461b4b7cf6",
+      "byte_identical": true
+    },
+    {
+      "program": "ids_unique.bend",
+      "backend": "js",
+      "sha256": "7cd95b192a7cefd161f9aae1849baf55c375cc36a56d0d5ee7ce0d07803672b9",
+      "byte_identical": true
+    },
+    {
+      "program": "spin_lent_sink.bend",
+      "backend": "c",
+      "sha256": "064b9ec6ad1fde93581d302332345b7ac6782ff41dcc8385b8a68fcd85651907",
+      "byte_identical": true
+    },
+    {
+      "program": "spin_lent_sink.bend",
+      "backend": "js",
+      "sha256": "6d13fa7adb3a65ecd397ad16049b1bec07f4d2a57287440f2c49c1290742f1b4",
+      "byte_identical": true
+    },
+    {
+      "program": "fork_spin_hold.bend",
+      "backend": "c",
+      "sha256": "5520a2ca745eaf1f021cb6e268dbace58ea144c85c9b3c5c4d4208161b89a48f",
+      "byte_identical": true
+    },
+    {
+      "program": "fork_spin_hold.bend",
+      "backend": "js",
+      "sha256": "d409b8d7d42361604cd3365c46844739feb7d90a01708c32641df225a51c580d",
+      "byte_identical": true
+    }
+  ],
+  "upstream": [
+    {
+      "program": "closures_hof.bend",
+      "lane": "interpreter",
+      "output": "64180"
+    },
+    {
+      "program": "closures_hof.bend",
+      "lane": "js",
+      "output": "64180"
+    },
+    {
+      "program": "closures_hof.bend",
+      "lane": "c-1",
+      "output": "64180"
+    },
+    {
+      "program": "closures_hof.bend",
+      "lane": "c-4",
+      "output": "64180"
+    },
+    {
+      "program": "fn_capture_owns.bend",
+      "lane": "interpreter",
+      "output": "184n"
+    },
+    {
+      "program": "fn_capture_owns.bend",
+      "lane": "js",
+      "output": "184n"
+    },
+    {
+      "program": "fn_capture_owns.bend",
+      "lane": "c-1",
+      "output": "184n"
+    },
+    {
+      "program": "fn_capture_owns.bend",
+      "lane": "c-4",
+      "output": "184n"
+    },
+    {
+      "program": "unsafe_mutual.bend",
+      "lane": "interpreter",
+      "output": "\"y\""
+    },
+    {
+      "program": "unsafe_mutual.bend",
+      "lane": "js",
+      "output": "\"y\""
+    },
+    {
+      "program": "unsafe_mutual.bend",
+      "lane": "c-1",
+      "output": "\"y\""
+    },
+    {
+      "program": "unsafe_mutual.bend",
+      "lane": "c-4",
+      "output": "\"y\""
+    },
+    {
+      "program": "array_map_loop.bend",
+      "lane": "interpreter",
+      "output": "690\n1"
+    },
+    {
+      "program": "array_map_loop.bend",
+      "lane": "js",
+      "output": "690\n1"
+    },
+    {
+      "program": "array_map_loop.bend",
+      "lane": "c-1",
+      "output": "690\n1"
+    },
+    {
+      "program": "array_map_loop.bend",
+      "lane": "c-4",
+      "output": "690\n1"
+    },
+    {
+      "program": "js_tail_closure.bend",
+      "lane": "interpreter",
+      "output": "0"
+    },
+    {
+      "program": "js_tail_closure.bend",
+      "lane": "js",
+      "output": "0"
+    },
+    {
+      "program": "js_tail_closure.bend",
+      "lane": "c-1",
+      "output": "0"
+    },
+    {
+      "program": "js_tail_closure.bend",
+      "lane": "c-4",
+      "output": "0"
+    },
+    {
+      "program": "js_loop_capture.bend",
+      "lane": "interpreter",
+      "output": "55"
+    },
+    {
+      "program": "js_loop_capture.bend",
+      "lane": "js",
+      "output": "55"
+    },
+    {
+      "program": "js_loop_capture.bend",
+      "lane": "c-1",
+      "output": "55"
+    },
+    {
+      "program": "js_loop_capture.bend",
+      "lane": "c-4",
+      "output": "55"
+    },
+    {
+      "program": "array_poly_elem.bend",
+      "lane": "interpreter",
+      "output": "102122"
+    },
+    {
+      "program": "array_poly_elem.bend",
+      "lane": "js",
+      "output": "102122"
+    },
+    {
+      "program": "array_poly_elem.bend",
+      "lane": "c-1",
+      "output": "102122"
+    },
+    {
+      "program": "array_poly_elem.bend",
+      "lane": "c-4",
+      "output": "102122"
+    },
+    {
+      "program": "array_boxed_get.bend",
+      "lane": "interpreter",
+      "output": "777113"
+    },
+    {
+      "program": "array_boxed_get.bend",
+      "lane": "js",
+      "output": "777113"
+    },
+    {
+      "program": "array_boxed_get.bend",
+      "lane": "c-1",
+      "output": "777113"
+    },
+    {
+      "program": "array_boxed_get.bend",
+      "lane": "c-4",
+      "output": "777113"
+    },
+    {
+      "program": "array_split_join.bend",
+      "lane": "interpreter",
+      "output": "145896"
+    },
+    {
+      "program": "array_split_join.bend",
+      "lane": "js",
+      "output": "145896"
+    },
+    {
+      "program": "array_split_join.bend",
+      "lane": "c-1",
+      "output": "145896"
+    },
+    {
+      "program": "array_split_join.bend",
+      "lane": "c-4",
+      "output": "145896"
+    },
+    {
+      "program": "array_wrap_index.bend",
+      "lane": "interpreter",
+      "output": "111211"
+    },
+    {
+      "program": "array_wrap_index.bend",
+      "lane": "js",
+      "output": "111211"
+    },
+    {
+      "program": "array_wrap_index.bend",
+      "lane": "c-1",
+      "output": "111211"
+    },
+    {
+      "program": "array_wrap_index.bend",
+      "lane": "c-4",
+      "output": "111211"
+    },
+    {
+      "program": "array_fill_fold.bend",
+      "lane": "interpreter",
+      "output": "140375"
+    },
+    {
+      "program": "array_fill_fold.bend",
+      "lane": "js",
+      "output": "140375"
+    },
+    {
+      "program": "array_fill_fold.bend",
+      "lane": "c-1",
+      "output": "140375"
+    },
+    {
+      "program": "array_fill_fold.bend",
+      "lane": "c-4",
+      "output": "140375"
+    },
+    {
+      "program": "ids_unique.bend",
+      "lane": "interpreter",
+      "output": "11115"
+    },
+    {
+      "program": "ids_unique.bend",
+      "lane": "js",
+      "output": "11115"
+    },
+    {
+      "program": "ids_unique.bend",
+      "lane": "c-1",
+      "output": "11115"
+    },
+    {
+      "program": "ids_unique.bend",
+      "lane": "c-4",
+      "output": "11115"
+    },
+    {
+      "program": "spin_lent_sink.bend",
+      "lane": "interpreter",
+      "output": "4000010 2000000 4"
+    },
+    {
+      "program": "spin_lent_sink.bend",
+      "lane": "js",
+      "output": "4000010 2000000 4"
+    },
+    {
+      "program": "spin_lent_sink.bend",
+      "lane": "c-1",
+      "output": "4000010 2000000 4"
+    },
+    {
+      "program": "spin_lent_sink.bend",
+      "lane": "c-4",
+      "output": "4000010 2000000 4"
+    },
+    {
+      "program": "fork_spin_hold.bend",
+      "lane": "interpreter",
+      "output": "12 5"
+    },
+    {
+      "program": "fork_spin_hold.bend",
+      "lane": "js",
+      "output": "12 5"
+    },
+    {
+      "program": "fork_spin_hold.bend",
+      "lane": "c-1",
+      "output": "12 5"
+    },
+    {
+      "program": "fork_spin_hold.bend",
+      "lane": "c-4",
+      "output": "12 5"
+    },
+    {
+      "program": "known_callback.bend",
+      "lane": "interpreter",
+      "output": "42"
+    },
+    {
+      "program": "known_callback.bend",
+      "lane": "js",
+      "output": "42"
+    },
+    {
+      "program": "known_callback.bend",
+      "lane": "c-1",
+      "output": "42"
+    },
+    {
+      "program": "known_callback.bend",
+      "lane": "c-4",
+      "output": "42"
+    },
+    {
+      "program": "known_callback_array.bend",
+      "lane": "interpreter",
+      "output": "42"
+    },
+    {
+      "program": "known_callback_array.bend",
+      "lane": "js",
+      "output": "42"
+    },
+    {
+      "program": "known_callback_array.bend",
+      "lane": "c-1",
+      "output": "42"
+    },
+    {
+      "program": "known_callback_array.bend",
+      "lane": "c-4",
+      "output": "42"
+    }
+  ],
+  "particle_codegen": [
+    {
+      "lane": "base",
+      "variant": "callback",
+      "jobs": 1024,
+      "published_sha256": "a69d39840d3fcfe78ee0c1b48ef70d1817e5038876845eb70a02cb26bd4fab25",
+      "submission_sha256": "a69d39840d3fcfe78ee0c1b48ef70d1817e5038876845eb70a02cb26bd4fab25",
+      "byte_identical": true
+    },
+    {
+      "lane": "base",
+      "variant": "callback",
+      "jobs": 16384,
+      "published_sha256": "356687cf743135873f092ed9a38089e5d74d78c67ce62d10ae0305d879ce143e",
+      "submission_sha256": "356687cf743135873f092ed9a38089e5d74d78c67ce62d10ae0305d879ce143e",
+      "byte_identical": true
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "jobs": 1024,
+      "published_sha256": "5e4f32ac5e507dc562002274068661b474a7302c6ac45f65c240a69863ff7e55",
+      "submission_sha256": "5e4f32ac5e507dc562002274068661b474a7302c6ac45f65c240a69863ff7e55",
+      "byte_identical": true
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "jobs": 16384,
+      "published_sha256": "752a042b63ce55f5366a7857eaddd65e6f90eb3298c6ee0af1dda37a7138b2af",
+      "submission_sha256": "752a042b63ce55f5366a7857eaddd65e6f90eb3298c6ee0af1dda37a7138b2af",
+      "byte_identical": true
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "jobs": 1024,
+      "published_sha256": "a2dfc61d7bf61cc38a113344545ca3566bee6b9d17ba5f863d32e5dd6634d4a9",
+      "submission_sha256": "a2dfc61d7bf61cc38a113344545ca3566bee6b9d17ba5f863d32e5dd6634d4a9",
+      "byte_identical": true
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "jobs": 16384,
+      "published_sha256": "e652499c256abb9a10b8c4755ade4fd0a835c26cbc1984922f9be080b10367a5",
+      "submission_sha256": "e652499c256abb9a10b8c4755ade4fd0a835c26cbc1984922f9be080b10367a5",
+      "byte_identical": true
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "jobs": 1024,
+      "published_sha256": "5e4f32ac5e507dc562002274068661b474a7302c6ac45f65c240a69863ff7e55",
+      "submission_sha256": "5e4f32ac5e507dc562002274068661b474a7302c6ac45f65c240a69863ff7e55",
+      "byte_identical": true
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "jobs": 16384,
+      "published_sha256": "752a042b63ce55f5366a7857eaddd65e6f90eb3298c6ee0af1dda37a7138b2af",
+      "submission_sha256": "752a042b63ce55f5366a7857eaddd65e6f90eb3298c6ee0af1dda37a7138b2af",
+      "byte_identical": true
+    }
+  ],
+  "base_revision": "5a0b523f7759335164f1dead0e0815234a5fd9dc",
+  "compaction_revision": "1e2508508380aaca4baf5200c6ddac2b30bcd406",
+  "head_revision": "83d497e52610c42dcc5bddf5ad21fb0285e12e88",
+  "branch": "perf/known-callback-specialization",
+  "compiler_sha256": "77457157281fed61d461af89305db3ce461d07268296f9150304b33b6c6c0001",
+  "tokens": {
+    "base": 63980,
+    "compaction": 63129,
+    "head": 63956,
+    "cap": 64000
+  },
+  "repository_gate": {
+    "compaction": "PASS: 49 / 49",
+    "head": "PASS: 49 / 49"
+  },
+  "callback_contracts": {
+    "passed": 13,
+    "command": "BEND_REPO=\"$PWD/build/bend-prs/known-callbacks-submission\" BEND_BASE_REPO=\"$PWD/build/bend-prs/known-callbacks-submission-base\" BEND_PARTICLE_CID=Tick python3 tests/bend_step02_refactor.py"
+  },
+  "red_check": {
+    "revision": "5a0b523f7759335164f1dead0e0815234a5fd9dc",
+    "test": "CallbackTest.test_known_callback_has_no_live_closure_segments",
+    "result": "FAIL",
+    "live_closure_segments": 5
+  },
+  "typescript": {
+    "baseline_errors": [
+      [
+        "bend2/bend.ts",
+        2040,
+        "TS2339"
+      ],
+      [
+        "bend2/bend.ts",
+        3764,
+        "TS2339"
+      ]
+    ],
+    "head_errors": [
+      [
+        "bend2/bend.ts",
+        2040,
+        "TS2339"
+      ],
+      [
+        "bend2/bend.ts",
+        3764,
+        "TS2339"
+      ]
+    ],
+    "new_errors": 0
+  },
+  "environment": {
+    "hardware": "Apple M5, 10 CPU/10 GPU cores, 32 GiB",
+    "os": "macOS 26.6.2",
+    "bun": "1.3.5",
+    "clang": "21.0.0"
+  },
+  "measured_reference": {
+    "base": "947db722640c86247849343657bf2f7ef01cb7f1",
+    "head": "b59588e2a9c63092b542739bb6908c3329d2e353",
+    "playground_source": "0d2b737a2b0e020428e223e572d85e6d2c4d748e",
+    "timings": "../results-macos-m5.json",
+    "timing_rerun": false,
+    "reason": "All eight particle C files, instrumented by the same measurement adapter, match the respective measured baseline/optimized files byte for byte."
+  },
+  "not_run": [
+    "full upstream cluster test/perf/safe gates",
+    "CUDA hardware"
+  ],
+  "upstream_language_unchanged": true,
+  "paths": [
+    "bend2/comp.ts",
+    "tests/run/known_callback.bend",
+    "tests/run/known_callback_array.bend"
+  ],
+  "diff_after_compaction": {
+    "compiler_added": 69,
+    "compiler_removed": 15,
+    "test_fixtures": 2
+  },
+  "pull_request": {
+    "repository": "bendlang/bend",
+    "number": 1288,
+    "url": "https://github.com/bendlang/bend/pull/1288",
+    "head_revision": "83d497e52610c42dcc5bddf5ad21fb0285e12e88",
+    "base_revision": "5a0b523f7759335164f1dead0e0815234a5fd9dc",
+    "state": "OPEN",
+    "draft": false
+  },
+  "body_checks": {
+    "template": "Feature: What Bend should do / Why",
+    "fresh_reader": "PASS: 7 / 7 criteria",
+    "gate": "ok: visible 3564/3589 chars (pr p90), language en ok, 2 other repository references",
+    "lint": {
+      "en_removable_tells": 0,
+      "ja_removable_tells": 0,
+      "pr_corpus_max": 1,
+      "pr_corpus_count": 13,
+      "ja_corpus_count": 0
+    }
+  }
+}

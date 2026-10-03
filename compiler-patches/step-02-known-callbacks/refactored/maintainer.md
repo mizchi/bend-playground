@@ -39,7 +39,14 @@ finding you had in mind when you wrote it, so re-derive it when that changes.
 - `bend2/bend.ts` is human-written and must not be edited. Only Taelin changes permanent token caps. New files must pass the repository allow list.
 - C compilation targets clang. A compiler optimization must preserve ownership and fallback behavior.
 - AI assistance is disclosed in several recent merged PRs. Do not claim human review that has not occurred.
-- The user requested a PR feasibility check. The size gate currently blocks submission; keep the draft local.
+- Review source compaction separately from behavior changes; preserve the existing token cap and human-written language implementation.
+
+## 7. Current submission audit
+
+- Latest main checked via GitHub API and fetched: `5a0b523f7759335164f1dead0e0815234a5fd9dc` (Bend 2.0.35), 2026-10-03. No PR template; feature.yml still asks for What Bend should do and Why.
+- Searches of issues/PRs in all states for callback, known callback, fusion and lambda, and the open PR list: #1286 is the user's foreign-callback emission fix; #1281 is a broader compiler/runtime simplification; #1282 changes device spin sharing. Their mechanisms differ from known literal callback specialization.
+- Re-running measure.ts failed twice with GitHub GraphQL HTTP 502. The earlier historical sample below remains intact; current template, main revision and related open PRs were checked separately via API/git.
+- The callback branch has two commits on the latest main: notation/comment compaction and compiler specialization with two permanent regression fixtures. Local repo gate is 49/49; full cluster gates and CUDA remain unrun.
 
 ## 8. Measurements
 
