@@ -15,7 +15,7 @@ import subprocess
 
 import particles
 from algorithm_bench import command_output
-from bend_step02 import CHECKOUT, prepare
+from bend_step02 import CHECKOUT, git, prepare
 
 ROOT = particles.ROOT
 SOURCE = ROOT / 'compiler-patches/step-02-known-callbacks'
@@ -47,19 +47,24 @@ def definitions():
             for rounds in (0, 64) for jobs in (1024, 16384)]
 
 
-def build():
-    prepare()
+def build(repositories=None, configs=None):
+    if repositories is None:
+        prepare()
+        repositories = {'base': ROOT / 'upstream/bend', 'patched': CHECKOUT}
     rows = []
-    for lane, variant, rounds, jobs in definitions():
-        repo = ROOT / 'upstream/bend' if lane == 'base' else CHECKOUT
+    for lane, variant, rounds, jobs in configs or definitions():
+        repo = repositories[lane]
         with compiler(repo):
             binary = particles.build(WORK / f'{lane}-{variant}-{rounds}-{jobs}',
                                      noise_rounds=rounds, jobs=jobs, variant=variant)
             meta = particles.metadata(binary)
+        meta['environment']['source_state'] = 'inputs identified by source_sha256 and generated_sha256'
         code = (Path(binary).parents[3] / 'bend.c').read_text()
         rows.append(dict(lane=lane, rounds=rounds, jobs=jobs,
                          binary=str(binary.relative_to(ROOT)),
                          compiler_sha256=digest(repo / 'bend2/comp.ts'),
+                         compiler_revision=git(repo, 'rev-parse', 'HEAD').stdout.strip(),
+                         compiler_dirty=bool(git(repo, 'status', '--porcelain').stdout.strip()),
                          live_closure_segments=len(re.findall(r'WL_CASE\(FID_[A-Z0-9_]+_C\d+\)', code)),
                          **meta))
         print(f'built {lane}/{variant}, noise={rounds}, jobs={jobs}', flush=True)
@@ -125,13 +130,16 @@ def verify(rows, counts):
     return records
 
 
-def measure(rows, verification, args):
+def measure(rows, verification, args, repositories=None):
+    repositories = repositories or {'base': ROOT / 'upstream/bend', 'patched': CHECKOUT}
     specs = []
     for row in rows:
         backend = 'bend-cpu' if row['jobs'] == 1024 else 'bend-gpu'
-        repo = ROOT / 'upstream/bend' if row['lane'] == 'base' else CHECKOUT
+        repo = repositories[row['lane']]
         if digest(repo / 'bend2/comp.ts') != row['compiler_sha256']:
             raise RuntimeError('compiler changed since build; rebuild and verify first')
+        if 'compiler_revision' in row and git(repo, 'rev-parse', 'HEAD').stdout.strip() != row['compiler_revision']:
+            raise RuntimeError('compiler revision changed since build')
         if row['generated_sha256']['bend.c'] != digest(Path(ROOT / row['binary']).parents[3] / 'bend.c'):
             raise RuntimeError('generated code changed since build')
         for count in args.count:
@@ -144,6 +152,7 @@ def measure(rows, verification, args):
                   'startup/build/verification excluded; UI presentation excluded',
                   warmups=args.warmups, samples=args.samples, repeats=args.repeats,
                   order_seed=20261003, compiler_patch_sha256=digest(SOURCE / 'compiler.patch'),
+                  compiler_references=getattr(args, 'compiler_references', {}),
                   benchmark_source_sha256=digest(__file__), verification=verification,
                   execution_order=[], cases=specs,
                   thermal_before=command_output('pmset', '-g', 'therm'),

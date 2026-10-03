@@ -94,6 +94,10 @@ class CallbackTest(unittest.TestCase):
             if path.suffix in ('.bend', '.c', '.h'):
                 (self.work / path.name).write_bytes(path.read_bytes())
         (self.work / 'abi.h').write_bytes((ROOT / 'examples/gpui/abi.h').read_bytes())
+        # Newer compilers use the constructor's short name in imported C.
+        if ENV.get('BEND_PARTICLE_CID') == 'Tick':
+            native = self.work / 'native.c'
+            native.write_text(native.read_text().replace('CID(api.Tick)', 'CID(Tick)'))
         source = self.work / 'run.bend'
         source.write_text('''import Base
 import ./api.bend as UI
@@ -105,7 +109,7 @@ def main() -> IO(Unit):
         generated = self.emit(source.stem, source).read_bytes()
         base = self.work / 'base.c'
         result = run(ROOT / 'scripts/bend.sh', source, '-o', base,
-                     env={**ENV, 'BEND_REPO': str(ROOT / 'upstream/bend')})
+                     env={**ENV, 'BEND_REPO': ENV.get('BEND_BASE_REPO', str(ROOT / 'upstream/bend'))})
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertEqual(generated, base.read_bytes())
 

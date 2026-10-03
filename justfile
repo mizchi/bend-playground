@@ -196,6 +196,14 @@ check-bend-step02:
 setup-bend-step02:
     python3 scripts/bend_step02.py setup
 
+# Verify the smaller patch on the upstream revision used for PR evaluation.
+check-bend-step02-refactored:
+    python3 scripts/bend_step02_refactor.py check
+
+# Build and verify both compiler lanes before serial CPU/Metal timings.
+bench-bend-step02-refactored *args="":
+    python3 scripts/bend_step02_refactor.py bench {{args}}
+
 # Build, validate, then measure old/new compilers with unchanged particle sources.
 bench-bend-step02 *args="":
     python3 scripts/bend_step02_bench.py {{args}}

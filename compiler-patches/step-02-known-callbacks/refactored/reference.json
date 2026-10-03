@@ -1,0 +1,12 @@
+{
+  "base": {
+    "repository": "https://github.com/bendlang/bend.git",
+    "revision": "947db722640c86247849343657bf2f7ef01cb7f1",
+    "compiler_sha256": "453e5452f7d5ea1d501b29ce2332623c3f9f4c9e89f407352209716d31638c89"
+  },
+  "patched": {
+    "repository": "https://github.com/mizchi/bend.git",
+    "revision": "b59588e2a9c63092b542739bb6908c3329d2e353",
+    "compiler_sha256": "6346230340777c3c94a9e04123dfaaec21b763d0479fd9b94f2ca4ae43f2195f"
+  }
+}
