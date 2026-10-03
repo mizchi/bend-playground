@@ -4,20 +4,16 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import plistlib
-import shutil
 import subprocess
 
 from grid import ROOT, integer, normalize, bend_node, c_input
 from grid_cases import dashboard
-from grid_gpu import instrument_metal
+from bend_gpui import LIBRARY, TARGET, DEPLOYMENT, cargo, compile_app, instrument_metal
 
 FIELDS = {"frame", "width", "height", "kind", "bend_ns", "bend_gpu_commands",
           "bend_gpu_ns", "convert_gpu_ns", "convert_wait_ns", "cpu_payload_read_bytes",
           "verified_pixels", "handoff_ns", "drop_ns", "frame_ready_ns"}
 SOURCE = ROOT / "examples/gpui"
-TARGET = ROOT / "build/gpui/target"
-DEPLOYMENT = os.environ.get("MACOSX_DEPLOYMENT_TARGET", "15.0")
 
 
 def dimensions(width, height):
@@ -47,12 +43,6 @@ def parse_frame(line, gpu=False):
     if value["verified_pixels"] not in (0, value["width"] * value["height"]):
         raise ValueError("incomplete pixel verification")
     return value
-
-
-def cargo(*args):
-    subprocess.run(["cargo", *args, "--manifest-path", str(SOURCE / "Cargo.toml")],
-                   env={**os.environ, "CARGO_TARGET_DIR": str(TARGET),
-                        "MACOSX_DEPLOYMENT_TARGET": DEPLOYMENT}, check=True)
 
 
 def build(mode="grid", work=None, page=None):
@@ -103,35 +93,8 @@ def main() -> IO(Unit):
     generated = work / "bend.c"
     subprocess.run([str(ROOT / "scripts/bend.sh"), str(work / "run.bend"), "-o", str(generated)],
                    env={**os.environ, "BEND_NO_TELEMETRY": "1"}, check=True, stdout=subprocess.DEVNULL)
-    generated.write_text(instrument_metal(generated.read_text()))
-    return compile_app(work, generated)
-
-
-def compile_app(work, generated, name="bend-gpui", bundle_id="com.mizchi.bend-playground.gpui", extra_objects=()):
-    """Link a generated Bend native effect to the shared GPUI C ABI."""
-    work, generated = Path(work), Path(generated)
-    binary = work / name
-    subprocess.run([os.environ.get("CC", "clang"), "-std=c11", "-O3", "-ffp-contract=off", "-pthread",
-                    "-mmacosx-version-min=" + DEPLOYMENT,
-                    "-x", "objective-c", "-fobjc-arc", "-fmodules", "-DBEND_METAL=1",
-                    str(generated), "-x", "none", *map(str, extra_objects), str(TARGET / "debug/libbend_gpui.a"),
-                    "-framework", "Cocoa", "-framework", "Metal", "-framework", "CoreVideo",
-                    "-framework", "CoreGraphics", "-framework", "CoreText", "-framework", "QuartzCore",
-                    "-framework", "Security", "-framework", "SystemConfiguration", "-framework", "VideoToolbox",
-                    "-framework", "ScreenCaptureKit", "-framework", "Carbon", "-liconv", "-lm", "-o", str(binary)], check=True)
-    subprocess.run([str(binary), "--gpu-build"], check=True)
-    app = work / "BendGPUI.app/Contents"
-    executable = app / "MacOS" / name
-    executable.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(binary, executable)
-    shutil.copy2(Path(str(binary) + ".gpu"), Path(str(executable) + ".gpu"))
-    (app / "Info.plist").write_bytes(plistlib.dumps({
-        "CFBundleIdentifier": bundle_id,
-        "CFBundleName": "BendGPUI", "CFBundleExecutable": name,
-        "CFBundlePackageType": "APPL", "CFBundleVersion": "1",
-        "NSHighResolutionCapable": True, "LSMinimumSystemVersion": DEPLOYMENT,
-    }))
-    return executable
+    generated.write_text(instrument_metal(generated.read_text(), prefix="bend_gpui_probe"))
+    return compile_app(work, generated, cflags=['-DBEND_GPUI_VERIFY_HEADER="verify.h"'])
 
 
 def run(binary, gpu=False, frames=3, width=960, height=540, headless=False, verify=False, timeout=120):
@@ -152,10 +115,15 @@ def run(binary, gpu=False, frames=3, width=960, height=540, headless=False, veri
     return rows
 
 
+def library_sources():
+    return [p for p in LIBRARY.rglob('*') if p.suffix in ('.bend', '.c', '.h', '.metal', '.rs', '.py')] + [
+        LIBRARY / 'Cargo.toml', LIBRARY / 'Cargo.lock']
+
+
 def metadata(binary):
     from algorithm_bench import environment_metadata, command_output
     paths = [p for p in SOURCE.rglob('*') if p.suffix in ('.bend', '.c', '.h', '.metal', '.rs')]
-    paths += [SOURCE / "Cargo.toml", SOURCE / "Cargo.lock", ROOT / "tests/gpui.py",
+    paths += library_sources() + [ROOT / "tests/gpui.py", ROOT / "scripts/bend_gpui.py",
               ROOT / "scripts/gpui.py", ROOT / "scripts/grid_gpu.py", ROOT / "scripts/grid.py", ROOT / "scripts/grid_cases.py"]
     paths += [p for p in (ROOT / "examples/grid").iterdir() if p.suffix in ('.bend', '.c', '.h')]
     work = Path(binary).parents[3]

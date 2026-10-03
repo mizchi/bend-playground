@@ -1,5 +1,9 @@
 # Bend → GPUI 描画バインディング
 
+再利用するAPI・Rust crate・ビルダーは[packages/bend-gpui](../../packages/bend-gpui/README.md)へ分離した。このディレクトリにはGrid・画素デモと検証oracle・計測記録を置く。`api.bend`・`native.c`・`abi.h`・`convert.metal`はパッケージ内の実装へのsymlinkで、コピーした実装を別々に保守しない。
+
+最小のアプリは[minimal.bend](minimal.bend)。`just gpui-build examples/gpui/minimal.bend`で構築できる。既存の`just gpui grid`・`just gpui shader`も同じライブラリを使う。
+
 macOS の GPUI 0.2.2 と、固定版 Bend 2.0.34 を同じプロセスにリンクする最小バインディング。
 Bend の共有配列を Metal で直接読み、GPUI の `surface` に接続する。
 画像・矩形の内容を CPU の配列に読み出す処理は通常の描画経路にない。
@@ -20,7 +24,7 @@ just bench-gpui
 ```
 
 Rust/Cargo、Bun、Python 3、clang、macOS 15以降のMetal環境が必要。
-依存は `Cargo.lock` と `gpui = 0.2.2` で固定し、Rustのビルド成果物も `build/gpui/` に置く。
+依存はパッケージの `Cargo.lock` と `gpui = 0.2.2` で固定し、Rustのビルド成果物も `build/gpui/` に置く。
 `MACOSX_DEPLOYMENT_TARGET` はCとRustの両方に渡す。既定は固定版Bendが使うMetal APIに合わせた15.0。
 `BEND_REPO` は既存スクリプトと同じように利用できる。
 
@@ -77,7 +81,7 @@ GPUI 0.2.2 の [`surface`](https://docs.rs/gpui/0.2.2/gpui/fn.surface.html) はm
 
 ## 検証と計測範囲
 
-`just check-gpui` はC/RustのABI、サイズ・形式の拒否、CPU/GPUの各3フレームを32×16と384×256で確認する。
+`just check-gpui` はC/RustのABI、サイズ・形式の拒否、CPU/GPUの各3フレームを32×16と384×256で確認し、パッケージ単体をコピーした別プロジェクトのビルド・描画も検証する。
 独立したCのGrid実装または画素の算術式から、NV12の全Y/UVセルを検証する。丸め差の許容は1/255。
 `--verify` だけが変換後の画像をCPUで読む。Bendの出力配列は検証時にもCPUで読まない。
 

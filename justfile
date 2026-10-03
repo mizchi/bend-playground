@@ -68,14 +68,23 @@ check-device:
 bench-device *args="":
     python3 scripts/device_bench.py {{args}}
 
+# Build the reusable GPUI Rust/C library (macOS).
+build-gpui-library:
+    CARGO_TARGET_DIR="$PWD/build/gpui/target" MACOSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET:-15.0}" cargo build --locked --manifest-path packages/bend-gpui/Cargo.toml
+
+# Build any Bend main using the GPUI library, including external project paths.
+gpui-build +args:
+    python3 packages/bend-gpui/build.py --bend-command ./scripts/bend.sh --target-dir build/gpui/target "$@"
+
 # Draw Bend Grid or procedural pixels in a native GPUI/Metal window (macOS).
 gpui *args="grid":
     python3 scripts/gpui.py {{args}}
 
 # Verify C/Rust ABI and CPU/GPU output against independent NV12 pixel oracles.
 check-gpui:
-    CARGO_TARGET_DIR="$PWD/build/gpui/target" MACOSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET:-15.0}" cargo test --locked --manifest-path examples/gpui/Cargo.toml
+    CARGO_TARGET_DIR="$PWD/build/gpui/target" MACOSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET:-15.0}" cargo test --locked --manifest-path packages/bend-gpui/Cargo.toml
     python3 tests/gpui.py
+    python3 tests/bend_gpui.py
 
 # Open actual GPUI windows, verify all output pixels, and close automatically.
 check-gpui-window:

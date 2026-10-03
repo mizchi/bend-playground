@@ -3,6 +3,7 @@
 Bend CPU、Bend GPU、手書きMetal computeで同じ粒子状態を更新し、同じMetal rendererで描画する。
 更新後の粒子をCPUの描画用配列へ取り出さず、GPUIのNV12 surfaceまでGPU上で接続した。
 macOS / Metal / Rustが必要。GPUIは既存バインディングの固定版0.2.2を使用する。
+ウィンドウ表示とC ABI/static libraryは[packages/bend-gpui](../../packages/bend-gpui/README.md)を共有する。粒子の状態・更新・描画kernelはこの実験側に置く。
 
 コンパイラを固定したコード改善の比較は[`OPTIMIZATION.md`](OPTIMIZATION.md)を参照。
 `--variant flat`では粒子ごとのcallbackを省き、100万粒子＋追加計算64回のGPU更新が

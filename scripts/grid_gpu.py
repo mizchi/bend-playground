@@ -10,6 +10,7 @@ import struct
 import subprocess
 
 from algorithm_bench import environment_metadata, command_output
+from bend_gpui import instrument_metal
 from grid import ROOT, normalize, bend_node, bend_float, c_input, integer
 from grid_cases import dashboard, cards, nested
 
@@ -41,43 +42,6 @@ def parse_profile(text, gpu=False):
     if value["gpu_wait_ns"] > value["layout_ns"]:
         raise ValueError("GPU wait cannot exceed its containing layout phase")
     return value
-
-
-def instrument_metal(source):
-    """Patch generated scratch C only; preserve upstream compiler and scheduling."""
-    anchor = "static bool io_gpu;"
-    declarations = """static uint32_t grid_probe_commands;
-static uint64_t grid_probe_execution, grid_probe_wait, grid_probe_submit;
-static uint64_t grid_probe_clock(void) {
-  struct timespec t; clock_gettime(CLOCK_MONOTONIC, &t);
-  return (uint64_t)t.tv_sec * 1000000000ull + (uint64_t)t.tv_nsec;
-}
-"""
-    if source.count(anchor) != 1:
-        raise ValueError("unsupported generated runtime: IO anchor")
-    source = source.replace(anchor, declarations + anchor)
-    old = """static void gpu_pass(u32 f) {
-  @autoreleasepool {
-    id<MTLCommandBuffer> cb = [gpu_que commandBuffer];"""
-    new = """static void gpu_pass(u32 f) {
-  uint64_t grid_submit_begin = grid_probe_clock();
-  @autoreleasepool {
-    id<MTLCommandBuffer> cb = [gpu_que commandBuffer];"""
-    ending = """    [cb commit];
-    [cb waitUntilCompleted];
-    if ([cb error]) {"""
-    measured = """    [cb commit];
-    uint64_t grid_wait_begin = grid_probe_clock();
-    [cb waitUntilCompleted];
-    uint64_t grid_wait_end = grid_probe_clock();
-    grid_probe_commands++;
-    grid_probe_submit += grid_wait_begin - grid_submit_begin;
-    grid_probe_wait += grid_wait_end - grid_wait_begin;
-    grid_probe_execution += (uint64_t)(([cb GPUEndTime] - [cb GPUStartTime]) * 1e9);
-    if ([cb error]) {"""
-    if source.count(old) != 1 or source.count(ending) != 1:
-        raise ValueError("unsupported generated runtime: Metal dispatch anchor")
-    return source.replace(old, new).replace(ending, measured)
 
 
 def build_case(root, work, page, depth, samples=5, warmups=2, page_parallel=False):

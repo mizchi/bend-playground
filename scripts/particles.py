@@ -225,8 +225,7 @@ def metadata(binary):
     paths = [p for p in SOURCE.iterdir() if p.suffix in ('.bend', '.c', '.h', '.metal')]
     paths += [ROOT / 'scripts/particles.py', ROOT / 'scripts/gpui.py', ROOT / 'scripts/grid_gpu.py',
               ROOT / 'scripts/algorithm_bench.py', ROOT / 'scripts/grid.py', ROOT / 'tests/particles.py',
-              gpui.SOURCE / 'abi.h', gpui.SOURCE / 'convert.metal', gpui.SOURCE / 'Cargo.toml',
-              gpui.SOURCE / 'Cargo.lock', gpui.SOURCE / 'src/lib.rs']
+              *gpui.library_sources(), ROOT / 'scripts/bend_gpui.py']
     work = Path(binary).parents[3]
     return dict(environment=environment, gpui='0.2.2', deployment_target=gpui.DEPLOYMENT,
                 c_cpu_flags=' '.join(CPU_FLAGS) + ' -mmacosx-version-min=' + gpui.DEPLOYMENT + '; separate TU, no LTO',

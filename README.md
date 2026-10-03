@@ -67,6 +67,7 @@ C FFI とその比較用ループが同じ結果になること、CSS Grid サ�
 | [examples/algorithms/](examples/algorithms/README.md) | 適性の候補16項目と、N-Queens / Pollard ρ / AST 変換 / DPLL SAT の Mac CPU 実測。C の逐次・並列版とも比較 |
 | [examples/ffi/](examples/ffi/README.md) | C FFI の1呼出し当たりの追加時間と、処理をまとめた場合の比較 |
 | [examples/device/](examples/device/README.md) | CPU/GPU の同期往復と、同じ総計算量をまとめた場合の比較 |
+| [packages/bend-gpui/](packages/bend-gpui/README.md) | 再利用できるmacOS描画ライブラリ。Bend API・C ABI・Rust surface・独立ビルダーをまとめ、別プロジェクトから使える |
 | [examples/gpui/](examples/gpui/README.md) | Bend → GPUI のmacOS描画バインディング。共有配列からMetal描画・NV12 surfaceへ接続し、CPUで画像・座標を読み出さない |
 | [examples/particles/](examples/particles/README.md) | 永続バッファの粒子シミュレーションとGPUI描画。Bend CPU / Bend GPU / 手書きMetalを比較し、[コード改善と本体の改善候補](examples/particles/OPTIMIZATION.md)を分けて記録 |
 | [examples/grid/](examples/grid/README.md) | CSS Grid の実用サブセット。Bend / C 実装、ブラウザ照合、CPU / Metal バッチ比較、出力木と共有連続バッファの読み取り時間 |

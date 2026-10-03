@@ -3,6 +3,9 @@ name = "bend-gpui"
 version = "0.1.0"
 edition = "2024"
 publish = false
+description = "Bend/GPUI surface binding with a versioned C ABI for macOS"
+repository = "https://github.com/mizchi/bend-playground"
+readme = "README.md"
 
 [lib]
 crate-type = ["staticlib", "rlib"]

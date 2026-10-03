@@ -38,21 +38,10 @@ def fork(+depth: Nat, +width: U32, +height: U32, +frame: U32,
         fork(p, width, height, frame, U32.add(index, U32.shln(1, p)), chunk, buffer)
       Array.join(U32, a, b)
 
-def capacity_step(more: Bool, depth: Nat, rest: Unit -> Nat) -> Nat:
-  match more:
-    case False{}: depth
-    case True{}: rest(Unit{})
-
-def capacity(fuel: Nat, +n: U32, +size: U32, +depth: Nat) -> Nat:
-  match fuel:
-    case 0n: depth
-    case 1n+p:
-      capacity_step(U32.is_lt(size, n), depth, u => capacity(p, n, U32.mul(size, 2), 1n+depth))
-
 def frame(tick: UI.Tick) -> UI.Frame:
   match tick:
     case UI.Tick{+width, +height, frame}:
       +count = U32.mul(width, height)
-      buffer = Array.new(U32, capacity(23n, count, 1, 0n), 0)
+      buffer = Array.new(U32, UI.capacity(count), 0)
       UI.Pixels{width, height, fork(8n, width, height, frame, 0,
         U32.div(U32.add(count, 255), 256), buffer)}
