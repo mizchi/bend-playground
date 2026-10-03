@@ -1,0 +1,1307 @@
+{
+  "upstream_main": "947db722640c86247849343657bf2f7ef01cb7f1",
+  "platform": "Apple M5 / macOS 26.6.2 / Bun 1.3.5 / clang 21.0.0",
+  "compiler_diff": {
+    "added": 69,
+    "removed": 15,
+    "net": 54,
+    "prototype_added": 166
+  },
+  "tokens": {
+    "base": 63933,
+    "patched": 64777,
+    "cap": 64000
+  },
+  "repo_gate": {
+    "pass": 48,
+    "total": 49,
+    "failure": "comp.ts: 64777 > 64000 ttok"
+  },
+  "contracts": 13,
+  "playground_tests": 40,
+  "upstream_programs": 12,
+  "upstream_execution_modes": [
+    "interpreter",
+    "js",
+    "c-1",
+    "c-4"
+  ],
+  "typescript": "two identical pre-existing errors in bend.ts; no new errors",
+  "not_run": [
+    "full upstream cluster test/perf/safe gates",
+    "CUDA hardware"
+  ],
+  "logs": {
+    "contracts": "python3 scripts/bend_step02_refactor.py check\n..From /var/folders/_h/_rf455xj4h3_3g6z86pg244c0000gn/T/tmp36h7cr56/origin\n * branch            649a0653614257f0d92464349e45c546033acb13 -> FETCH_HEAD\nPrevious HEAD position was c607645 base\nHEAD is now at 649a065 patched\n..\n----------------------------------------------------------------------\nRan 4 tests in 2.112s\n\nOK\n.............\n----------------------------------------------------------------------\nRan 13 tests in 7.731s\n\nOK\n",
+    "playground": "python3 tests/smoke.py\ntest_fwht_involution (__main__.PlaygroundSmokeTest) ... ok\ntest_generated_balls_flat_is_current (__main__.PlaygroundSmokeTest) ... ok\ntest_intro_includes_expected_type_errors (__main__.PlaygroundSmokeTest) ... ok\ntest_just_forwards_multiple_arguments (__main__.PlaygroundSmokeTest) ... ok\ntest_missing_compiler_explains_setup (__main__.PlaygroundSmokeTest) ... ok\ntest_run_from_unrelated_directory_with_spaces (__main__.PlaygroundSmokeTest) ... ok\ntest_simulations_match_their_c_twins (__main__.PlaygroundSmokeTest) ... ok\ntest_unsafe_proof_fails_the_check (__main__.PlaygroundSmokeTest) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 11.476s\n\nOK\npython3 tests/benchmark.py\ntest_benchmark_scripts_parse_with_system_bash (__main__.BenchmarkTest) ... ok\ntest_failed_program_does_not_produce_a_measurement (__main__.BenchmarkTest) ... ok\ntest_json_measurement_records_samples_and_units (__main__.BenchmarkTest) ... ok\ntest_max_rss_has_the_same_units_on_macos_and_linux (__main__.BenchmarkTest) ... ok\ntest_measurement_suppresses_program_output (__main__.BenchmarkTest) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.177s\n\nOK\npython3 tests/algorithms.py\ntest_ast_fold_preserves_values_and_removes_nodes (__main__.AlgorithmTest) ... ok\ntest_default_cli_selects_all_programs (__main__.AlgorithmTest) ... ok\ntest_invalid_case_cannot_change_the_problem_silently (__main__.AlgorithmTest) ... ok\ntest_nqueens_matches_known_solution_counts (__main__.AlgorithmTest) ... ok\ntest_pollard_rho_matches_independent_trial_division (__main__.AlgorithmTest) ... ok\ntest_result_parser_rejects_missing_or_extra_fields (__main__.AlgorithmTest) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 5.733s\n\nOK\npython3 tests/sat.py\ntest_answer_parser_rejects_unknown_and_invalid_witness_fields (__main__.SatTest) ... ok\ntest_bit_32_and_invalid_split_contract (__main__.SatTest) ... ok\ntest_dimacs_comments_multiline_duplicate_literals_and_empty_clause (__main__.SatTest) ... ok\ntest_dimacs_rejects_unsupported_or_malformed_inputs (__main__.SatTest) ... ok\ntest_generated_batch_matches_truth_tables_and_validated_witnesses (__main__.SatTest) ... ok\ntest_pigeonhole_and_repeated_single_formula (__main__.SatTest) ... ok\ntest_prefix_partition_preserves_sat_unsat_and_witnesses (__main__.SatTest) ... ok\ntest_random_cnfs_against_exhaustive_oracle (__main__.SatTest) ... ok\ntest_truth_tables_units_tautologies_and_backtracking (__main__.SatTest) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 9.658s\n\nOK\npython3 tests/ffi.py\ntest_builder_rejects_invalid_sizes_before_compilation (__main__.FfiTest) ... ok\ntest_fit_rejects_degenerate_or_nonfinite_measurements (__main__.FfiTest) ... ok\ntest_native_and_pure_loops_match_independent_oracle (__main__.FfiTest) ... ok\ntest_output_parser_rejects_invalid_values (__main__.FfiTest) ... ok\ntest_regression_removes_startup_and_reports_nanoseconds (__main__.FfiTest) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 7.691s\n\nOK\npython3 tests/grid.py\ntest_benchmark_counts_all_dynamic_layouts (__main__.GridTest) ... ok\ntest_capacity_exhaustion_is_an_error (__main__.GridTest) ... ok\ntest_css_track_parser_and_repeat (__main__.GridTest) ... ok\ntest_native_engines_match_hand_computed_geometry (__main__.GridTest) ... ok\ntest_placement_exhaustion_never_wraps_owned_arrays (__main__.GridTest) ... ok\ntest_sparse_fixed_rows_keep_cursors_by_start_row (__main__.GridTest) ... ok\ntest_unsupported_or_invalid_inputs_fail_explicitly (__main__.GridTest) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 5.187s\n\nOK\n",
+    "upstream": "PASS closures_hof\nPASS fn_capture_owns\nPASS unsafe_mutual\nPASS array_map_loop\nPASS js_tail_closure\nPASS js_loop_capture\nPASS array_poly_elem\nPASS array_boxed_get\nPASS array_split_join\nPASS array_wrap_index\nPASS array_fill_fold\nPASS ids_unique\n",
+    "tsc_base": "build/bend-steps/step-02-refactored/base/bend2/bend.ts(2040,51): error TS2339: Property 'k' does not exist on type 'LTerm'.\n  Property 'k' does not exist on type '{ $: \"Qnt\"; } & { s?: Span; }'.\nbuild/bend-steps/step-02-refactored/base/bend2/bend.ts(3764,27): error TS2339: Property 'v' does not exist on type 'TLD'.\n  Property 'v' does not exist on type 'ADT'.\n",
+    "tsc_patched": "build/bend-steps/step-02-refactored/bend/bend2/bend.ts(2040,51): error TS2339: Property 'k' does not exist on type 'LTerm'.\n  Property 'k' does not exist on type '{ $: \"Qnt\"; } & { s?: Span; }'.\nbuild/bend-steps/step-02-refactored/bend/bend2/bend.ts(3764,27): error TS2339: Property 'v' does not exist on type 'TLD'.\n  Property 'v' does not exist on type 'ADT'.\n",
+    "repo_gate": "FAIL bend2/comp.ts: 64777 > 64000 ttok\nPASS: 48 / 49\n"
+  },
+  "particle_codegen": [
+    {
+      "lane": "base",
+      "rounds": 64,
+      "jobs": 1024,
+      "binary": "build/bend-steps/step-02-refactored/particles/base-callback-64-1024/BendGPUI.app/Contents/MacOS/bend-particles",
+      "compiler_sha256": "453e5452f7d5ea1d501b29ce2332623c3f9f4c9e89f407352209716d31638c89",
+      "compiler_revision": "947db722640c86247849343657bf2f7ef01cb7f1",
+      "compiler_dirty": false,
+      "live_closure_segments": 16,
+      "environment": {
+        "date": "2026-10-03T19:30:10+09:00",
+        "playground_commit": "0d2b737a2b0e020428e223e572d85e6d2c4d748e",
+        "bend_commit": "947db722640c86247849343657bf2f7ef01cb7f1",
+        "bend_version": "bend 2.0.34",
+        "platform": "Darwin arm64",
+        "compiler": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+        "c_flags": "-O3 -ffp-contract=off; Objective-C/Metal; GPUI Rust dev debug=0",
+        "python": "3.9.6",
+        "method": "serial within-process particle frame preparation; startup excluded",
+        "source_state": "inputs identified by source_sha256 and generated_sha256",
+        "background": "existing UI applications running; no benchmark/build jobs launched concurrently by this run",
+        "cpu": "Apple M5",
+        "memory_bytes": 34359738368,
+        "os_version": "26.6.2",
+        "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+        "logical_cpu_count": 10,
+        "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+        "gpu": [
+          {
+            "_name": "Apple M5",
+            "spdisplays_mtlgpufamilysupport": "spdisplays_metal4",
+            "spdisplays_ndrvs": [
+              {
+                "_name": "Color LCD",
+                "_spdisplays_display-product-id": "a05e",
+                "_spdisplays_display-serial-number": "fd626d62",
+                "_spdisplays_display-vendor-id": "610",
+                "_spdisplays_display-week": "0",
+                "_spdisplays_display-year": "0",
+                "_spdisplays_displayID": "1",
+                "_spdisplays_pixels": "3024 x 1964",
+                "_spdisplays_resolution": "1512 x 982 @ 120.00Hz",
+                "spdisplays_ambient_brightness": "spdisplays_yes",
+                "spdisplays_connection_type": "spdisplays_internal",
+                "spdisplays_display_type": "spdisplays_built-in-liquid-retina-xdr",
+                "spdisplays_main": "spdisplays_yes",
+                "spdisplays_mirror": "spdisplays_off",
+                "spdisplays_online": "spdisplays_yes",
+                "spdisplays_pixelresolution": "spdisplays_3024x1964Retina"
+              }
+            ],
+            "spdisplays_vendor": "sppci_vendor_Apple",
+            "sppci_bus": "spdisplays_builtin",
+            "sppci_cores": "10",
+            "sppci_device_type": "spdisplays_gpu",
+            "sppci_model": "Apple M5"
+          }
+        ]
+      },
+      "gpui": "0.2.2",
+      "deployment_target": "15.0",
+      "c_cpu_flags": "-std=c11 -O3 -ffp-contract=off -pthread -mmacosx-version-min=15.0; separate TU, no LTO",
+      "variant": "callback",
+      "codegen": {
+        "particle_loops": [],
+        "runtime_particle_closure_segments": 14
+      },
+      "source_sha256": {
+        "build/bend-steps/step-02-refactored/sources/simulation.bend": "35ee4808b1bc070915b0807d15db27630c94a879c40e5568bdecbd14474c112b",
+        "build/bend-steps/step-02-refactored/sources/cpu.c": "62814c0e8b4ca2c14fb2e7dfab9dd79ac5e61c1df6f0db9cf77fc6a79c6148f1",
+        "build/bend-steps/step-02-refactored/sources/particles.metal": "0c50b907e27608411093b506a4cbb698c489431706a31c1b076e8a92a72dad9d",
+        "build/bend-steps/step-02-refactored/sources/gpu-leaf.metal": "baa172da073df8411c7964e4df3ec1eaf7521c310cd7ba1cd86310ba3a2adaaa",
+        "build/bend-steps/step-02-refactored/sources/simulation-flat.bend": "3fef23c714214e683e2cdaf4a0748630a1d4765944df0909b25c97af5998ca43",
+        "build/bend-steps/step-02-refactored/sources/oracle.h": "876e18cf50000c3e369c2c8b602460f108d40c5d39aeebdc38c78ad5b0b87c0f",
+        "build/bend-steps/step-02-refactored/sources/gpu-profile.h": "77a2792de278aa9f6dd295c5f7631e51277530414c0e4d663e23e50ed7c026c8",
+        "build/bend-steps/step-02-refactored/sources/cpu.h": "707de68ee027b6a72f41a5467e03659d242f484e56371cc7ee226c6a55f566e0",
+        "build/bend-steps/step-02-refactored/sources/native.c": "6e6938593fb82040418a3ee5171a6286b045beb9dc6e78c01193d4f65bef436c",
+        "build/bend-steps/step-02-refactored/sources/state.h": "e64b9423113428aecf438ffe18aec597b7f569116bdf09332fad5016d57503c2",
+        "build/bend-steps/step-02-refactored/sources/api.bend": "7d14c7ec73e8272c624401168bf8f48652f744311f835ad9df2f5c839f839ef2",
+        "scripts/particles.py": "3769af5c296ef373e80ca596838dd8f837f3b064ac5d4e957538a90069cc8d51",
+        "scripts/gpui.py": "8e7a1f1461b4fe789d68d80bb9c8defa87d0c7c101d4979c2f4a053df225ecdd",
+        "scripts/grid_gpu.py": "b2c247584e0b3fcd34c16bebb9191eda099353ab04c770287bdfc97a1921c22a",
+        "scripts/algorithm_bench.py": "413b450b074728b249d6c542ceacff3a23509db89e700630160795d3b912cf73",
+        "scripts/grid.py": "c1ac047d11f35c4bdd58a618be7272a96e0bf760f78bc266eda240891920f7eb",
+        "tests/particles.py": "1e380c49612967ca7c48f5579af79b84ea34b912c6d0661bf5ecbcd6b7183863",
+        "examples/gpui/abi.h": "ae24e2c670850992558a66972b0a1d4c4b7c52d647f1b37ee7338a3c0b50eb34",
+        "examples/gpui/convert.metal": "88bdbe1bb33f05b46437bb49128575e95acaed6da838c3bc37e8455fdb01289a",
+        "examples/gpui/Cargo.toml": "dd9efb245332215f0fa9b33457d55ed4e85500e6da59f25685bd268f4ae98d85",
+        "examples/gpui/Cargo.lock": "49a5909284a3ff604aa4e3d8b9f7de16ccb973f8a49761823a13a0de66ec8bea",
+        "examples/gpui/src/lib.rs": "03a55bd44a752b8690dfc26ba12bde5dde8fb16b58394e1fb4763fb1e4789f2c"
+      },
+      "generated_sha256": {
+        "run.bend": "d6aeef06f1987ba5e4facdd0db813eb10b68bd7c520ace683d193ba21258f453",
+        "particle-config.h": "3174465affab1326ca106f260b6e67683c51ab5a103b08eb00a1957d90b3b069",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "a69d39840d3fcfe78ee0c1b48ef70d1817e5038876845eb70a02cb26bd4fab25",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "base",
+      "rounds": 64,
+      "jobs": 16384,
+      "binary": "build/bend-steps/step-02-refactored/particles/base-callback-64-16384/BendGPUI.app/Contents/MacOS/bend-particles",
+      "compiler_sha256": "453e5452f7d5ea1d501b29ce2332623c3f9f4c9e89f407352209716d31638c89",
+      "compiler_revision": "947db722640c86247849343657bf2f7ef01cb7f1",
+      "compiler_dirty": false,
+      "live_closure_segments": 16,
+      "environment": {
+        "date": "2026-10-03T19:30:13+09:00",
+        "playground_commit": "0d2b737a2b0e020428e223e572d85e6d2c4d748e",
+        "bend_commit": "947db722640c86247849343657bf2f7ef01cb7f1",
+        "bend_version": "bend 2.0.34",
+        "platform": "Darwin arm64",
+        "compiler": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+        "c_flags": "-O3 -ffp-contract=off; Objective-C/Metal; GPUI Rust dev debug=0",
+        "python": "3.9.6",
+        "method": "serial within-process particle frame preparation; startup excluded",
+        "source_state": "inputs identified by source_sha256 and generated_sha256",
+        "background": "existing UI applications running; no benchmark/build jobs launched concurrently by this run",
+        "cpu": "Apple M5",
+        "memory_bytes": 34359738368,
+        "os_version": "26.6.2",
+        "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+        "logical_cpu_count": 10,
+        "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+        "gpu": [
+          {
+            "_name": "Apple M5",
+            "spdisplays_mtlgpufamilysupport": "spdisplays_metal4",
+            "spdisplays_ndrvs": [
+              {
+                "_name": "Color LCD",
+                "_spdisplays_display-product-id": "a05e",
+                "_spdisplays_display-serial-number": "fd626d62",
+                "_spdisplays_display-vendor-id": "610",
+                "_spdisplays_display-week": "0",
+                "_spdisplays_display-year": "0",
+                "_spdisplays_displayID": "1",
+                "_spdisplays_pixels": "3024 x 1964",
+                "_spdisplays_resolution": "1512 x 982 @ 120.00Hz",
+                "spdisplays_ambient_brightness": "spdisplays_yes",
+                "spdisplays_connection_type": "spdisplays_internal",
+                "spdisplays_display_type": "spdisplays_built-in-liquid-retina-xdr",
+                "spdisplays_main": "spdisplays_yes",
+                "spdisplays_mirror": "spdisplays_off",
+                "spdisplays_online": "spdisplays_yes",
+                "spdisplays_pixelresolution": "spdisplays_3024x1964Retina"
+              }
+            ],
+            "spdisplays_vendor": "sppci_vendor_Apple",
+            "sppci_bus": "spdisplays_builtin",
+            "sppci_cores": "10",
+            "sppci_device_type": "spdisplays_gpu",
+            "sppci_model": "Apple M5"
+          }
+        ]
+      },
+      "gpui": "0.2.2",
+      "deployment_target": "15.0",
+      "c_cpu_flags": "-std=c11 -O3 -ffp-contract=off -pthread -mmacosx-version-min=15.0; separate TU, no LTO",
+      "variant": "callback",
+      "codegen": {
+        "particle_loops": [],
+        "runtime_particle_closure_segments": 14
+      },
+      "source_sha256": {
+        "build/bend-steps/step-02-refactored/sources/simulation.bend": "35ee4808b1bc070915b0807d15db27630c94a879c40e5568bdecbd14474c112b",
+        "build/bend-steps/step-02-refactored/sources/cpu.c": "62814c0e8b4ca2c14fb2e7dfab9dd79ac5e61c1df6f0db9cf77fc6a79c6148f1",
+        "build/bend-steps/step-02-refactored/sources/particles.metal": "0c50b907e27608411093b506a4cbb698c489431706a31c1b076e8a92a72dad9d",
+        "build/bend-steps/step-02-refactored/sources/gpu-leaf.metal": "baa172da073df8411c7964e4df3ec1eaf7521c310cd7ba1cd86310ba3a2adaaa",
+        "build/bend-steps/step-02-refactored/sources/simulation-flat.bend": "3fef23c714214e683e2cdaf4a0748630a1d4765944df0909b25c97af5998ca43",
+        "build/bend-steps/step-02-refactored/sources/oracle.h": "876e18cf50000c3e369c2c8b602460f108d40c5d39aeebdc38c78ad5b0b87c0f",
+        "build/bend-steps/step-02-refactored/sources/gpu-profile.h": "77a2792de278aa9f6dd295c5f7631e51277530414c0e4d663e23e50ed7c026c8",
+        "build/bend-steps/step-02-refactored/sources/cpu.h": "707de68ee027b6a72f41a5467e03659d242f484e56371cc7ee226c6a55f566e0",
+        "build/bend-steps/step-02-refactored/sources/native.c": "6e6938593fb82040418a3ee5171a6286b045beb9dc6e78c01193d4f65bef436c",
+        "build/bend-steps/step-02-refactored/sources/state.h": "e64b9423113428aecf438ffe18aec597b7f569116bdf09332fad5016d57503c2",
+        "build/bend-steps/step-02-refactored/sources/api.bend": "7d14c7ec73e8272c624401168bf8f48652f744311f835ad9df2f5c839f839ef2",
+        "scripts/particles.py": "3769af5c296ef373e80ca596838dd8f837f3b064ac5d4e957538a90069cc8d51",
+        "scripts/gpui.py": "8e7a1f1461b4fe789d68d80bb9c8defa87d0c7c101d4979c2f4a053df225ecdd",
+        "scripts/grid_gpu.py": "b2c247584e0b3fcd34c16bebb9191eda099353ab04c770287bdfc97a1921c22a",
+        "scripts/algorithm_bench.py": "413b450b074728b249d6c542ceacff3a23509db89e700630160795d3b912cf73",
+        "scripts/grid.py": "c1ac047d11f35c4bdd58a618be7272a96e0bf760f78bc266eda240891920f7eb",
+        "tests/particles.py": "1e380c49612967ca7c48f5579af79b84ea34b912c6d0661bf5ecbcd6b7183863",
+        "examples/gpui/abi.h": "ae24e2c670850992558a66972b0a1d4c4b7c52d647f1b37ee7338a3c0b50eb34",
+        "examples/gpui/convert.metal": "88bdbe1bb33f05b46437bb49128575e95acaed6da838c3bc37e8455fdb01289a",
+        "examples/gpui/Cargo.toml": "dd9efb245332215f0fa9b33457d55ed4e85500e6da59f25685bd268f4ae98d85",
+        "examples/gpui/Cargo.lock": "49a5909284a3ff604aa4e3d8b9f7de16ccb973f8a49761823a13a0de66ec8bea",
+        "examples/gpui/src/lib.rs": "03a55bd44a752b8690dfc26ba12bde5dde8fb16b58394e1fb4763fb1e4789f2c"
+      },
+      "generated_sha256": {
+        "run.bend": "0af29a1919c0880f0cd74da89b8fdde5f57ee0da026763802de7f4817f81c072",
+        "particle-config.h": "450ec7c46ac3011ff6bcd4ac024dafd0b7c194d66c0c2b6961695c8d5d2e3df6",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "356687cf743135873f092ed9a38089e5d74d78c67ce62d10ae0305d879ce143e",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "base",
+      "rounds": 64,
+      "jobs": 1024,
+      "binary": "build/bend-steps/step-02-refactored/particles/base-flat-64-1024/BendGPUI.app/Contents/MacOS/bend-particles",
+      "compiler_sha256": "453e5452f7d5ea1d501b29ce2332623c3f9f4c9e89f407352209716d31638c89",
+      "compiler_revision": "947db722640c86247849343657bf2f7ef01cb7f1",
+      "compiler_dirty": false,
+      "live_closure_segments": 2,
+      "environment": {
+        "date": "2026-10-03T19:30:15+09:00",
+        "playground_commit": "0d2b737a2b0e020428e223e572d85e6d2c4d748e",
+        "bend_commit": "947db722640c86247849343657bf2f7ef01cb7f1",
+        "bend_version": "bend 2.0.34",
+        "platform": "Darwin arm64",
+        "compiler": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+        "c_flags": "-O3 -ffp-contract=off; Objective-C/Metal; GPUI Rust dev debug=0",
+        "python": "3.9.6",
+        "method": "serial within-process particle frame preparation; startup excluded",
+        "source_state": "inputs identified by source_sha256 and generated_sha256",
+        "background": "existing UI applications running; no benchmark/build jobs launched concurrently by this run",
+        "cpu": "Apple M5",
+        "memory_bytes": 34359738368,
+        "os_version": "26.6.2",
+        "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+        "logical_cpu_count": 10,
+        "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+        "gpu": [
+          {
+            "_name": "Apple M5",
+            "spdisplays_mtlgpufamilysupport": "spdisplays_metal4",
+            "spdisplays_ndrvs": [
+              {
+                "_name": "Color LCD",
+                "_spdisplays_display-product-id": "a05e",
+                "_spdisplays_display-serial-number": "fd626d62",
+                "_spdisplays_display-vendor-id": "610",
+                "_spdisplays_display-week": "0",
+                "_spdisplays_display-year": "0",
+                "_spdisplays_displayID": "1",
+                "_spdisplays_pixels": "3024 x 1964",
+                "_spdisplays_resolution": "1512 x 982 @ 120.00Hz",
+                "spdisplays_ambient_brightness": "spdisplays_yes",
+                "spdisplays_connection_type": "spdisplays_internal",
+                "spdisplays_display_type": "spdisplays_built-in-liquid-retina-xdr",
+                "spdisplays_main": "spdisplays_yes",
+                "spdisplays_mirror": "spdisplays_off",
+                "spdisplays_online": "spdisplays_yes",
+                "spdisplays_pixelresolution": "spdisplays_3024x1964Retina"
+              }
+            ],
+            "spdisplays_vendor": "sppci_vendor_Apple",
+            "sppci_bus": "spdisplays_builtin",
+            "sppci_cores": "10",
+            "sppci_device_type": "spdisplays_gpu",
+            "sppci_model": "Apple M5"
+          }
+        ]
+      },
+      "gpui": "0.2.2",
+      "deployment_target": "15.0",
+      "c_cpu_flags": "-std=c11 -O3 -ffp-contract=off -pthread -mmacosx-version-min=15.0; separate TU, no LTO",
+      "variant": "flat",
+      "codegen": {
+        "particle_loops": [
+          {
+            "function": "spin_16",
+            "transitive_helpers": [
+              "spin_0",
+              "spin_1",
+              "spin_10",
+              "spin_11",
+              "spin_12",
+              "spin_13",
+              "spin_2",
+              "spin_3",
+              "spin_4",
+              "spin_5",
+              "spin_6",
+              "spin_7",
+              "spin_8",
+              "spin_9"
+            ],
+            "heap_alloc_sites": 0,
+            "closure_sites": 0,
+            "dynamic_apply_sites": 0
+          }
+        ],
+        "runtime_particle_closure_segments": 0
+      },
+      "source_sha256": {
+        "build/bend-steps/step-02-refactored/sources/simulation.bend": "35ee4808b1bc070915b0807d15db27630c94a879c40e5568bdecbd14474c112b",
+        "build/bend-steps/step-02-refactored/sources/cpu.c": "62814c0e8b4ca2c14fb2e7dfab9dd79ac5e61c1df6f0db9cf77fc6a79c6148f1",
+        "build/bend-steps/step-02-refactored/sources/particles.metal": "0c50b907e27608411093b506a4cbb698c489431706a31c1b076e8a92a72dad9d",
+        "build/bend-steps/step-02-refactored/sources/gpu-leaf.metal": "baa172da073df8411c7964e4df3ec1eaf7521c310cd7ba1cd86310ba3a2adaaa",
+        "build/bend-steps/step-02-refactored/sources/simulation-flat.bend": "3fef23c714214e683e2cdaf4a0748630a1d4765944df0909b25c97af5998ca43",
+        "build/bend-steps/step-02-refactored/sources/oracle.h": "876e18cf50000c3e369c2c8b602460f108d40c5d39aeebdc38c78ad5b0b87c0f",
+        "build/bend-steps/step-02-refactored/sources/gpu-profile.h": "77a2792de278aa9f6dd295c5f7631e51277530414c0e4d663e23e50ed7c026c8",
+        "build/bend-steps/step-02-refactored/sources/cpu.h": "707de68ee027b6a72f41a5467e03659d242f484e56371cc7ee226c6a55f566e0",
+        "build/bend-steps/step-02-refactored/sources/native.c": "6e6938593fb82040418a3ee5171a6286b045beb9dc6e78c01193d4f65bef436c",
+        "build/bend-steps/step-02-refactored/sources/state.h": "e64b9423113428aecf438ffe18aec597b7f569116bdf09332fad5016d57503c2",
+        "build/bend-steps/step-02-refactored/sources/api.bend": "7d14c7ec73e8272c624401168bf8f48652f744311f835ad9df2f5c839f839ef2",
+        "scripts/particles.py": "3769af5c296ef373e80ca596838dd8f837f3b064ac5d4e957538a90069cc8d51",
+        "scripts/gpui.py": "8e7a1f1461b4fe789d68d80bb9c8defa87d0c7c101d4979c2f4a053df225ecdd",
+        "scripts/grid_gpu.py": "b2c247584e0b3fcd34c16bebb9191eda099353ab04c770287bdfc97a1921c22a",
+        "scripts/algorithm_bench.py": "413b450b074728b249d6c542ceacff3a23509db89e700630160795d3b912cf73",
+        "scripts/grid.py": "c1ac047d11f35c4bdd58a618be7272a96e0bf760f78bc266eda240891920f7eb",
+        "tests/particles.py": "1e380c49612967ca7c48f5579af79b84ea34b912c6d0661bf5ecbcd6b7183863",
+        "examples/gpui/abi.h": "ae24e2c670850992558a66972b0a1d4c4b7c52d647f1b37ee7338a3c0b50eb34",
+        "examples/gpui/convert.metal": "88bdbe1bb33f05b46437bb49128575e95acaed6da838c3bc37e8455fdb01289a",
+        "examples/gpui/Cargo.toml": "dd9efb245332215f0fa9b33457d55ed4e85500e6da59f25685bd268f4ae98d85",
+        "examples/gpui/Cargo.lock": "49a5909284a3ff604aa4e3d8b9f7de16ccb973f8a49761823a13a0de66ec8bea",
+        "examples/gpui/src/lib.rs": "03a55bd44a752b8690dfc26ba12bde5dde8fb16b58394e1fb4763fb1e4789f2c"
+      },
+      "generated_sha256": {
+        "run.bend": "b0d5f2764ced4b158a4dca273bc4128edd7054a2a4b3b9599e70d0baf1be6935",
+        "particle-config.h": "3174465affab1326ca106f260b6e67683c51ab5a103b08eb00a1957d90b3b069",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "5e4f32ac5e507dc562002274068661b474a7302c6ac45f65c240a69863ff7e55",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "base",
+      "rounds": 64,
+      "jobs": 16384,
+      "binary": "build/bend-steps/step-02-refactored/particles/base-flat-64-16384/BendGPUI.app/Contents/MacOS/bend-particles",
+      "compiler_sha256": "453e5452f7d5ea1d501b29ce2332623c3f9f4c9e89f407352209716d31638c89",
+      "compiler_revision": "947db722640c86247849343657bf2f7ef01cb7f1",
+      "compiler_dirty": false,
+      "live_closure_segments": 2,
+      "environment": {
+        "date": "2026-10-03T19:30:18+09:00",
+        "playground_commit": "0d2b737a2b0e020428e223e572d85e6d2c4d748e",
+        "bend_commit": "947db722640c86247849343657bf2f7ef01cb7f1",
+        "bend_version": "bend 2.0.34",
+        "platform": "Darwin arm64",
+        "compiler": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+        "c_flags": "-O3 -ffp-contract=off; Objective-C/Metal; GPUI Rust dev debug=0",
+        "python": "3.9.6",
+        "method": "serial within-process particle frame preparation; startup excluded",
+        "source_state": "inputs identified by source_sha256 and generated_sha256",
+        "background": "existing UI applications running; no benchmark/build jobs launched concurrently by this run",
+        "cpu": "Apple M5",
+        "memory_bytes": 34359738368,
+        "os_version": "26.6.2",
+        "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+        "logical_cpu_count": 10,
+        "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+        "gpu": [
+          {
+            "_name": "Apple M5",
+            "spdisplays_mtlgpufamilysupport": "spdisplays_metal4",
+            "spdisplays_ndrvs": [
+              {
+                "_name": "Color LCD",
+                "_spdisplays_display-product-id": "a05e",
+                "_spdisplays_display-serial-number": "fd626d62",
+                "_spdisplays_display-vendor-id": "610",
+                "_spdisplays_display-week": "0",
+                "_spdisplays_display-year": "0",
+                "_spdisplays_displayID": "1",
+                "_spdisplays_pixels": "3024 x 1964",
+                "_spdisplays_resolution": "1512 x 982 @ 120.00Hz",
+                "spdisplays_ambient_brightness": "spdisplays_yes",
+                "spdisplays_connection_type": "spdisplays_internal",
+                "spdisplays_display_type": "spdisplays_built-in-liquid-retina-xdr",
+                "spdisplays_main": "spdisplays_yes",
+                "spdisplays_mirror": "spdisplays_off",
+                "spdisplays_online": "spdisplays_yes",
+                "spdisplays_pixelresolution": "spdisplays_3024x1964Retina"
+              }
+            ],
+            "spdisplays_vendor": "sppci_vendor_Apple",
+            "sppci_bus": "spdisplays_builtin",
+            "sppci_cores": "10",
+            "sppci_device_type": "spdisplays_gpu",
+            "sppci_model": "Apple M5"
+          }
+        ]
+      },
+      "gpui": "0.2.2",
+      "deployment_target": "15.0",
+      "c_cpu_flags": "-std=c11 -O3 -ffp-contract=off -pthread -mmacosx-version-min=15.0; separate TU, no LTO",
+      "variant": "flat",
+      "codegen": {
+        "particle_loops": [
+          {
+            "function": "spin_16",
+            "transitive_helpers": [
+              "spin_0",
+              "spin_1",
+              "spin_10",
+              "spin_11",
+              "spin_12",
+              "spin_13",
+              "spin_2",
+              "spin_3",
+              "spin_4",
+              "spin_5",
+              "spin_6",
+              "spin_7",
+              "spin_8",
+              "spin_9"
+            ],
+            "heap_alloc_sites": 0,
+            "closure_sites": 0,
+            "dynamic_apply_sites": 0
+          }
+        ],
+        "runtime_particle_closure_segments": 0
+      },
+      "source_sha256": {
+        "build/bend-steps/step-02-refactored/sources/simulation.bend": "35ee4808b1bc070915b0807d15db27630c94a879c40e5568bdecbd14474c112b",
+        "build/bend-steps/step-02-refactored/sources/cpu.c": "62814c0e8b4ca2c14fb2e7dfab9dd79ac5e61c1df6f0db9cf77fc6a79c6148f1",
+        "build/bend-steps/step-02-refactored/sources/particles.metal": "0c50b907e27608411093b506a4cbb698c489431706a31c1b076e8a92a72dad9d",
+        "build/bend-steps/step-02-refactored/sources/gpu-leaf.metal": "baa172da073df8411c7964e4df3ec1eaf7521c310cd7ba1cd86310ba3a2adaaa",
+        "build/bend-steps/step-02-refactored/sources/simulation-flat.bend": "3fef23c714214e683e2cdaf4a0748630a1d4765944df0909b25c97af5998ca43",
+        "build/bend-steps/step-02-refactored/sources/oracle.h": "876e18cf50000c3e369c2c8b602460f108d40c5d39aeebdc38c78ad5b0b87c0f",
+        "build/bend-steps/step-02-refactored/sources/gpu-profile.h": "77a2792de278aa9f6dd295c5f7631e51277530414c0e4d663e23e50ed7c026c8",
+        "build/bend-steps/step-02-refactored/sources/cpu.h": "707de68ee027b6a72f41a5467e03659d242f484e56371cc7ee226c6a55f566e0",
+        "build/bend-steps/step-02-refactored/sources/native.c": "6e6938593fb82040418a3ee5171a6286b045beb9dc6e78c01193d4f65bef436c",
+        "build/bend-steps/step-02-refactored/sources/state.h": "e64b9423113428aecf438ffe18aec597b7f569116bdf09332fad5016d57503c2",
+        "build/bend-steps/step-02-refactored/sources/api.bend": "7d14c7ec73e8272c624401168bf8f48652f744311f835ad9df2f5c839f839ef2",
+        "scripts/particles.py": "3769af5c296ef373e80ca596838dd8f837f3b064ac5d4e957538a90069cc8d51",
+        "scripts/gpui.py": "8e7a1f1461b4fe789d68d80bb9c8defa87d0c7c101d4979c2f4a053df225ecdd",
+        "scripts/grid_gpu.py": "b2c247584e0b3fcd34c16bebb9191eda099353ab04c770287bdfc97a1921c22a",
+        "scripts/algorithm_bench.py": "413b450b074728b249d6c542ceacff3a23509db89e700630160795d3b912cf73",
+        "scripts/grid.py": "c1ac047d11f35c4bdd58a618be7272a96e0bf760f78bc266eda240891920f7eb",
+        "tests/particles.py": "1e380c49612967ca7c48f5579af79b84ea34b912c6d0661bf5ecbcd6b7183863",
+        "examples/gpui/abi.h": "ae24e2c670850992558a66972b0a1d4c4b7c52d647f1b37ee7338a3c0b50eb34",
+        "examples/gpui/convert.metal": "88bdbe1bb33f05b46437bb49128575e95acaed6da838c3bc37e8455fdb01289a",
+        "examples/gpui/Cargo.toml": "dd9efb245332215f0fa9b33457d55ed4e85500e6da59f25685bd268f4ae98d85",
+        "examples/gpui/Cargo.lock": "49a5909284a3ff604aa4e3d8b9f7de16ccb973f8a49761823a13a0de66ec8bea",
+        "examples/gpui/src/lib.rs": "03a55bd44a752b8690dfc26ba12bde5dde8fb16b58394e1fb4763fb1e4789f2c"
+      },
+      "generated_sha256": {
+        "run.bend": "b3c95bd03849b106fe6fcd25cb7659638b19cbcf947e582ff34fc53756b8aa16",
+        "particle-config.h": "450ec7c46ac3011ff6bcd4ac024dafd0b7c194d66c0c2b6961695c8d5d2e3df6",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "752a042b63ce55f5366a7857eaddd65e6f90eb3298c6ee0af1dda37a7138b2af",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "patched",
+      "rounds": 64,
+      "jobs": 1024,
+      "binary": "build/bend-steps/step-02-refactored/particles/patched-callback-64-1024/BendGPUI.app/Contents/MacOS/bend-particles",
+      "compiler_sha256": "6346230340777c3c94a9e04123dfaaec21b763d0479fd9b94f2ca4ae43f2195f",
+      "compiler_revision": "b59588e2a9c63092b542739bb6908c3329d2e353",
+      "compiler_dirty": false,
+      "live_closure_segments": 2,
+      "environment": {
+        "date": "2026-10-03T19:30:20+09:00",
+        "playground_commit": "0d2b737a2b0e020428e223e572d85e6d2c4d748e",
+        "bend_commit": "b59588e2a9c63092b542739bb6908c3329d2e353",
+        "bend_version": "bend 2.0.34",
+        "platform": "Darwin arm64",
+        "compiler": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+        "c_flags": "-O3 -ffp-contract=off; Objective-C/Metal; GPUI Rust dev debug=0",
+        "python": "3.9.6",
+        "method": "serial within-process particle frame preparation; startup excluded",
+        "source_state": "inputs identified by source_sha256 and generated_sha256",
+        "background": "existing UI applications running; no benchmark/build jobs launched concurrently by this run",
+        "cpu": "Apple M5",
+        "memory_bytes": 34359738368,
+        "os_version": "26.6.2",
+        "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+        "logical_cpu_count": 10,
+        "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+        "gpu": [
+          {
+            "_name": "Apple M5",
+            "spdisplays_mtlgpufamilysupport": "spdisplays_metal4",
+            "spdisplays_ndrvs": [
+              {
+                "_name": "Color LCD",
+                "_spdisplays_display-product-id": "a05e",
+                "_spdisplays_display-serial-number": "fd626d62",
+                "_spdisplays_display-vendor-id": "610",
+                "_spdisplays_display-week": "0",
+                "_spdisplays_display-year": "0",
+                "_spdisplays_displayID": "1",
+                "_spdisplays_pixels": "3024 x 1964",
+                "_spdisplays_resolution": "1512 x 982 @ 120.00Hz",
+                "spdisplays_ambient_brightness": "spdisplays_yes",
+                "spdisplays_connection_type": "spdisplays_internal",
+                "spdisplays_display_type": "spdisplays_built-in-liquid-retina-xdr",
+                "spdisplays_main": "spdisplays_yes",
+                "spdisplays_mirror": "spdisplays_off",
+                "spdisplays_online": "spdisplays_yes",
+                "spdisplays_pixelresolution": "spdisplays_3024x1964Retina"
+              }
+            ],
+            "spdisplays_vendor": "sppci_vendor_Apple",
+            "sppci_bus": "spdisplays_builtin",
+            "sppci_cores": "10",
+            "sppci_device_type": "spdisplays_gpu",
+            "sppci_model": "Apple M5"
+          }
+        ]
+      },
+      "gpui": "0.2.2",
+      "deployment_target": "15.0",
+      "c_cpu_flags": "-std=c11 -O3 -ffp-contract=off -pthread -mmacosx-version-min=15.0; separate TU, no LTO",
+      "variant": "callback",
+      "codegen": {
+        "particle_loops": [],
+        "runtime_particle_closure_segments": 0
+      },
+      "source_sha256": {
+        "build/bend-steps/step-02-refactored/sources/simulation.bend": "35ee4808b1bc070915b0807d15db27630c94a879c40e5568bdecbd14474c112b",
+        "build/bend-steps/step-02-refactored/sources/cpu.c": "62814c0e8b4ca2c14fb2e7dfab9dd79ac5e61c1df6f0db9cf77fc6a79c6148f1",
+        "build/bend-steps/step-02-refactored/sources/particles.metal": "0c50b907e27608411093b506a4cbb698c489431706a31c1b076e8a92a72dad9d",
+        "build/bend-steps/step-02-refactored/sources/gpu-leaf.metal": "baa172da073df8411c7964e4df3ec1eaf7521c310cd7ba1cd86310ba3a2adaaa",
+        "build/bend-steps/step-02-refactored/sources/simulation-flat.bend": "3fef23c714214e683e2cdaf4a0748630a1d4765944df0909b25c97af5998ca43",
+        "build/bend-steps/step-02-refactored/sources/oracle.h": "876e18cf50000c3e369c2c8b602460f108d40c5d39aeebdc38c78ad5b0b87c0f",
+        "build/bend-steps/step-02-refactored/sources/gpu-profile.h": "77a2792de278aa9f6dd295c5f7631e51277530414c0e4d663e23e50ed7c026c8",
+        "build/bend-steps/step-02-refactored/sources/cpu.h": "707de68ee027b6a72f41a5467e03659d242f484e56371cc7ee226c6a55f566e0",
+        "build/bend-steps/step-02-refactored/sources/native.c": "6e6938593fb82040418a3ee5171a6286b045beb9dc6e78c01193d4f65bef436c",
+        "build/bend-steps/step-02-refactored/sources/state.h": "e64b9423113428aecf438ffe18aec597b7f569116bdf09332fad5016d57503c2",
+        "build/bend-steps/step-02-refactored/sources/api.bend": "7d14c7ec73e8272c624401168bf8f48652f744311f835ad9df2f5c839f839ef2",
+        "scripts/particles.py": "3769af5c296ef373e80ca596838dd8f837f3b064ac5d4e957538a90069cc8d51",
+        "scripts/gpui.py": "8e7a1f1461b4fe789d68d80bb9c8defa87d0c7c101d4979c2f4a053df225ecdd",
+        "scripts/grid_gpu.py": "b2c247584e0b3fcd34c16bebb9191eda099353ab04c770287bdfc97a1921c22a",
+        "scripts/algorithm_bench.py": "413b450b074728b249d6c542ceacff3a23509db89e700630160795d3b912cf73",
+        "scripts/grid.py": "c1ac047d11f35c4bdd58a618be7272a96e0bf760f78bc266eda240891920f7eb",
+        "tests/particles.py": "1e380c49612967ca7c48f5579af79b84ea34b912c6d0661bf5ecbcd6b7183863",
+        "examples/gpui/abi.h": "ae24e2c670850992558a66972b0a1d4c4b7c52d647f1b37ee7338a3c0b50eb34",
+        "examples/gpui/convert.metal": "88bdbe1bb33f05b46437bb49128575e95acaed6da838c3bc37e8455fdb01289a",
+        "examples/gpui/Cargo.toml": "dd9efb245332215f0fa9b33457d55ed4e85500e6da59f25685bd268f4ae98d85",
+        "examples/gpui/Cargo.lock": "49a5909284a3ff604aa4e3d8b9f7de16ccb973f8a49761823a13a0de66ec8bea",
+        "examples/gpui/src/lib.rs": "03a55bd44a752b8690dfc26ba12bde5dde8fb16b58394e1fb4763fb1e4789f2c"
+      },
+      "generated_sha256": {
+        "run.bend": "d6aeef06f1987ba5e4facdd0db813eb10b68bd7c520ace683d193ba21258f453",
+        "particle-config.h": "3174465affab1326ca106f260b6e67683c51ab5a103b08eb00a1957d90b3b069",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "a2dfc61d7bf61cc38a113344545ca3566bee6b9d17ba5f863d32e5dd6634d4a9",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "patched",
+      "rounds": 64,
+      "jobs": 16384,
+      "binary": "build/bend-steps/step-02-refactored/particles/patched-callback-64-16384/BendGPUI.app/Contents/MacOS/bend-particles",
+      "compiler_sha256": "6346230340777c3c94a9e04123dfaaec21b763d0479fd9b94f2ca4ae43f2195f",
+      "compiler_revision": "b59588e2a9c63092b542739bb6908c3329d2e353",
+      "compiler_dirty": false,
+      "live_closure_segments": 2,
+      "environment": {
+        "date": "2026-10-03T19:30:23+09:00",
+        "playground_commit": "0d2b737a2b0e020428e223e572d85e6d2c4d748e",
+        "bend_commit": "b59588e2a9c63092b542739bb6908c3329d2e353",
+        "bend_version": "bend 2.0.34",
+        "platform": "Darwin arm64",
+        "compiler": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+        "c_flags": "-O3 -ffp-contract=off; Objective-C/Metal; GPUI Rust dev debug=0",
+        "python": "3.9.6",
+        "method": "serial within-process particle frame preparation; startup excluded",
+        "source_state": "inputs identified by source_sha256 and generated_sha256",
+        "background": "existing UI applications running; no benchmark/build jobs launched concurrently by this run",
+        "cpu": "Apple M5",
+        "memory_bytes": 34359738368,
+        "os_version": "26.6.2",
+        "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+        "logical_cpu_count": 10,
+        "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+        "gpu": [
+          {
+            "_name": "Apple M5",
+            "spdisplays_mtlgpufamilysupport": "spdisplays_metal4",
+            "spdisplays_ndrvs": [
+              {
+                "_name": "Color LCD",
+                "_spdisplays_display-product-id": "a05e",
+                "_spdisplays_display-serial-number": "fd626d62",
+                "_spdisplays_display-vendor-id": "610",
+                "_spdisplays_display-week": "0",
+                "_spdisplays_display-year": "0",
+                "_spdisplays_displayID": "1",
+                "_spdisplays_pixels": "3024 x 1964",
+                "_spdisplays_resolution": "1512 x 982 @ 120.00Hz",
+                "spdisplays_ambient_brightness": "spdisplays_yes",
+                "spdisplays_connection_type": "spdisplays_internal",
+                "spdisplays_display_type": "spdisplays_built-in-liquid-retina-xdr",
+                "spdisplays_main": "spdisplays_yes",
+                "spdisplays_mirror": "spdisplays_off",
+                "spdisplays_online": "spdisplays_yes",
+                "spdisplays_pixelresolution": "spdisplays_3024x1964Retina"
+              }
+            ],
+            "spdisplays_vendor": "sppci_vendor_Apple",
+            "sppci_bus": "spdisplays_builtin",
+            "sppci_cores": "10",
+            "sppci_device_type": "spdisplays_gpu",
+            "sppci_model": "Apple M5"
+          }
+        ]
+      },
+      "gpui": "0.2.2",
+      "deployment_target": "15.0",
+      "c_cpu_flags": "-std=c11 -O3 -ffp-contract=off -pthread -mmacosx-version-min=15.0; separate TU, no LTO",
+      "variant": "callback",
+      "codegen": {
+        "particle_loops": [],
+        "runtime_particle_closure_segments": 0
+      },
+      "source_sha256": {
+        "build/bend-steps/step-02-refactored/sources/simulation.bend": "35ee4808b1bc070915b0807d15db27630c94a879c40e5568bdecbd14474c112b",
+        "build/bend-steps/step-02-refactored/sources/cpu.c": "62814c0e8b4ca2c14fb2e7dfab9dd79ac5e61c1df6f0db9cf77fc6a79c6148f1",
+        "build/bend-steps/step-02-refactored/sources/particles.metal": "0c50b907e27608411093b506a4cbb698c489431706a31c1b076e8a92a72dad9d",
+        "build/bend-steps/step-02-refactored/sources/gpu-leaf.metal": "baa172da073df8411c7964e4df3ec1eaf7521c310cd7ba1cd86310ba3a2adaaa",
+        "build/bend-steps/step-02-refactored/sources/simulation-flat.bend": "3fef23c714214e683e2cdaf4a0748630a1d4765944df0909b25c97af5998ca43",
+        "build/bend-steps/step-02-refactored/sources/oracle.h": "876e18cf50000c3e369c2c8b602460f108d40c5d39aeebdc38c78ad5b0b87c0f",
+        "build/bend-steps/step-02-refactored/sources/gpu-profile.h": "77a2792de278aa9f6dd295c5f7631e51277530414c0e4d663e23e50ed7c026c8",
+        "build/bend-steps/step-02-refactored/sources/cpu.h": "707de68ee027b6a72f41a5467e03659d242f484e56371cc7ee226c6a55f566e0",
+        "build/bend-steps/step-02-refactored/sources/native.c": "6e6938593fb82040418a3ee5171a6286b045beb9dc6e78c01193d4f65bef436c",
+        "build/bend-steps/step-02-refactored/sources/state.h": "e64b9423113428aecf438ffe18aec597b7f569116bdf09332fad5016d57503c2",
+        "build/bend-steps/step-02-refactored/sources/api.bend": "7d14c7ec73e8272c624401168bf8f48652f744311f835ad9df2f5c839f839ef2",
+        "scripts/particles.py": "3769af5c296ef373e80ca596838dd8f837f3b064ac5d4e957538a90069cc8d51",
+        "scripts/gpui.py": "8e7a1f1461b4fe789d68d80bb9c8defa87d0c7c101d4979c2f4a053df225ecdd",
+        "scripts/grid_gpu.py": "b2c247584e0b3fcd34c16bebb9191eda099353ab04c770287bdfc97a1921c22a",
+        "scripts/algorithm_bench.py": "413b450b074728b249d6c542ceacff3a23509db89e700630160795d3b912cf73",
+        "scripts/grid.py": "c1ac047d11f35c4bdd58a618be7272a96e0bf760f78bc266eda240891920f7eb",
+        "tests/particles.py": "1e380c49612967ca7c48f5579af79b84ea34b912c6d0661bf5ecbcd6b7183863",
+        "examples/gpui/abi.h": "ae24e2c670850992558a66972b0a1d4c4b7c52d647f1b37ee7338a3c0b50eb34",
+        "examples/gpui/convert.metal": "88bdbe1bb33f05b46437bb49128575e95acaed6da838c3bc37e8455fdb01289a",
+        "examples/gpui/Cargo.toml": "dd9efb245332215f0fa9b33457d55ed4e85500e6da59f25685bd268f4ae98d85",
+        "examples/gpui/Cargo.lock": "49a5909284a3ff604aa4e3d8b9f7de16ccb973f8a49761823a13a0de66ec8bea",
+        "examples/gpui/src/lib.rs": "03a55bd44a752b8690dfc26ba12bde5dde8fb16b58394e1fb4763fb1e4789f2c"
+      },
+      "generated_sha256": {
+        "run.bend": "0af29a1919c0880f0cd74da89b8fdde5f57ee0da026763802de7f4817f81c072",
+        "particle-config.h": "450ec7c46ac3011ff6bcd4ac024dafd0b7c194d66c0c2b6961695c8d5d2e3df6",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "e652499c256abb9a10b8c4755ade4fd0a835c26cbc1984922f9be080b10367a5",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "patched",
+      "rounds": 64,
+      "jobs": 1024,
+      "binary": "build/bend-steps/step-02-refactored/particles/patched-flat-64-1024/BendGPUI.app/Contents/MacOS/bend-particles",
+      "compiler_sha256": "6346230340777c3c94a9e04123dfaaec21b763d0479fd9b94f2ca4ae43f2195f",
+      "compiler_revision": "b59588e2a9c63092b542739bb6908c3329d2e353",
+      "compiler_dirty": false,
+      "live_closure_segments": 2,
+      "environment": {
+        "date": "2026-10-03T19:30:25+09:00",
+        "playground_commit": "0d2b737a2b0e020428e223e572d85e6d2c4d748e",
+        "bend_commit": "b59588e2a9c63092b542739bb6908c3329d2e353",
+        "bend_version": "bend 2.0.34",
+        "platform": "Darwin arm64",
+        "compiler": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+        "c_flags": "-O3 -ffp-contract=off; Objective-C/Metal; GPUI Rust dev debug=0",
+        "python": "3.9.6",
+        "method": "serial within-process particle frame preparation; startup excluded",
+        "source_state": "inputs identified by source_sha256 and generated_sha256",
+        "background": "existing UI applications running; no benchmark/build jobs launched concurrently by this run",
+        "cpu": "Apple M5",
+        "memory_bytes": 34359738368,
+        "os_version": "26.6.2",
+        "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+        "logical_cpu_count": 10,
+        "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+        "gpu": [
+          {
+            "_name": "Apple M5",
+            "spdisplays_mtlgpufamilysupport": "spdisplays_metal4",
+            "spdisplays_ndrvs": [
+              {
+                "_name": "Color LCD",
+                "_spdisplays_display-product-id": "a05e",
+                "_spdisplays_display-serial-number": "fd626d62",
+                "_spdisplays_display-vendor-id": "610",
+                "_spdisplays_display-week": "0",
+                "_spdisplays_display-year": "0",
+                "_spdisplays_displayID": "1",
+                "_spdisplays_pixels": "3024 x 1964",
+                "_spdisplays_resolution": "1512 x 982 @ 120.00Hz",
+                "spdisplays_ambient_brightness": "spdisplays_yes",
+                "spdisplays_connection_type": "spdisplays_internal",
+                "spdisplays_display_type": "spdisplays_built-in-liquid-retina-xdr",
+                "spdisplays_main": "spdisplays_yes",
+                "spdisplays_mirror": "spdisplays_off",
+                "spdisplays_online": "spdisplays_yes",
+                "spdisplays_pixelresolution": "spdisplays_3024x1964Retina"
+              }
+            ],
+            "spdisplays_vendor": "sppci_vendor_Apple",
+            "sppci_bus": "spdisplays_builtin",
+            "sppci_cores": "10",
+            "sppci_device_type": "spdisplays_gpu",
+            "sppci_model": "Apple M5"
+          }
+        ]
+      },
+      "gpui": "0.2.2",
+      "deployment_target": "15.0",
+      "c_cpu_flags": "-std=c11 -O3 -ffp-contract=off -pthread -mmacosx-version-min=15.0; separate TU, no LTO",
+      "variant": "flat",
+      "codegen": {
+        "particle_loops": [
+          {
+            "function": "spin_16",
+            "transitive_helpers": [
+              "spin_0",
+              "spin_1",
+              "spin_10",
+              "spin_11",
+              "spin_12",
+              "spin_13",
+              "spin_2",
+              "spin_3",
+              "spin_4",
+              "spin_5",
+              "spin_6",
+              "spin_7",
+              "spin_8",
+              "spin_9"
+            ],
+            "heap_alloc_sites": 0,
+            "closure_sites": 0,
+            "dynamic_apply_sites": 0
+          }
+        ],
+        "runtime_particle_closure_segments": 0
+      },
+      "source_sha256": {
+        "build/bend-steps/step-02-refactored/sources/simulation.bend": "35ee4808b1bc070915b0807d15db27630c94a879c40e5568bdecbd14474c112b",
+        "build/bend-steps/step-02-refactored/sources/cpu.c": "62814c0e8b4ca2c14fb2e7dfab9dd79ac5e61c1df6f0db9cf77fc6a79c6148f1",
+        "build/bend-steps/step-02-refactored/sources/particles.metal": "0c50b907e27608411093b506a4cbb698c489431706a31c1b076e8a92a72dad9d",
+        "build/bend-steps/step-02-refactored/sources/gpu-leaf.metal": "baa172da073df8411c7964e4df3ec1eaf7521c310cd7ba1cd86310ba3a2adaaa",
+        "build/bend-steps/step-02-refactored/sources/simulation-flat.bend": "3fef23c714214e683e2cdaf4a0748630a1d4765944df0909b25c97af5998ca43",
+        "build/bend-steps/step-02-refactored/sources/oracle.h": "876e18cf50000c3e369c2c8b602460f108d40c5d39aeebdc38c78ad5b0b87c0f",
+        "build/bend-steps/step-02-refactored/sources/gpu-profile.h": "77a2792de278aa9f6dd295c5f7631e51277530414c0e4d663e23e50ed7c026c8",
+        "build/bend-steps/step-02-refactored/sources/cpu.h": "707de68ee027b6a72f41a5467e03659d242f484e56371cc7ee226c6a55f566e0",
+        "build/bend-steps/step-02-refactored/sources/native.c": "6e6938593fb82040418a3ee5171a6286b045beb9dc6e78c01193d4f65bef436c",
+        "build/bend-steps/step-02-refactored/sources/state.h": "e64b9423113428aecf438ffe18aec597b7f569116bdf09332fad5016d57503c2",
+        "build/bend-steps/step-02-refactored/sources/api.bend": "7d14c7ec73e8272c624401168bf8f48652f744311f835ad9df2f5c839f839ef2",
+        "scripts/particles.py": "3769af5c296ef373e80ca596838dd8f837f3b064ac5d4e957538a90069cc8d51",
+        "scripts/gpui.py": "8e7a1f1461b4fe789d68d80bb9c8defa87d0c7c101d4979c2f4a053df225ecdd",
+        "scripts/grid_gpu.py": "b2c247584e0b3fcd34c16bebb9191eda099353ab04c770287bdfc97a1921c22a",
+        "scripts/algorithm_bench.py": "413b450b074728b249d6c542ceacff3a23509db89e700630160795d3b912cf73",
+        "scripts/grid.py": "c1ac047d11f35c4bdd58a618be7272a96e0bf760f78bc266eda240891920f7eb",
+        "tests/particles.py": "1e380c49612967ca7c48f5579af79b84ea34b912c6d0661bf5ecbcd6b7183863",
+        "examples/gpui/abi.h": "ae24e2c670850992558a66972b0a1d4c4b7c52d647f1b37ee7338a3c0b50eb34",
+        "examples/gpui/convert.metal": "88bdbe1bb33f05b46437bb49128575e95acaed6da838c3bc37e8455fdb01289a",
+        "examples/gpui/Cargo.toml": "dd9efb245332215f0fa9b33457d55ed4e85500e6da59f25685bd268f4ae98d85",
+        "examples/gpui/Cargo.lock": "49a5909284a3ff604aa4e3d8b9f7de16ccb973f8a49761823a13a0de66ec8bea",
+        "examples/gpui/src/lib.rs": "03a55bd44a752b8690dfc26ba12bde5dde8fb16b58394e1fb4763fb1e4789f2c"
+      },
+      "generated_sha256": {
+        "run.bend": "b0d5f2764ced4b158a4dca273bc4128edd7054a2a4b3b9599e70d0baf1be6935",
+        "particle-config.h": "3174465affab1326ca106f260b6e67683c51ab5a103b08eb00a1957d90b3b069",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "5e4f32ac5e507dc562002274068661b474a7302c6ac45f65c240a69863ff7e55",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    },
+    {
+      "lane": "patched",
+      "rounds": 64,
+      "jobs": 16384,
+      "binary": "build/bend-steps/step-02-refactored/particles/patched-flat-64-16384/BendGPUI.app/Contents/MacOS/bend-particles",
+      "compiler_sha256": "6346230340777c3c94a9e04123dfaaec21b763d0479fd9b94f2ca4ae43f2195f",
+      "compiler_revision": "b59588e2a9c63092b542739bb6908c3329d2e353",
+      "compiler_dirty": false,
+      "live_closure_segments": 2,
+      "environment": {
+        "date": "2026-10-03T19:30:27+09:00",
+        "playground_commit": "0d2b737a2b0e020428e223e572d85e6d2c4d748e",
+        "bend_commit": "b59588e2a9c63092b542739bb6908c3329d2e353",
+        "bend_version": "bend 2.0.34",
+        "platform": "Darwin arm64",
+        "compiler": "Apple clang version 21.0.0 (clang-2100.0.123.102)",
+        "c_flags": "-O3 -ffp-contract=off; Objective-C/Metal; GPUI Rust dev debug=0",
+        "python": "3.9.6",
+        "method": "serial within-process particle frame preparation; startup excluded",
+        "source_state": "inputs identified by source_sha256 and generated_sha256",
+        "background": "existing UI applications running; no benchmark/build jobs launched concurrently by this run",
+        "cpu": "Apple M5",
+        "memory_bytes": 34359738368,
+        "os_version": "26.6.2",
+        "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+        "logical_cpu_count": 10,
+        "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+        "gpu": [
+          {
+            "_name": "Apple M5",
+            "spdisplays_mtlgpufamilysupport": "spdisplays_metal4",
+            "spdisplays_ndrvs": [
+              {
+                "_name": "Color LCD",
+                "_spdisplays_display-product-id": "a05e",
+                "_spdisplays_display-serial-number": "fd626d62",
+                "_spdisplays_display-vendor-id": "610",
+                "_spdisplays_display-week": "0",
+                "_spdisplays_display-year": "0",
+                "_spdisplays_displayID": "1",
+                "_spdisplays_pixels": "3024 x 1964",
+                "_spdisplays_resolution": "1512 x 982 @ 120.00Hz",
+                "spdisplays_ambient_brightness": "spdisplays_yes",
+                "spdisplays_connection_type": "spdisplays_internal",
+                "spdisplays_display_type": "spdisplays_built-in-liquid-retina-xdr",
+                "spdisplays_main": "spdisplays_yes",
+                "spdisplays_mirror": "spdisplays_off",
+                "spdisplays_online": "spdisplays_yes",
+                "spdisplays_pixelresolution": "spdisplays_3024x1964Retina"
+              }
+            ],
+            "spdisplays_vendor": "sppci_vendor_Apple",
+            "sppci_bus": "spdisplays_builtin",
+            "sppci_cores": "10",
+            "sppci_device_type": "spdisplays_gpu",
+            "sppci_model": "Apple M5"
+          }
+        ]
+      },
+      "gpui": "0.2.2",
+      "deployment_target": "15.0",
+      "c_cpu_flags": "-std=c11 -O3 -ffp-contract=off -pthread -mmacosx-version-min=15.0; separate TU, no LTO",
+      "variant": "flat",
+      "codegen": {
+        "particle_loops": [
+          {
+            "function": "spin_16",
+            "transitive_helpers": [
+              "spin_0",
+              "spin_1",
+              "spin_10",
+              "spin_11",
+              "spin_12",
+              "spin_13",
+              "spin_2",
+              "spin_3",
+              "spin_4",
+              "spin_5",
+              "spin_6",
+              "spin_7",
+              "spin_8",
+              "spin_9"
+            ],
+            "heap_alloc_sites": 0,
+            "closure_sites": 0,
+            "dynamic_apply_sites": 0
+          }
+        ],
+        "runtime_particle_closure_segments": 0
+      },
+      "source_sha256": {
+        "build/bend-steps/step-02-refactored/sources/simulation.bend": "35ee4808b1bc070915b0807d15db27630c94a879c40e5568bdecbd14474c112b",
+        "build/bend-steps/step-02-refactored/sources/cpu.c": "62814c0e8b4ca2c14fb2e7dfab9dd79ac5e61c1df6f0db9cf77fc6a79c6148f1",
+        "build/bend-steps/step-02-refactored/sources/particles.metal": "0c50b907e27608411093b506a4cbb698c489431706a31c1b076e8a92a72dad9d",
+        "build/bend-steps/step-02-refactored/sources/gpu-leaf.metal": "baa172da073df8411c7964e4df3ec1eaf7521c310cd7ba1cd86310ba3a2adaaa",
+        "build/bend-steps/step-02-refactored/sources/simulation-flat.bend": "3fef23c714214e683e2cdaf4a0748630a1d4765944df0909b25c97af5998ca43",
+        "build/bend-steps/step-02-refactored/sources/oracle.h": "876e18cf50000c3e369c2c8b602460f108d40c5d39aeebdc38c78ad5b0b87c0f",
+        "build/bend-steps/step-02-refactored/sources/gpu-profile.h": "77a2792de278aa9f6dd295c5f7631e51277530414c0e4d663e23e50ed7c026c8",
+        "build/bend-steps/step-02-refactored/sources/cpu.h": "707de68ee027b6a72f41a5467e03659d242f484e56371cc7ee226c6a55f566e0",
+        "build/bend-steps/step-02-refactored/sources/native.c": "6e6938593fb82040418a3ee5171a6286b045beb9dc6e78c01193d4f65bef436c",
+        "build/bend-steps/step-02-refactored/sources/state.h": "e64b9423113428aecf438ffe18aec597b7f569116bdf09332fad5016d57503c2",
+        "build/bend-steps/step-02-refactored/sources/api.bend": "7d14c7ec73e8272c624401168bf8f48652f744311f835ad9df2f5c839f839ef2",
+        "scripts/particles.py": "3769af5c296ef373e80ca596838dd8f837f3b064ac5d4e957538a90069cc8d51",
+        "scripts/gpui.py": "8e7a1f1461b4fe789d68d80bb9c8defa87d0c7c101d4979c2f4a053df225ecdd",
+        "scripts/grid_gpu.py": "b2c247584e0b3fcd34c16bebb9191eda099353ab04c770287bdfc97a1921c22a",
+        "scripts/algorithm_bench.py": "413b450b074728b249d6c542ceacff3a23509db89e700630160795d3b912cf73",
+        "scripts/grid.py": "c1ac047d11f35c4bdd58a618be7272a96e0bf760f78bc266eda240891920f7eb",
+        "tests/particles.py": "1e380c49612967ca7c48f5579af79b84ea34b912c6d0661bf5ecbcd6b7183863",
+        "examples/gpui/abi.h": "ae24e2c670850992558a66972b0a1d4c4b7c52d647f1b37ee7338a3c0b50eb34",
+        "examples/gpui/convert.metal": "88bdbe1bb33f05b46437bb49128575e95acaed6da838c3bc37e8455fdb01289a",
+        "examples/gpui/Cargo.toml": "dd9efb245332215f0fa9b33457d55ed4e85500e6da59f25685bd268f4ae98d85",
+        "examples/gpui/Cargo.lock": "49a5909284a3ff604aa4e3d8b9f7de16ccb973f8a49761823a13a0de66ec8bea",
+        "examples/gpui/src/lib.rs": "03a55bd44a752b8690dfc26ba12bde5dde8fb16b58394e1fb4763fb1e4789f2c"
+      },
+      "generated_sha256": {
+        "run.bend": "b3c95bd03849b106fe6fcd25cb7659638b19cbcf947e582ff34fc53756b8aa16",
+        "particle-config.h": "450ec7c46ac3011ff6bcd4ac024dafd0b7c194d66c0c2b6961695c8d5d2e3df6",
+        "particle-source.h": "f88614f6f92cd5911d0de9aaf948445a584732adb2e4cd9f498cc590497d5ecb",
+        "bend.c": "752a042b63ce55f5366a7857eaddd65e6f90eb3298c6ee0af1dda37a7138b2af",
+        "cpu.o": "5b3472914b957927271b1c43752b96877c65d78bf252a1cbdc23c844014e1960"
+      }
+    }
+  ],
+  "particle_verification": [
+    {
+      "lane": "base",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 1,
+      "backend": "bend-cpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 17,
+      "backend": "bend-cpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 10003,
+      "backend": "bend-cpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 1000000,
+      "backend": "bend-cpu",
+      "threads": 1,
+      "full_scale_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 1000000,
+      "backend": "bend-cpu",
+      "threads": 10,
+      "full_scale_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 1,
+      "backend": "bend-gpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 17,
+      "backend": "bend-gpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 10003,
+      "backend": "bend-gpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 1000000,
+      "backend": "bend-gpu",
+      "threads": 10,
+      "full_scale_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 1,
+      "backend": "bend-cpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 17,
+      "backend": "bend-cpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 10003,
+      "backend": "bend-cpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 1000000,
+      "backend": "bend-cpu",
+      "threads": 1,
+      "full_scale_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 1000000,
+      "backend": "bend-cpu",
+      "threads": 10,
+      "full_scale_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 1,
+      "backend": "bend-gpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 17,
+      "backend": "bend-gpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 10003,
+      "backend": "bend-gpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "base",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 1000000,
+      "backend": "bend-gpu",
+      "threads": 10,
+      "full_scale_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 1,
+      "backend": "bend-cpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 17,
+      "backend": "bend-cpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 10003,
+      "backend": "bend-cpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 1000000,
+      "backend": "bend-cpu",
+      "threads": 1,
+      "full_scale_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 1000000,
+      "backend": "bend-cpu",
+      "threads": 10,
+      "full_scale_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 1,
+      "backend": "bend-gpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 17,
+      "backend": "bend-gpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 10003,
+      "backend": "bend-gpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "callback",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 1000000,
+      "backend": "bend-gpu",
+      "threads": 10,
+      "full_scale_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 1,
+      "backend": "bend-cpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 17,
+      "backend": "bend-cpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 10003,
+      "backend": "bend-cpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 1000000,
+      "backend": "bend-cpu",
+      "threads": 1,
+      "full_scale_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 1024,
+      "count": 1000000,
+      "backend": "bend-cpu",
+      "threads": 10,
+      "full_scale_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 1,
+      "backend": "bend-gpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 17,
+      "backend": "bend-gpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 10003,
+      "backend": "bend-gpu",
+      "independent_frames": 4
+    },
+    {
+      "lane": "patched",
+      "variant": "flat",
+      "rounds": 64,
+      "jobs": 16384,
+      "count": 1000000,
+      "backend": "bend-gpu",
+      "threads": 10,
+      "full_scale_frames": 4
+    }
+  ],
+  "pr_patch_apply_check": true,
+  "sha256": {
+    "compiler-patches/step-02-known-callbacks/refactored/compiler.patch": "dc75caf9c6d562e98c4f6cd03e47366b27ee46ff6669fe7b4f96df51ce6c9879",
+    "compiler-patches/step-02-known-callbacks/refactored/pr.patch": "dbd658ebc775c49d41c79d949e4b1964ff4b9196774872f1848a6e50f9bbea3d",
+    "compiler-patches/step-02-known-callbacks/refactored/SPEC.md": "65c9edc363f31bc911d2e4476926dd3da569be26212eee5e55544012e68061a4",
+    "compiler-patches/step-02-known-callbacks/refactored/draft.ja.md": "d52d5f5b7c91bce399a4e98fe0045c67ddd5de1b02b1646674283defe8528271",
+    "compiler-patches/step-02-known-callbacks/refactored/draft.en.md": "9f048802d210a9f51dddd28e82842c892b199b7cea5e9218d017eb9bb8d5c79d",
+    "compiler-patches/step-02-known-callbacks/refactored/results-macos-m5.json": "381b089ae2ad7b5d5fd8d93e80035625d19720579f47c0b25beced8efb4b8857",
+    "scripts/bend_step02_refactor.py": "8a18dfba3d173806fadc657479ba39c30878866aec0512ef2602e4dd0ce7fae8",
+    "scripts/bend_step02_bench.py": "8a0c4465d5f01c4976b5d6964861614297c8f65de460777f49d1758fffb98215",
+    "tests/bend_step02_refactor.py": "07911593c97fe0c9bd89c28ec285ca8d5ff6d97eda7021b641b677f10de8d660",
+    "tests/bend_step02.py": "010c07a1d78e086e8e2adaa7eb1f7321b1ee7c027ee184afacd2fd961bbd7f2d"
+  },
+  "draft_review": {
+    "fresh_reader": "pass on all seven criteria",
+    "english_removable_tells": 0,
+    "english_baseline_max": 1,
+    "english_baseline_n": 13,
+    "japanese_removable_tells": 0,
+    "japanese_baseline_n": 0,
+    "gate": "ok: visible 3109/3589 chars (pr p90), language en ok, 2 public repository references"
+  },
+  "compiler_references": {
+    "base": {
+      "repository": "https://github.com/bendlang/bend.git",
+      "revision": "947db722640c86247849343657bf2f7ef01cb7f1",
+      "compiler_sha256": "453e5452f7d5ea1d501b29ce2332623c3f9f4c9e89f407352209716d31638c89"
+    },
+    "patched": {
+      "repository": "https://github.com/mizchi/bend.git",
+      "revision": "b59588e2a9c63092b542739bb6908c3329d2e353",
+      "compiler_sha256": "6346230340777c3c94a9e04123dfaaec21b763d0479fd9b94f2ca4ae43f2195f"
+    }
+  },
+  "playground_source_commit": "0d2b737a2b0e020428e223e572d85e6d2c4d748e",
+  "reference_checkout_contracts": 4,
+  "fresh_public_checkout": "both published commits fetched and hashes verified from GitHub URLs",
+  "benchmark_recorded_frames": 720,
+  "measured_readback_bytes": 0,
+  "state_allocations": 1,
+  "results_sha256": "dbd9f6d3dd737b376398a0dddf9603dbab792a49b92bde95fa465dfcc4e46d98"
+}

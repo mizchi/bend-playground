@@ -2,6 +2,8 @@
 
 Bend 2 の理解ノートと実験コード。Bend 本体の checkout に置いていた `.mizchi` を独立させたリポジトリです。
 
+上流へのリファレンス実装: [既知callbackのコンパイラ最適化とmain／forkの比較](compiler-patches/step-02-known-callbacks/refactored/README.md)。固定コミットからCPU/Metalの検証・計測を再現できます。[English instructions](compiler-patches/step-02-known-callbacks/refactored/README.en.md)も用意しています。
+
 ## セットアップ
 
 必要なもの: Git、Bun、just、Python 3。ネイティブ実験には C コンパイラも必要です。
