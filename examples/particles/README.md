@@ -8,6 +8,14 @@ macOS / Metal / Rustが必要。GPUIは既存バインディングの固定版0.
 `--variant flat`では粒子ごとのcallbackを省き、100万粒子＋追加計算64回のGPU更新が
 同じ分割数で6.762→1.481 msに改善した。アプリ側で改善できた部分と、本体側に残る候補を分けて記録している。
 
+さらに[`CPU.md`](CPU.md)でCのCPU対照実装と比較した。
+100万粒子＋追加計算64回・1,024 jobs・10 workersではBend 12.275 / C 12.159 msと近い値になった。
+軽い更新には差が残るため、Cの逐次ループ・worker poolと分けて計測している。
+
+[`GPU.md`](GPU.md)では分割方法・runtime段階・生成ループの直接kernel化を比較した。
+100万粒子＋追加計算64回・16,384 jobsのGPU実行は汎用Bend 1.291 / 直接leaf 0.821 / Metal tiled 0.573 ms。
+直接leafはコンパイラlowering案を調べる実験用対照で、通常のbackendには含めていない。
+
 ```sh
 # ネイティブGPUIウィンドウ。Pause/Resumeとリサイズに対応。
 just particles --backend bend-cpu --count 100000
@@ -17,6 +25,15 @@ just particles --backend metal --count 1000000 --noise-rounds 64
 # コンパイラを変えずにcallbackを省いた版。比較元は--variant callback（デフォルト）。
 just particles --variant flat --backend bend-gpu --count 1000000 --noise-rounds 64 --jobs 16384
 just bench-particles-code
+
+# C CPU対照との比較。--threadsはCPU worker数。
+just particles --backend c-cpu --count 1000000 --noise-rounds 64 --threads 10
+just particles --backend c-direct --count 10000 --jobs 64
+just bench-particles-cpu
+
+# GPU分割方法と生成ループの直接kernel化を比較。段階診断は通常測定と分離する。
+just check-particles-gpu
+just bench-particles-gpu
 
 # 状態・描画・実ウィンドウの検証。
 just check-particles
@@ -59,11 +76,13 @@ GPUIへ渡す画像は別のCVPixelBufferで、Rust側がretainする。
 
 - [`simulation.bend`](simulation.bend): 粒子更新とforkによる範囲分割。CPU/GPUで同じソース。
 - [`simulation-flat.bend`](simulation-flat.bend): 上記の物理計算を共有し、静的な読み出しと自己末尾再帰で更新する比較版。
+- [`state.h`](state.h) / [`cpu.h`](cpu.h) / [`cpu.c`](cpu.c): CPU/Metalの共有状態契約と、独立したC逐次更新・永続worker pool。
 - [`particles.metal`](particles.metal): 手書き更新kernelと、3経路共通の円形sprite描画。
 - [`native.c`](native.c): 永続配列の所有権、Metal command、画像pool、計測、GPUI接続。
 - [`oracle.h`](oracle.h): 初期状態と検証専用の独立C計算。計測中の更新には使用しない。
 - [`../../tests/particles.py`](../../tests/particles.py): 独立Python float32計算、円形spriteとNV12の画像oracle。
 - [`../../scripts/particles_bench.py`](../../scripts/particles_bench.py): ビルド後に検証し、順序を変えて直列計測。
+- [`gpu-profile.h`](gpu-profile.h) / [`gpu-leaf.metal`](gpu-leaf.metal) / [`../../scripts/particles_gpu.py`](../../scripts/particles_gpu.py): opt-inのGPU段階診断と生成ループの専用kernel対照。
 
 配列は初期化時に一度確保する。通常のArray.splitは配列をコピーするため使わず、
 `@unsafe`を限定してdisjointな範囲の共有handleを渡し、Array.joinで余分な参照を解放する。
@@ -77,7 +96,7 @@ GPUIへ渡す画像は別のCVPixelBufferで、Rust側がretainする。
 
 ## 検証と計測範囲
 
-`just check-particles`は1・17・10,003粒子、追加負荷0・64、callback版の3 backendとflat版のCPU/GPU、連続4フレームを検証する。
+`just check-particles`は1・17・10,003粒子、追加負荷0・64、callback版の3 backendとflat版のCPU/GPU・Cの2経路、連続4フレームを検証する。
 位置・速度・寿命は絶対誤差2e-6以内、乱数状態と予約語は完全一致。
 1粒子の全NV12画素は独立した円形sprite計算と照合し、複数粒子の全画素もbackend間で照合する
 （8-bit変換・rasterizationの差として最大2/255を許容）。

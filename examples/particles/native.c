@@ -1,14 +1,16 @@
 #include "abi.h"
 #include "oracle.h"
+#include "cpu.h"
 #include "particle-config.h"
 #include "particle-source.h"
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
 #import <CoreVideo/CoreVideo.h>
 
-typedef struct { uint32_t count, rounds, width, height; float radius; } ParticleArgs;
+typedef struct { uint32_t count, rounds, width, height; float radius; uint32_t jobs; } ParticleArgs;
+_Static_assert(sizeof(ParticleArgs) == 24, "Metal particle argument layout");
 typedef struct { uint32_t width, height, kind, count; } ConvertArgs;
-typedef enum { PARTICLE_CPU, PARTICLE_BEND_GPU, PARTICLE_METAL } ParticleBackend;
+typedef enum { PARTICLE_CPU, PARTICLE_BEND_GPU, PARTICLE_METAL, PARTICLE_C_CPU, PARTICLE_C_DIRECT } ParticleBackend;
 typedef struct {
   Env env;
   Term update, buffer;
@@ -26,6 +28,8 @@ typedef struct {
   CVPixelBufferPoolRef pool;
   CVPixelBufferRef previous;
   Particle *oracle;
+  ParticleCPU *cpu;
+  const char *mapping;
   bool profile;
   const char *dump;
 } ParticleState;
@@ -73,8 +77,28 @@ static void particle_init(ParticleState *s) {
   options.mathFloatingPointFunctions = MTLMathFloatingPointFunctionsPrecise;
   id<MTLLibrary> library = [s->device newLibraryWithSource:
     [NSString stringWithUTF8String:particle_shader_source] options:options error:&error];
+  s->mapping = getenv("BEND_PARTICLE_METAL_MAPPING") ?: "particle";
+  NSString *kernel;
+  if (!strcmp(s->mapping, "particle")) kernel = @"particle_update";
+  else if (!strcmp(s->mapping, "tiled")) kernel = @"particle_update_tiled";
+  else if (!strcmp(s->mapping, "strided")) kernel = @"particle_update_strided";
+#ifdef PARTICLE_GPU_PROBE
+  else if (!strcmp(s->mapping, "leaf")) kernel = @"particle_bend_leaf";
+#endif
+  else err_fail("invalid particle Metal mapping");
+  if (s->backend != PARTICLE_METAL && strcmp(s->mapping, "particle"))
+    err_fail("particle Metal mapping requires Metal backend");
+  id<MTLLibrary> update_library = library;
+#ifdef PARTICLE_GPU_PROBE
+  if (!strcmp(s->mapping, "leaf")) {
+    MTLCompileOptions *leaf_options = [MTLCompileOptions new];
+    leaf_options.mathMode = MTLMathModeSafe;
+    leaf_options.preprocessorMacros = @{@"CUBE_LOG":@(CUBE_LOG)};
+    update_library = [s->device newLibraryWithSource:@(BEND_SRC) options:leaf_options error:&error];
+  }
+#endif
   s->compute = [s->device newComputePipelineStateWithFunction:
-    [library newFunctionWithName:@"particle_update"] error:&error];
+    [update_library newFunctionWithName:kernel] error:&error];
   s->convert = [s->device newComputePipelineStateWithFunction:
     [library newFunctionWithName:@"convert"] error:&error];
   MTLRenderPipelineDescriptor *render = [MTLRenderPipelineDescriptor new];
@@ -92,6 +116,9 @@ static void particle_init(ParticleState *s) {
     fprintf(stderr, "Particle initialization: %s\n", error.localizedDescription.UTF8String);
     err_fail("particle Metal initialization failed");
   }
+#ifdef PARTICLE_GPU_PROBE
+  particle_probe_setup(s->device, s->compute);
+#endif
   uint64_t begin = particle_clock();
   while ((1ull << s->depth) < (uint64_t)s->count * 8) ++s->depth;
   Term zero = f32_rewrap(0);
@@ -102,7 +129,7 @@ static void particle_init(ParticleState *s) {
   for (uint32_t i = 0; i < s->count; ++i) {
     Particle p = particle_initial(i); memcpy(bytes + (size_t)i * sizeof p, &p, sizeof p);
   }
-  // Unused capacity is a canary; all three update paths must respect count.
+  // Unused capacity is a canary; all update paths must respect count.
   uint32_t canary = 0x7fc12345;
   for (uint64_t i = (uint64_t)s->count * 8; i < (1ull << s->depth); ++i)
     memcpy(bytes + i * 4, &canary, 4);
@@ -116,6 +143,10 @@ static void particle_init(ParticleState *s) {
     s->input_offset = ptr - base;
   }
   if (!s->input) err_fail("particle shared buffer import failed");
+  if (s->backend == PARTICLE_C_CPU) {
+    s->cpu = particle_cpu_create(pool_size);
+    if (!s->cpu) err_fail("particle C worker pool failed");
+  }
   s->prepare_ns = particle_clock() - begin;
   if (getenv("BEND_PARTICLE_VERIFY")) {
     s->oracle = malloc((size_t)s->count * sizeof(Particle));
@@ -204,20 +235,54 @@ static int32_t particle_draw(void *context, uint32_t width, uint32_t height,
         CVMetalTextureCacheCreateTextureFromImage(NULL, s->cache, pixel, NULL,
           MTLPixelFormatRG8Unorm, width/2, height/2, 1, &uvt)) err_fail("particle surface allocation failed");
     uint64_t prepared = particle_clock();
-    ParticleArgs args = {s->count, PARTICLE_NOISE_ROUNDS, width, height, 2};
+    ParticleArgs args = {s->count, PARTICLE_NOISE_ROUNDS, width, height, 2, PARTICLE_JOBS};
     grid_probe_commands = 0; grid_probe_execution = grid_probe_wait = grid_probe_submit = 0;
     uint64_t update_gpu = 0, update_wait = 0;
-    if (s->backend == PARTICLE_METAL) {
+    ParticleCPUStats cpu_stats = {0};
+#ifdef PARTICLE_GPU_PROBE
+    particle_probe_begin(s->device, frame, s->count, PARTICLE_JOBS, PARTICLE_NOISE_ROUNDS,
+      s->backend == PARTICLE_BEND_GPU ? "bend-gpu" : "metal");
+#endif
+    if (s->backend == PARTICLE_C_CPU || s->backend == PARTICLE_C_DIRECT) {
+      Particle *state = (Particle *)((unsigned char *)s->env.mem + s->offset);
+      int result = s->cpu ? particle_cpu_run(s->cpu, state, s->count, PARTICLE_JOBS, PARTICLE_NOISE_ROUNDS, &cpu_stats)
+        : particle_cpu_direct(state, s->count, PARTICLE_JOBS, PARTICLE_NOISE_ROUNDS, &cpu_stats);
+      if (result || cpu_stats.completed_jobs != PARTICLE_JOBS || !cpu_stats.workers_used)
+        err_fail("particle C update failed");
+    } else if (s->backend == PARTICLE_METAL) {
       id<MTLCommandBuffer> command = [s->queue commandBuffer];
+      uint32_t lanes = !strcmp(s->mapping, "particle") ? s->count : PARTICLE_JOBS;
+      uint32_t group_threads = !strcmp(s->mapping, "particle") ? 64 : 128;
+#ifdef PARTICLE_GPU_PROBE
+      id<MTLComputeCommandEncoder> encoder = particle_probe_active
+        ? particle_probe_encoder(command, s->mapping, 0, (lanes + group_threads - 1) / group_threads, group_threads)
+        : [command computeCommandEncoder];
+#else
       id<MTLComputeCommandEncoder> encoder = [command computeCommandEncoder];
+#endif
       [encoder setComputePipelineState:s->compute];
-      [encoder setBuffer:s->input offset:s->input_offset atIndex:0];
-      [encoder setBytes:&args length:sizeof args atIndex:1];
-      [encoder dispatchThreads:MTLSizeMake(s->count, 1, 1) threadsPerThreadgroup:MTLSizeMake(64, 1, 1)];
+#ifdef PARTICLE_GPU_PROBE
+      if (!strcmp(s->mapping, "leaf")) {
+        struct { uint64_t buffer; uint32_t count, jobs, rounds, reserved; } leaf_args =
+          {s->buffer, s->count, PARTICLE_JOBS, PARTICLE_NOISE_ROUNDS, 0};
+        _Static_assert(sizeof(leaf_args) == 24, "Bend leaf argument layout");
+        [encoder setBuffer:gpu_buf offset:0 atIndex:0];
+        [encoder setBytes:&leaf_args length:sizeof leaf_args atIndex:1];
+      } else
+#endif
+      {
+        [encoder setBuffer:s->input offset:s->input_offset atIndex:0];
+        [encoder setBytes:&args length:sizeof args atIndex:1];
+      }
+      [encoder dispatchThreads:MTLSizeMake(lanes, 1, 1) threadsPerThreadgroup:MTLSizeMake(group_threads, 1, 1)];
       [encoder endEncoding]; [command commit];
       uint64_t waiting = particle_clock(); [command waitUntilCompleted];
       update_wait = particle_clock() - waiting;
       particle_command_ok(command); update_gpu = particle_gpu_time(command);
+#ifdef PARTICLE_GPU_PROBE
+      if (!strcmp(s->mapping, "leaf") && a32_load(a32_at(s->env.mem, H_ERROR_CODE)))
+        err_fail("direct Bend GPU leaf failed");
+#endif
     } else {
       Env e = s->env;
       s->update = term_keep(e, s->update, 1);
@@ -231,6 +296,9 @@ static int32_t particle_draw(void *context, uint32_t width, uint32_t height,
       if ((s->backend == PARTICLE_BEND_GPU) != (grid_probe_commands != 0))
         err_fail("particle backend fallback");
     }
+#ifdef PARTICLE_GPU_PROBE
+    particle_probe_finish(s->device);
+#endif
     uint64_t updated = particle_clock();
     // Same rendering path for all backends. Render and conversion use one queue;
     // conversion depends on the completed render command, without a CPU wait
@@ -270,9 +338,11 @@ static int32_t particle_draw(void *context, uint32_t width, uint32_t height,
     if (s->oracle) particle_verify(s, pixel, frame);
     uint64_t verified = particle_clock();
     const char *backend = s->backend == PARTICLE_CPU ? "bend-cpu" :
-      s->backend == PARTICLE_BEND_GPU ? "bend-gpu" : "metal";
+      s->backend == PARTICLE_BEND_GPU ? "bend-gpu" : s->backend == PARTICLE_METAL ? "metal" :
+      s->backend == PARTICLE_C_CPU ? "c-cpu" : "c-direct";
     if (s->profile) printf("{\"frame\":%u,\"width\":%u,\"height\":%u,\"count\":%u,"
-      "\"backend\":\"%s\",\"noise_rounds\":%u,\"jobs\":%u,\"radius_px\":2,"
+      "\"backend\":\"%s\",\"noise_rounds\":%u,\"jobs\":%u,\"threads\":%u,\"radius_px\":2,"
+      "\"c_completed_jobs\":%u,\"c_workers_used\":%u,"
       "\"buffer_offset\":%llu,\"buffer_bytes\":%llu,\"state_allocations\":1,\"state_prepare_ns\":%llu,"
       "\"surface_prepare_ns\":%llu,\"update_ns\":%llu,\"update_gpu_ns\":%llu,\"update_wait_ns\":%llu,"
       "\"bend_gpu_commands\":%u,\"bend_gpu_submit_ns\":%llu,"
@@ -280,6 +350,7 @@ static int32_t particle_draw(void *context, uint32_t width, uint32_t height,
       "\"render_ns\":%llu,\"release_ns\":%llu,\"frame_ready_ns\":%llu,"
       "\"cpu_readback_bytes\":0,\"verified_particles\":%u,\"verify_ns\":%llu}\n",
       frame, width, height, s->count, backend, PARTICLE_NOISE_ROUNDS, PARTICLE_JOBS,
+      s->backend == PARTICLE_C_DIRECT ? 1 : pool_size, cpu_stats.completed_jobs, cpu_stats.workers_used,
       (unsigned long long)s->offset, (unsigned long long)(4ull << s->depth),
       (unsigned long long)s->prepare_ns, (unsigned long long)(prepared-begin),
       (unsigned long long)(updated-prepared), (unsigned long long)update_gpu, (unsigned long long)update_wait,
@@ -304,8 +375,15 @@ static Term particle_run_effect(Env e, Term *f, IoWork *w) {
   if (!strcmp(backend, "bend-cpu")) mode = PARTICLE_CPU;
   else if (!strcmp(backend, "bend-gpu")) mode = PARTICLE_BEND_GPU;
   else if (!strcmp(backend, "metal")) mode = PARTICLE_METAL;
+  else if (!strcmp(backend, "c-cpu")) mode = PARTICLE_C_CPU;
+  else if (!strcmp(backend, "c-direct")) mode = PARTICLE_C_DIRECT;
   else err_fail("invalid particle backend");
-  if ((mode == PARTICLE_BEND_GPU) != io_gpu) err_fail("particle GPU option mismatch");
+  bool direct_leaf = false;
+#ifdef PARTICLE_GPU_PROBE
+  direct_leaf = mode == PARTICLE_METAL && getenv("BEND_PARTICLE_METAL_MAPPING") &&
+    !strcmp(getenv("BEND_PARTICLE_METAL_MAPPING"), "leaf");
+#endif
+  if ((mode == PARTICLE_BEND_GPU || direct_leaf) != io_gpu) err_fail("particle GPU option mismatch");
   ParticleState state = {.env = e, .update = f[4], .backend = mode,
     .count = particle_option("BEND_PARTICLE_COUNT", (uint32_t)f[2], 1, 1000000),
     .profile = config.max_frames != 0 || getenv("BEND_PARTICLE_PROFILE") != NULL,
@@ -323,6 +401,7 @@ static Term particle_run_effect(Env e, Term *f, IoWork *w) {
   if (state.pool) CVPixelBufferPoolRelease(state.pool);
   if (state.cache) CFRelease(state.cache);
   free(state.oracle);
+  particle_cpu_destroy(state.cpu);
   term_drop(e, state.buffer); term_drop(e, state.update);
   return term_pak(CID(Unit), 0);
 }

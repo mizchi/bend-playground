@@ -107,14 +107,14 @@ def main() -> IO(Unit):
     return compile_app(work, generated)
 
 
-def compile_app(work, generated, name="bend-gpui", bundle_id="com.mizchi.bend-playground.gpui"):
+def compile_app(work, generated, name="bend-gpui", bundle_id="com.mizchi.bend-playground.gpui", extra_objects=()):
     """Link a generated Bend native effect to the shared GPUI C ABI."""
     work, generated = Path(work), Path(generated)
     binary = work / name
     subprocess.run([os.environ.get("CC", "clang"), "-std=c11", "-O3", "-ffp-contract=off", "-pthread",
                     "-mmacosx-version-min=" + DEPLOYMENT,
                     "-x", "objective-c", "-fobjc-arc", "-fmodules", "-DBEND_METAL=1",
-                    str(generated), "-x", "none", str(TARGET / "debug/libbend_gpui.a"),
+                    str(generated), "-x", "none", *map(str, extra_objects), str(TARGET / "debug/libbend_gpui.a"),
                     "-framework", "Cocoa", "-framework", "Metal", "-framework", "CoreVideo",
                     "-framework", "CoreGraphics", "-framework", "CoreText", "-framework", "QuartzCore",
                     "-framework", "Security", "-framework", "SystemConfiguration", "-framework", "VideoToolbox",

@@ -1,13 +1,10 @@
 #ifndef BEND_PARTICLE_ORACLE_H
 #define BEND_PARTICLE_ORACLE_H
-#include <stdint.h>
+#include "state.h"
 #include <math.h>
 
 // Independent scalar reference. It is used for initialization and optional
-// verification, never for the timed update of any of the three backends.
-typedef struct { float x, y, vx, vy, life, seed, pad0, pad1; } Particle;
-_Static_assert(sizeof(Particle) == 32, "particle stride");
-#define PARTICLE_DT 0.016666667f
+// verification, never for a timed update. cpu.c owns the independent C backend.
 
 static uint32_t particle_random(uint32_t x) {
   x ^= x << 13; x ^= x >> 17; x ^= x << 5;

@@ -132,3 +132,42 @@ GPU実行だけでも1.281 / 0.440 msで約2.91倍の時間がかかる。
 汎用fork/workerの費用、直接kernelへ落とす経路、非同期resourceの所有権が次の候補。
 原因別の寄与は未測定で、本体改善の効果は別checkoutでA/B/C/Dを比較して確認する。
 また、新版の描画GPU時間は約6.22 msあり、以後は共通renderer側の改善も効く。
+
+## C CPU対照から見た言語の費用
+
+[`particles/CPU.md`](examples/particles/CPU.md)に、同じ共有状態・物理計算・分割数で
+最適化後のBendとCを比較する実装と測定を追加した。
+Cは初期準備でpthread poolを作って再利用し、worker起床・queue・完了待ちを含めて測る。
+呼び出し元で同じC kernelを実行する逐次経路も用意した。Bend/Cでschedulerの実装は異なる。
+
+100万粒子・追加計算64回・1,024 jobs・10 workersの更新medianは
+Bend **12.275 ms**、C **12.159 ms**。1 workerでは**70.002 / 68.691 ms**だった。
+反復の範囲は重なり、この差を性能優位とは断定しない。
+今回の算術負荷が大きいCPU処理では、通常のCに近い実行時間まで改善できたと評価できる。
+
+小さい軽い更新では差が残る。1万粒子・64 jobs・1 workerの更新は
+Bend **0.105 ms**、C pool **0.015 ms**、C direct **0.011 ms**。
+呼び出し・fork・handle・同期・配列アクセスを含む費用で、要因ごとの寄与はまだ分離していない。
+この差をFFI一回やGPU起動の固定費に置き換えない。
+
+また、分割を細かくしすぎるとCにも費用がある。
+100万粒子の軽い更新・10 workersは、64 jobsでBend **0.848 / C 0.631 ms**、
+16,384 jobsで**1.751 / 1.740 ms**だった。
+言語だけでなく、計算量と仕事の粒度に合わせて並列化を選ぶ。
+GPU側の残る差は、CPUの算術速度とは別にworker runtimeやメモリアクセスをprofilingして判断する。
+
+## GPU runtimeと生成ループの対照
+
+[`particles/GPU.md`](examples/particles/GPU.md)では、手書きMetalにも同じ連続仕事を与え、
+Bendの生成ループをそのまま直接kernelから呼ぶ対照を作った。固定コンパイラは変更していない。
+100万粒子・追加乱数64回・16,384 jobsのGPU実行medianは、
+汎用Bend **1.291 ms**、直接leaf **0.821 ms**、Metal tiled **0.573 ms**。
+52条件を3反復し、速度比較とencoder-boundaryカウンター診断は別processで実施した。
+
+生成ループの直接kernel化は約1.57倍の改善で、独立配列更新の専用loweringが候補になる。
+ただし生成ループ自体にもMetalとの差が残る。汎用kernelと専用kernelでは
+仕事管理に加え、Metal compilerの最適化やthreadgroup resourceも変わるため、純粋なscheduler費用とは断定しない。
+アプリ側では分割数とアドレス配置、本体側では非重複範囲を直接kernelへ落とす契約、
+生成ループのGPU用型表現を分けて調べる。占有率・帯域・registerの寄与は未測定。
+
+同条件の画像準備まででは8.163 → 7.706 ms。描画の費用が大きく、表示FPSは測っていない。

@@ -13,9 +13,12 @@ from grid import integer
 from grid_gpu import instrument_metal
 
 SOURCE = ROOT / "examples/particles"
-BACKENDS = ("bend-cpu", "bend-gpu", "metal")
+BACKENDS = ("bend-cpu", "bend-gpu", "metal", "c-cpu", "c-direct")
+CPU_BACKENDS = ('bend-cpu', 'c-cpu', 'c-direct')
+CPU_FLAGS = ('-std=c11', '-O3', '-ffp-contract=off', '-pthread')
 VARIANTS = ('callback', 'flat')
-FIELDS = {"frame", "width", "height", "count", "backend", "noise_rounds", "jobs", "radius_px",
+FIELDS = {"frame", "width", "height", "count", "backend", "noise_rounds", "jobs", "threads", "radius_px",
+          "c_completed_jobs", "c_workers_used",
           "buffer_offset", "buffer_bytes", "state_allocations", "state_prepare_ns", "surface_prepare_ns",
           "update_ns", "update_gpu_ns", "update_wait_ns", "bend_gpu_commands", "bend_gpu_submit_ns",
           "draw_gpu_ns", "convert_gpu_ns", "render_wait_ns", "render_ns", "release_ns", "frame_ready_ns",
@@ -53,13 +56,19 @@ def parse_frame(line, backend):
         raise ValueError("incomplete particle state")
     if row['noise_rounds'] not in (0, 64) or not 64 <= row['jobs'] <= 16384 or row['jobs'] & (row['jobs'] - 1):
         raise ValueError("invalid simulation configuration")
+    thread_count(backend, row['threads'])
+    if backend.startswith('c-'):
+        if row['c_completed_jobs'] != row['jobs'] or not 1 <= row['c_workers_used'] <= row['threads']:
+            raise ValueError("incomplete C worker update")
+    elif row['c_completed_jobs'] or row['c_workers_used']:
+        raise ValueError("unexpected C worker update")
     if (backend == 'bend-gpu') != (row['bend_gpu_commands'] == 1):
         raise ValueError("Bend GPU fallback or unexpected dispatch")
     if backend != 'bend-gpu' and row['bend_gpu_commands']:
         raise ValueError("unexpected Bend GPU dispatch")
-    if (backend != 'bend-cpu') != bool(row['update_gpu_ns']):
+    if (backend not in CPU_BACKENDS) != bool(row['update_gpu_ns']):
         raise ValueError("invalid GPU update timing")
-    if backend == 'bend-cpu' and (row['update_wait_ns'] or row['bend_gpu_submit_ns']):
+    if backend in CPU_BACKENDS and (row['update_wait_ns'] or row['bend_gpu_submit_ns']):
         raise ValueError("CPU update unexpectedly waited for the GPU")
     if row['update_wait_ns'] > row['update_ns'] or row['render_wait_ns'] > row['render_ns']:
         raise ValueError("wait exceeds its containing phase")
@@ -69,7 +78,7 @@ def parse_frame(line, backend):
     return row
 
 
-def build(work=None, noise_rounds=0, jobs=4096, variant='callback'):
+def build(work=None, noise_rounds=0, jobs=4096, variant='callback', gpu_probe=False):
     if os.uname().sysname != 'Darwin':
         raise RuntimeError("particles require macOS/Metal")
     if type(noise_rounds) is not int or noise_rounds not in (0, 64):
@@ -104,7 +113,19 @@ def main() -> IO(Unit):
     subprocess.run([str(ROOT / 'scripts/bend.sh'), str(work / 'run.bend'), '-o', str(generated)],
                    env={**os.environ, 'BEND_NO_TELEMETRY': '1'}, stdout=subprocess.DEVNULL, check=True)
     generated.write_text(instrument_metal(generated.read_text()))
-    return gpui.compile_app(work, generated, 'bend-particles', 'com.mizchi.bend-playground.particles')
+    if gpu_probe:
+        from particles_gpu import instrument_gpu
+        loops = codegen_report(generated.read_text())['particle_loops']
+        if len(loops) != 1 or loops[0]['function'] != 'spin_16' or any(
+            loops[0][key] for key in ('heap_alloc_sites', 'closure_sites', 'dynamic_apply_sites')):
+            raise ValueError('GPU leaf requires the pinned allocation-free flat particle loop')
+        generated.write_text(instrument_gpu(generated.read_text()))
+    cpu_object = work / 'cpu.o'
+    subprocess.run([os.environ.get('CC', 'clang'), *CPU_FLAGS,
+                    '-mmacosx-version-min=' + gpui.DEPLOYMENT,
+                    '-c', str(work / 'cpu.c'), '-o', str(cpu_object)], check=True)
+    return gpui.compile_app(work, generated, 'bend-particles', 'com.mizchi.bend-playground.particles',
+                            extra_objects=[cpu_object])
 
 
 def run_env(backend, count, frames, width, height, headless=False, verify=False, dump=None):
@@ -125,16 +146,27 @@ def run_env(backend, count, frames, width, height, headless=False, verify=False,
     return env
 
 
-def command(binary, backend):
+def thread_count(backend, threads=None):
+    if backend not in BACKENDS:
+        raise ValueError("invalid particle backend")
+    value = (1 if backend == 'c-direct' else min(os.cpu_count() or 1, 128)) if threads is None else threads
+    integer(value, 'threads', 1, 128)
+    if backend == 'c-direct' and value != 1:
+        raise ValueError('c-direct requires one thread')
+    return value
+
+
+def command(binary, backend, threads=None):
     return [str(binary), '--gpu', 'on' if backend == 'bend-gpu' else 'off',
-            '--threads', str(min(os.cpu_count() or 1, 128))]
+            '--threads', str(thread_count(backend, threads))]
 
 
 def run(binary, backend="bend-cpu", count=10000, frames=3, width=960, height=540,
-        headless=True, verify=False, dump=None, timeout=300):
+        headless=True, verify=False, dump=None, timeout=300, threads=None):
     if not frames:
         raise ValueError("run requires finite frames")
-    result = subprocess.run(command(binary, backend), env=run_env(backend, count, frames, width, height,
+    expected_threads = thread_count(backend, threads)
+    result = subprocess.run(command(binary, backend, expected_threads), env=run_env(backend, count, frames, width, height,
                             headless, verify, dump), capture_output=True, text=True, timeout=timeout)
     if result.returncode:
         raise RuntimeError(f'Particles exited {result.returncode}: {result.stderr}\n{result.stdout}')
@@ -143,6 +175,9 @@ def run(binary, backend="bend-cpu", count=10000, frames=3, width=960, height=540
         raise RuntimeError(f'incomplete particle frames: {result.stdout}\n{result.stderr}')
     if len({r['buffer_offset'] for r in rows}) != 1:
         raise RuntimeError("particle allocation changed between frames")
+    if any(r['threads'] != expected_threads or r['count'] != count or
+           (r['verified_particles'] != count if verify else r['verified_particles'] != 0) for r in rows):
+        raise RuntimeError('particle run configuration mismatch')
     return rows
 
 
@@ -184,6 +219,7 @@ def metadata(binary):
     environment.pop('source_sha256', None)
     environment.pop('c_scheduler', None)
     environment.pop('rss_unit', None)
+    environment['logical_cpu_count'] = environment.pop('threads')
     environment.update(rustc=command_output('rustc', '--version'),
                        gpu=json.loads(command_output('system_profiler', 'SPDisplaysDataType', '-json'))['SPDisplaysDataType'])
     paths = [p for p in SOURCE.iterdir() if p.suffix in ('.bend', '.c', '.h', '.metal')]
@@ -193,11 +229,12 @@ def metadata(binary):
               gpui.SOURCE / 'Cargo.lock', gpui.SOURCE / 'src/lib.rs']
     work = Path(binary).parents[3]
     return dict(environment=environment, gpui='0.2.2', deployment_target=gpui.DEPLOYMENT,
+                c_cpu_flags=' '.join(CPU_FLAGS) + ' -mmacosx-version-min=' + gpui.DEPLOYMENT + '; separate TU, no LTO',
                 variant='flat' if './simulation-flat.bend' in (work / 'run.bend').read_text() else 'callback',
                 codegen=codegen_report((work / 'bend.c').read_text()),
                 source_sha256={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths},
                 generated_sha256={name: hashlib.sha256((work / name).read_bytes()).hexdigest()
-                                  for name in ['run.bend', 'particle-config.h', 'particle-source.h', 'bend.c']})
+                                  for name in ['run.bend', 'particle-config.h', 'particle-source.h', 'bend.c', 'cpu.o']})
 
 
 def main():
@@ -207,6 +244,7 @@ def main():
     parser.add_argument('--count', type=int, default=100000)
     parser.add_argument('--noise-rounds', type=int, choices=[0, 64], default=0)
     parser.add_argument('--jobs', type=int, help='power of two; defaults to measured CPU/GPU grain')
+    parser.add_argument('--threads', type=int, help='CPU workers; c-direct requires one')
     parser.add_argument('--frames', type=int, default=0)
     parser.add_argument('--width', type=int, default=960)
     parser.add_argument('--height', type=int, default=540)
@@ -215,6 +253,7 @@ def main():
     parser.add_argument('--dump', type=Path)
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
+    threads = thread_count(args.backend, args.threads)
     env = run_env(args.backend, args.count, args.frames, args.width, args.height, args.headless, args.verify, args.dump)
     if args.output and not args.frames:
         parser.error('--output requires finite frames')
@@ -223,14 +262,14 @@ def main():
                    variant=args.variant)
     if args.frames:
         rows = run(binary, args.backend, args.count, args.frames, args.width, args.height,
-                   args.headless, args.verify, args.dump)
+                   args.headless, args.verify, args.dump, threads=threads)
         for row in rows: print(json.dumps(row))
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json.dumps({**metadata(binary), 'samples': rows,
-                'headless': args.headless, 'verify': args.verify}, indent=2) + '\n')
+                'headless': args.headless, 'verify': args.verify, 'threads': threads}, indent=2) + '\n')
     else:
-        subprocess.run(command(binary, args.backend), env=env, check=True)
+        subprocess.run(command(binary, args.backend, threads), env=env, check=True)
 
 
 if __name__ == '__main__':

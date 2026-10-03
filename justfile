@@ -108,6 +108,18 @@ bench-particles *args="":
 bench-particles-code *args="":
     python3 scripts/particles_bench.py --variant callback --variant flat {{args}}
 
+# Compare flat Bend and C CPU updates, including persistent pools and direct C.
+bench-particles-cpu *args="":
+    python3 scripts/particles_cpu_bench.py {{args}}
+
+# Verify native GPU mappings and encoder-boundary diagnostic samples.
+check-particles-gpu:
+    python3 tests/particles_gpu.py
+
+# Compare GPU job mappings; separate stage diagnostics from normal timings.
+bench-particles-gpu *args="":
+    python3 scripts/particles_gpu.py {{args}}
+
 # Verify native FFI and its pure controls against an independent scalar oracle.
 check-ffi:
     python3 tests/ffi.py

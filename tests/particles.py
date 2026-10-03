@@ -1,8 +1,10 @@
 """Independent float32 simulation oracle and persistent CPU/GPU state checks."""
 import math
 import json
+import os
 from pathlib import Path
 import struct
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -10,6 +12,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import particles
+import particles_bench
 
 
 def f32(x):
@@ -83,6 +86,86 @@ def single_particle_image(p, width, height):
 
 
 class ParticleTest(unittest.TestCase):
+    def test_benchmark_compares_matching_threads_without_duplicate_controls(self):
+        specs = particles_bench.specifications(['callback', 'flat'], [0], [64, 1024], [17],
+                        ['bend-cpu', 'c-cpu', 'c-direct', 'metal'], [1, 4])
+        self.assertEqual(len(specs), 15)
+        self.assertEqual(len(set(specs)), 15)
+        self.assertEqual({s[-1] for s in specs if s[-2] == 'c-direct'}, {1})
+        self.assertEqual(len([s for s in specs if s[-2] == 'metal']), 1)
+        self.assertEqual({s[0] for s in specs if s[-2] == 'c-cpu'}, {'callback'})
+
+    def test_c_cpu_contract_and_thread_options(self):
+        self.assertEqual(particles.options('c-cpu', 17, 4, 64, 32), (64, 32))
+        self.assertEqual(particles.options('c-direct', 17, 4, 64, 32), (64, 32))
+        self.assertEqual(particles.command(Path('/unused'), 'c-cpu', threads=4)[-2:], ['--threads', '4'])
+        for value in [0, 129, True]:
+            with self.subTest(threads=value), self.assertRaises(ValueError):
+                particles.command(Path('/unused'), 'c-cpu', threads=value)
+        with self.assertRaises(ValueError):
+            particles.command(Path('/unused'), 'c-direct', threads=4)
+
+    def test_c_workers_reuse_pool_across_counts_grains_and_rounds(self):
+        # This portable harness uses only the production C kernel, not oracle.h.
+        # Change the work description every frame while keeping one worker pool.
+        driver = '''#include "cpu.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+int main(int argc, char **argv) {
+  if (argc != 3) return 1;
+  unsigned threads = (unsigned)atoi(argv[1]), direct = (unsigned)atoi(argv[2]);
+  ParticleCPU *pool = particle_cpu_create(threads);
+  if (!pool || particle_cpu_create(0) || particle_cpu_create(129)) return 2;
+  Particle *state = calloc(10003, sizeof *state);
+  if (!state || fread(state, sizeof *state, 10003, stdin) != 10003) return 3;
+  ParticleCPUStats stats;
+  if (particle_cpu_run(pool, state, 17, 65, 0, &stats) != EINVAL ||
+      particle_cpu_direct(state, 0, 64, 0, &stats) != EINVAL) return 4;
+  unsigned config[3];
+  while (fread(config, sizeof config, 1, stdin) == 1) {
+    int result = direct ? particle_cpu_direct(state, config[0], config[1], config[2], &stats)
+      : particle_cpu_run(pool, state, config[0], config[1], config[2], &stats);
+    if (result || stats.completed_jobs != config[1] || !stats.workers_used ||
+        stats.workers_used > (direct ? 1 : threads)) return 5;
+    if (fwrite(state, sizeof *state, 10003, stdout) != 10003) return 6;
+  }
+  particle_cpu_destroy(pool); free(state); return 0;
+}
+'''
+        configurations = [(1, 16384, 0), (17, 64, 64), (10003, 1024, 64), (4097, 4096, 0)] * 3
+        start = [initial(i)[:6] + [float(i) + .5, -float(i) - .5] for i in range(10003)]
+        packed = b''.join(struct.pack('=8f', *p) for p in start)
+        expected, snapshots = start, []
+        for count, jobs, rounds in configurations:
+            expected = [update(p, rounds) if i < count else p for i, p in enumerate(expected)]
+            snapshots.append(expected)
+            packed += struct.pack('=3I', count, jobs, rounds)
+        with tempfile.TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            (work / 'driver.c').write_text(driver)
+            binary = work / 'cpu-test'
+            sanitizer = os.environ.get('BEND_PARTICLE_C_SANITIZER')
+            if sanitizer not in (None, 'thread', 'address'):
+                raise ValueError('invalid C test sanitizer')
+            flags = ['-fsanitize=' + sanitizer, '-g'] if sanitizer else []
+            subprocess.run(['clang', '-std=c11', '-O3', '-ffp-contract=off', '-pthread', *flags,
+                            '-I', str(particles.SOURCE), str(work / 'driver.c'),
+                            str(particles.SOURCE / 'cpu.c'), '-o', str(binary)], check=True)
+            for threads, direct in [(1, 0), (4, 0), (1, 1)]:
+                result = subprocess.run([str(binary), str(threads), str(direct)],
+                                        input=packed, capture_output=True, timeout=30)
+                self.assertEqual(result.returncode, 0, result.stderr.decode())
+                stride = 10003 * 32
+                self.assertEqual(len(result.stdout), len(configurations) * stride)
+                for frame, snapshot in enumerate(snapshots):
+                    raw = result.stdout[frame*stride:(frame+1)*stride]
+                    for i, actual in enumerate(struct.iter_unpack('=8f', raw)):
+                        self.assertEqual(actual[5:], tuple(snapshot[i][5:]))
+                        for got, wanted in zip(actual[:5], snapshot[i][:5]):
+                            self.assertTrue(math.isfinite(got))
+                            self.assertAlmostEqual(got, wanted, delta=2e-6)
+
     def test_contract_rejects_invalid_inputs_and_gpu_fallback(self):
         self.assertEqual(particles.options('bend-gpu', 10000, 4, 65, 33), (64, 32))
         self.assertEqual(particles.default_jobs('bend-cpu', 100000), 1024)
@@ -100,7 +183,7 @@ class ParticleTest(unittest.TestCase):
             particles.build(variant='invalid')
         # Real measurements must contain dispatch evidence and consistent phases.
         row = dict.fromkeys(particles.FIELDS, 0)
-        row.update(frame=0, backend='bend-gpu', width=32, height=16, count=17, jobs=4096,
+        row.update(frame=0, backend='bend-gpu', width=32, height=16, count=17, jobs=4096, threads=10,
                    radius_px=2, buffer_bytes=1024, state_allocations=1, update_ns=1000,
                    update_gpu_ns=500, update_wait_ns=800, bend_gpu_commands=1,
                    draw_gpu_ns=10, convert_gpu_ns=10, render_wait_ns=100,
@@ -111,6 +194,13 @@ class ParticleTest(unittest.TestCase):
                       dict(update_wait_ns=2000), dict(width=31), dict(verified_particles=1)]:
             with self.subTest(patch=patch), self.assertRaises(ValueError):
                 particles.parse_frame(json.dumps({**row, **patch}), 'bend-gpu')
+        c_row = {**row, 'backend': 'c-cpu', 'update_gpu_ns': 0, 'update_wait_ns': 0,
+                 'bend_gpu_commands': 0, 'c_completed_jobs': 4096, 'c_workers_used': 4}
+        particles.parse_frame(json.dumps(c_row), 'c-cpu')
+        for patch in [dict(c_completed_jobs=0), dict(c_workers_used=0), dict(c_workers_used=11),
+                      dict(update_gpu_ns=1), dict(update_wait_ns=1), dict(threads=0)]:
+            with self.subTest(patch=patch), self.assertRaises(ValueError):
+                particles.parse_frame(json.dumps({**c_row, **patch}), 'c-cpu')
 
     def test_persistent_updates_match_independent_float32_oracle(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -119,7 +209,8 @@ class ParticleTest(unittest.TestCase):
                 reference_images = {}
                 configurations = [(variant, backend) for variant in ['callback', 'flat']
                                   for backend in particles.BACKENDS
-                                  if variant == 'callback' or backend != 'metal']
+                                  if (variant == 'callback' and backend in ('bend-cpu', 'bend-gpu', 'metal'))
+                                  or (variant == 'flat' and backend != 'metal')]
                 binaries = {variant: particles.build(work / f'{rounds}-{variant}',
                             noise_rounds=rounds, variant=variant) for variant in ['callback', 'flat']}
                 report = particles.codegen_report((work / f'{rounds}-flat/bend.c').read_text())
