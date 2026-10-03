@@ -29,7 +29,7 @@ Apple M5で100万粒子を更新し、main `947db722`とfork `b59588e2`を比較
 | CPU・10スレッド | 24.472 ms | 12.108 ms | 2.02× |
 | Metal・完了待ち込み | 8.653 ms | 1.625 ms | 5.32× |
 
-GPUIは利用例です。このPRは一般的なコンパイラを変更し、バインディング・描画コード・手書きMetal kernelは[公開リファレンス実装](https://github.com/mizchi/bend-playground/tree/09fc6e6/compiler-patches/step-02-known-callbacks/refactored)に置きます。
+GPUIは利用例です。このPRは一般的なコンパイラを変更します。アプリケーション側は[再利用できるBend/GPUIライブラリ](https://github.com/mizchi/bend-playground/blob/6c21544c51228c88e5ff1559236231a0b88727f7/packages/bend-gpui/README.en.md)、[最小のBendアプリケーション](https://github.com/mizchi/bend-playground/blob/6c21544c51228c88e5ff1559236231a0b88727f7/examples/gpui/minimal.bend)、[粒子の描画例](https://github.com/mizchi/bend-playground/tree/6c21544c51228c88e5ff1559236231a0b88727f7/examples/particles)として公開します。[計測リファレンス実装](https://github.com/mizchi/bend-playground/tree/09fc6e6/compiler-patches/step-02-known-callbacks/refactored)は測定時の版に固定しています。
 
 ## Change
 

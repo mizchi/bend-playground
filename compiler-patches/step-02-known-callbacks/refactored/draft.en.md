@@ -29,7 +29,7 @@ One million particles on Apple M5, measured on main `947db722` vs fork `b59588e2
 | CPU, 10 threads | 24.472 ms | 12.108 ms | 2.02× |
 | Metal, including completion wait | 8.653 ms | 1.625 ms | 5.32× |
 
-GPUI is the application example. This PR changes the general compiler; the bindings, rendering code and handwritten Metal kernels live in the [public reference implementation](https://github.com/mizchi/bend-playground/tree/09fc6e6/compiler-patches/step-02-known-callbacks/refactored).
+GPUI is the application example. This PR changes the general compiler; application code is available as a [reusable Bend/GPUI library](https://github.com/mizchi/bend-playground/blob/6c21544c51228c88e5ff1559236231a0b88727f7/packages/bend-gpui/README.en.md), a [minimal Bend application](https://github.com/mizchi/bend-playground/blob/6c21544c51228c88e5ff1559236231a0b88727f7/examples/gpui/minimal.bend), and a [particle rendering example](https://github.com/mizchi/bend-playground/tree/6c21544c51228c88e5ff1559236231a0b88727f7/examples/particles). The [benchmark reference implementation](https://github.com/mizchi/bend-playground/tree/09fc6e6/compiler-patches/step-02-known-callbacks/refactored) remains pinned to the measured versions.
 
 ## Change
 

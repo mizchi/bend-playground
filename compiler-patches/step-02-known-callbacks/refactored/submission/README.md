@@ -2,6 +2,8 @@
 
 [Upstream PR #1288](https://github.com/bendlang/bend/pull/1288) follows the Feature template and describes the GPUI binding work that exposed the callback bottleneck.
 
+The application code is available as a [reusable Bend/GPUI library and English usage guide](https://github.com/mizchi/bend-playground/blob/6c21544c51228c88e5ff1559236231a0b88727f7/packages/bend-gpui/README.en.md), a [minimal Bend application](https://github.com/mizchi/bend-playground/blob/6c21544c51228c88e5ff1559236231a0b88727f7/examples/gpui/minimal.bend), and a [particle rendering example](https://github.com/mizchi/bend-playground/tree/6c21544c51228c88e5ff1559236231a0b88727f7/examples/particles).
+
 This branch applies the compiler optimization to upstream main [5a0b523f](https://github.com/bendlang/bend/commit/5a0b523f7759335164f1dead0e0815234a5fd9dc), preserving its latest ownership fix. It has two commits:
 
 1. [1e250850](https://github.com/mizchi/bend/commit/1e250850): simplify type/import notation and comments, 63,980 → 63,129 ttok. Fourteen existing programs emit byte-identical C/JS before and after this commit.
